@@ -1,0 +1,116 @@
+.reg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 380px;
+    height: 560px;
+    background: #FFFFFF;
+    border-radius: 10px;
+}
+.login {
+    height: 520px;
+}
+.reg__logo {
+    margin-top: 20px;
+    margin-right: 5px;
+}
+.reg__title {
+    margin-top: 10px;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 140%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #545454;
+}
+.reg__form {
+    margin: 28px 30px 0 30px;
+    width: 320px;
+}
+.reg__input__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+.reg__input__item {
+    display: flex;
+    flex-direction: column;
+}
+.reg__input__title {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #545454;
+}
+input {
+    all: unset;
+}
+button {
+    all: unset;
+    cursor: pointer;
+}
+.reg__input {
+    box-sizing: border-box;
+    padding-left: 15px;
+    margin-top: 7px;
+    width: 100%;
+    height: 30px;
+    background: #F2F4F5;
+    border-radius: 10px;
+}
+.reg__form__buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+.login__form__buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+.reg__form__buttons__row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.reg__form__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 40px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    font-size: 15px;
+}
+.reg__btn-orange {
+    background: #DA5C34;
+    color: #FFFFFF;
+}
+.reg__btn-white {
+    background: #fff;
+    color: #545454;
+}
+.login__recovery {
+    cursor: pointer;
+    margin-top: 24px;
+    font-size: 12px;
+    color: #545454
+}
+.reg__footer {
+    display: flex;
+    justify-content: space-between;
+    margin: 45px 20px 0 20px;
+    width: 340px;
+}
+.login__footer {
+    margin: 27px 20px 0 20px;
+}
+.reg__footer__content {
+    font-size: 10px;
+    line-height: 12px;
+    color: #545454;
+}

@@ -1,0 +1,108 @@
+.order__content {
+    margin-top: -20px;
+}
+.order__left__info {
+    display: flex;
+    align-items: center;
+}
+.order__title {
+    margin-left: 20px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.01em;
+    color: #545454;
+}
+
+.order__info__content {
+    margin-left: 5%;
+    width: 150px;
+    gap: 16px;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.order__status__title {
+    margin-left: 5%;
+    width: 190px;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    color: #545454;
+}
+.order__itog__info {
+    margin-top: 70px;
+    margin-left: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.order__itog__info__more-detail {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 92px;
+    height: 25px;
+    border: 1px solid #545454;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.01em;
+    color: #545454;
+}
+.order__itog__info__price {
+    margin-top: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10px;
+    width: 220px;
+    height: 40px;
+    border: 1px solid #DA5C34;
+    border-radius: 20px;
+}
+.order__itog__info__price__title {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    letter-spacing: 0.01em;
+    color: #545454
+}
+.order__itog__info__price__count {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.01em;
+    color: #545454
+}
+
+@media (max-width: 1180px) {
+    .order__title {
+        margin-left: 10px;
+    }
+    .order__itog__info {
+        margin-left: -2%;
+    }
+    .order__itog__info__price {
+        width: 190px;
+    }
+    .order__status__title {
+        margin-left: 4%;
+    }
+}
+@media (max-width: 1120px) {
+    .order__itog__info {
+        margin-left: -3%;
+    }
+    .order__itog__info__price {
+        width: 190px;
+    }
+    .order__status__title {
+        margin-left: 3%;
+    }
+}
