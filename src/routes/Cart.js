@@ -38,7 +38,7 @@ function Cart() {
   return (
     <div className="wrapper">
       <Header
-        cartPrice={2120}
+        cartPrice={cartPrice}
         pull={pull}
         setPull={setPull}
         pullMenuMob={pullMenuMob}

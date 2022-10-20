@@ -91,7 +91,7 @@
     justify-content: center;
     width: 100px;
     height: 40px;
-    background: #F20D0D;
+    background: rgb(41, 36, 36);
     border-radius: 20px;
     gap: 15px;
 }
@@ -172,7 +172,7 @@
     gap: 20px;
     width: 180px;
     height: 40px;
-    background: #F20D0D;
+    background: rgb(41, 36, 36);
     border: 1px solid #F20D0D;
     border-radius: 20px;
 }
@@ -338,7 +338,7 @@
     justify-content: center;
     width: 231px;
     height: 40px;
-    background: #F20D0D;
+    background: rgb(41, 36, 36);
     border-radius: 20px;
     margin-top: 50px;
 }
@@ -374,7 +374,7 @@
     width: 6px;
     height: 6px;
     border-radius: 6px;
-    background: #F20D0D;
+    background: rgb(41, 36, 36);
 }
 .mo__content__payment__title {
     display: flex;

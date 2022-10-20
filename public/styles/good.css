@@ -61,7 +61,7 @@
 .good__main__slider__img-active {
     width: 3px;
     height: 100%;
-    background: #F20D0D;;
+    background: rgb(41, 36, 36);
 }
 .good__main__image__content {
     display: flex;
@@ -173,7 +173,7 @@
 .good__main__down__color__left {
     width: 32px;
     height: 32px;
-    background: #F20D0D;
+    background: rgb(41, 36, 36);
     border: 1px solid #F2F4F5;
     border-radius: 20px;   
 }
@@ -281,7 +281,7 @@
     align-items: center;
     width: 140px;
     height: 40px;
-    background: #F20D0D;
+    background: rgb(41, 36, 36);
     box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.08);
     border-radius: 20px;
 }

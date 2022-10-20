@@ -151,7 +151,7 @@ ul {
     cursor: pointer;
     width: 211px;
     height: 40px;
-    background: #F20D0D;
+    background: rgb(41, 36, 36);
     border-radius: 20px;
     display: flex;
     justify-content: space-between;
