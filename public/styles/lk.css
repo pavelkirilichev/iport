@@ -202,7 +202,7 @@
 .lk-clients__content__main__item__bottom__phone {
     font-size: 14px;
     line-height: 17px;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk-clients__content__main__item__bottom__address {
     max-width: 250px;
@@ -242,7 +242,7 @@
 .lk-order__content__item__top__subtitle {
     font-size: 12px;
     line-height: 15px;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk-order__content__item__top__title {
     font-weight: 600;
@@ -265,7 +265,7 @@
     font-size: 10px;
     line-height: 12px;
     text-align: right;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk-order__content__main__item__bottom {
     display: flex;
@@ -280,7 +280,7 @@
 .lk-order__slash-orange {
     margin: 0 3px 0 3px;
     font-weight: 500;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 
 .lk__btn-160 {
@@ -408,7 +408,7 @@
     font-weight: 500;
     font-size: 14px;
     line-height: 17px;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk-order_inner__main__info__right__top {
     display: flex;
@@ -426,7 +426,7 @@
 .lk-order_inner__main__info__right__top__right__subtitle {
     font-size: 14px;
     line-height: 17px;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk-order_inner__main__info__right__bottom {
     display: flex;
@@ -481,7 +481,7 @@
 }
 .lk__orange-600 {
     font-weight: 600;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk-order_inner__main__goods__header__count {
     display: flex;
@@ -550,7 +550,7 @@
     color: #545454;
 }
 .lk-order_inner__main__goods__item__info__bottom span:last-child {
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk-order_inner__main__goods__item__price {
     margin-left: 50px;
@@ -568,13 +568,13 @@
     font-weight: 600;
     font-size: 10px;
     line-height: 12px;
-    color: #F20D0D;    
+    color: rgb(41, 36, 36);    
 }
 .lk-order_inner__main__goods__item__price__top__subtitle {
     font-weight: 300;
     font-size: 14px;
     line-height: 14px;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
     text-decoration: line-through;
 }
 .lk-order_inner__main__goods__item__price__bottom {
@@ -593,7 +593,7 @@
     font-weight: 600;
     font-size: 20px;
     line-height: 24px;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk-order_inner__main__goods__item__price__bottom__count img {
     cursor: pointer;
@@ -610,7 +610,7 @@
     color: #545454;
 }
 .lk-order_inner__main__goods__item__price__bottom__info span:last-child {
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk-order_inner__main__goods__item__result {
     margin-left: 110px;
@@ -640,7 +640,7 @@
     line-height: 20px;
     text-align: right;
     letter-spacing: 0.01em;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 
 .lk-order_inner__main__goods__item__close {
@@ -689,7 +689,7 @@
 }
 .lk-order_inner__main__bottom__shipment__inner span {
     font-size: 11px;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk-order_inner__main__bottom__right {
     display: flex;
@@ -746,7 +746,7 @@
     font-weight: 500;
     font-size: 16px;
     letter-spacing: 0.01em;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk__side__sale__row__count__procent {
     position: absolute;
@@ -785,7 +785,7 @@
     line-height: 20px;
     text-align: center;
     letter-spacing: 0.01em;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk__side__notes__title {
     margin-left: 10px;
@@ -855,7 +855,7 @@
     font-weight: 400;
     font-size: 10px;
     letter-spacing: 0.01em;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk__side__notes__message span:last-child {
     margin-top: 5px;
@@ -924,7 +924,7 @@
     margin-top: 4px;
     font-size: 14px;
     line-height: 17px;
-    color: #F20D0D;   
+    color: rgb(41, 36, 36);   
 }
 .lk-comp__main__left__num {
     margin-top: 5px;
@@ -950,7 +950,7 @@
 .lk-comp__main__right__info__item-red {
     font-weight: 500;
     font-size: 12px;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk-comp__main__right__info__item-black {
     font-weight: 400;
@@ -967,7 +967,7 @@
 .lk-comp__main__right__bottom__title {
     font-weight: 500;
     font-size: 12px;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .lk-comp__info__list {
     display: flex;

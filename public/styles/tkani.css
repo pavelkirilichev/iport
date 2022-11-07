@@ -198,7 +198,7 @@
     color: #545454;
 }
 .text-red {
-    color: #F20D0D !important;
+    color: rgb(41, 36, 36) !important;
 }
 .tkani__main__content__item {
     display: flex;

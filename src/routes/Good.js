@@ -3,20 +3,33 @@ import Footer from "../components/Footer";
 import FooterMob from "../components/FooterMob";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import GoodSlider from "../components/GoodSlider";
+import { goods } from "../data/GoodsJSON";
+import NewArrayByCount from "../Services/Array";
+import GoodMobile from "../components/GoodMobile";
 
 function Good() {
   const [pullMenuMob, setPullMenuMob] = useState("");
   const [pull, setPull] = useState("");
   const [img, setImg] = useState(0);
   const [goodCount, setGoodCount] = useState(0);
+  const [goodSlider, setGoodSlider] = useState("");
+  const [arrayCount, setArrayCount] = useState(NewArrayByCount(goods));
   const image_arr = [
-    "images/good/sidebar_img.svg",
-    "images/good/sidebar_img.svg",
-    "images/good/sidebar_img.svg",
-    "images/good/sidebar_img.svg",
+    "images/good/good_image_1.png",
+    "images/good/good_image_2.jpg",
+    "images/good/good_image_3.jpg",
+    "images/good/good_image_4.jpg",
   ];
   return (
     <div className="wrapper">
+      <GoodSlider
+        goodSlider={goodSlider}
+        setGoodSlider={setGoodSlider}
+        img={img}
+        setImg={setImg}
+        image_arr={image_arr}
+      />
       <Header
         cartPrice={2120}
         pull={pull}
@@ -74,7 +87,6 @@ function Good() {
                           ""
                         )}
                         <div
-                          src="../images/good/sidebar_img.svg"
                           className="good__main__slider__img"
                           style={{
                             backgroundImage: "url(../" + item + ")",
@@ -95,8 +107,13 @@ function Good() {
                   }}
                 />
               </div>
-              <div className="good__main__image__content">
-                <img src="../images/good/good_image.png" />
+              <div
+                className="good__main__image__content"
+                onClick={() => {
+                  setGoodSlider(" goodSlider-active");
+                }}
+              >
+                <img src={image_arr[img]} />
               </div>
               <div className="good__main__down">
                 <div className="good__main__down__left">
@@ -140,7 +157,7 @@ function Good() {
                       <div className="good__main__staff">
                         <div className="good__main__staff__price">
                           <span>товара на: </span>
-                          <span>4240 ₽</span>
+                          <span>{goodCount * 2120} р.</span>
                         </div>
                         <div className="good__main__staff__btn">
                           <span className="good__main__staff__btn__title">
@@ -198,120 +215,59 @@ function Good() {
             </div>
           </div>
           <div className="home__goods__list good__list">
-            <div className="home__goods__item">
-              <Link to={"/good"}>
-                <div className="home__goods__item__image"></div>
-              </Link>
-              <Link to={"/good"}>
-                <div className="home__goods__item__info">
-                  <div className="home__goods__item__price">
-                    <span className="home__goods__item__price__title">
-                      2120 ₽
-                    </span>
-                    <span className="home__goods__item__price__subtitle">
-                      2430 ₽
-                    </span>
+            {goods.map((good, key) => {
+              return (
+                <div className="home__goods__item">
+                  <Link to={"/good"}>
+                    <div className="home__goods__item__image"></div>
+                  </Link>
+                  <Link to={"/good"}>
+                    <div className="home__goods__item__info">
+                      <div className="home__goods__item__price">
+                        <span className="home__goods__item__price__title">
+                          {good.price} ₽
+                        </span>
+                        <span className="home__goods__item__price__subtitle">
+                          {good.old_price} ₽
+                        </span>
+                      </div>
+                      <p className="home__goods__item__info__title">
+                        {good.type} “{good.title}”{" "}
+                      </p>
+                    </div>
+                  </Link>
+                  <div className="home__goods__item__bottom">
+                    <div className="home__goods__item__bottom__left">
+                      <img
+                        src="../images/home/minus_icon.svg"
+                        onClick={() => {
+                          let copy = Object.assign([], arrayCount);
+                          let index = key;
+                          if (copy[index] > 0) {
+                            copy[index] -= 1;
+                          }
+                          setArrayCount(copy);
+                        }}
+                      />
+                      <span>{arrayCount[key]}</span>
+                      <img
+                        src="../images/home/plus_icon.svg"
+                        onClick={() => {
+                          let copy = Object.assign([], arrayCount);
+                          let index = key;
+                          copy[index] += 1;
+                          setArrayCount(copy);
+                        }}
+                      />
+                    </div>
+                    <img src="../images/home/cart.svg" />
                   </div>
-                  <p className="home__goods__item__info__title">
-                    Подушка “Memory Foam Roller”{" "}
-                  </p>
                 </div>
-              </Link>
-              <div className="home__goods__item__bottom">
-                <div className="home__goods__item__bottom__left">
-                  <img src="../images/home/minus_icon.svg" />
-                  <span>2</span>
-                  <img src="../images/home/plus_icon.svg" />
-                </div>
-                <img src="../images/home/cart.svg" />
-              </div>
-            </div>
-            <div className="home__goods__item">
-              <Link to={"/good"}>
-                <div className="home__goods__item__image"></div>
-              </Link>
-              <Link to={"/good"}>
-                <div className="home__goods__item__info">
-                  <div className="home__goods__item__price">
-                    <span className="home__goods__item__price__title">
-                      2120 ₽
-                    </span>
-                    <span className="home__goods__item__price__subtitle">
-                      2430 ₽
-                    </span>
-                  </div>
-                  <p className="home__goods__item__info__title">
-                    Подушка “Memory Foam Roller”{" "}
-                  </p>
-                </div>
-              </Link>
-              <div className="home__goods__item__bottom">
-                <div className="home__goods__item__bottom__left">
-                  <img src="../images/home/minus_icon.svg" />
-                  <span>2</span>
-                  <img src="../images/home/plus_icon.svg" />
-                </div>
-                <img src="../images/home/cart.svg" />
-              </div>
-            </div>
-            <div className="home__goods__item">
-              <Link to={"/good"}>
-                <div className="home__goods__item__image"></div>
-              </Link>
-              <Link to={"/good"}>
-                <div className="home__goods__item__info">
-                  <div className="home__goods__item__price">
-                    <span className="home__goods__item__price__title">
-                      2120 ₽
-                    </span>
-                    <span className="home__goods__item__price__subtitle">
-                      2430 ₽
-                    </span>
-                  </div>
-                  <p className="home__goods__item__info__title">
-                    Подушка “Memory Foam Roller”{" "}
-                  </p>
-                </div>
-              </Link>
-              <div className="home__goods__item__bottom">
-                <div className="home__goods__item__bottom__left">
-                  <img src="../images/home/minus_icon.svg" />
-                  <span>2</span>
-                  <img src="../images/home/plus_icon.svg" />
-                </div>
-                <img src="../images/home/cart.svg" />
-              </div>
-            </div>
-            <div className="home__goods__item">
-              <Link to={"/good"}>
-                <div className="home__goods__item__image"></div>
-              </Link>
-              <Link to={"/good"}>
-                <div className="home__goods__item__info">
-                  <div className="home__goods__item__price">
-                    <span className="home__goods__item__price__title">
-                      2120 ₽
-                    </span>
-                    <span className="home__goods__item__price__subtitle">
-                      2430 ₽
-                    </span>
-                  </div>
-                  <p className="home__goods__item__info__title">
-                    Подушка “Memory Foam Roller”{" "}
-                  </p>
-                </div>
-              </Link>
-              <div className="home__goods__item__bottom">
-                <div className="home__goods__item__bottom__left">
-                  <img src="../images/home/minus_icon.svg" />
-                  <span>2</span>
-                  <img src="../images/home/plus_icon.svg" />
-                </div>
-                <img src="../images/home/cart.svg" />
-              </div>
-            </div>
+              );
+            })}
           </div>
         </div>
+        <GoodMobile />
       </div>
       <Footer />
       <FooterMob cartPrice={212000} />

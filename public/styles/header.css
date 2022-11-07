@@ -167,7 +167,7 @@
     font-weight: 500;
     font-size: 16px;
     letter-spacing: 0.01em;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .pull__main {
     z-index: 2;

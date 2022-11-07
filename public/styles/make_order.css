@@ -51,7 +51,7 @@
     gap: 10px;
 }
 .mo__header__time__up span:last-child {
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .mo__header__essential {
     display: flex;
@@ -77,7 +77,7 @@
     gap: 26px;
     width: 180px;
     height: 40px;
-    border: 1px solid #F20D0D;
+    border: 1px solid rgb(41, 36, 36);
     border-radius: 20px;
 }
 .mo__header__essential__amount span:last-child {
@@ -162,7 +162,7 @@
     gap: 20px;
     width: 180px;
     height: 40px;
-    border: 1px solid #F20D0D;
+    border: 1px solid rgb(41, 36, 36);
     border-radius: 20px;
 }
 .mo__content__left__information__face__right {
@@ -173,7 +173,7 @@
     width: 180px;
     height: 40px;
     background: rgb(41, 36, 36);
-    border: 1px solid #F20D0D;
+    border: 1px solid rgb(41, 36, 36);
     border-radius: 20px;
 }
 .mo__content__left__information__face__right span {
@@ -247,7 +247,7 @@
 .mo__content__right__adress {
     font-weight: 400;
     font-size: 10px; 
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .mo__content__right__geo__info__up {
     display: flex;
@@ -265,7 +265,7 @@
 .mo__content__right__timer {
     font-weight: 400;
     font-size: 12px;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .mo__content__right__geo__info__down span:first-child {
     color: #545454;
@@ -318,7 +318,7 @@
 .mo__content__left__number__final {
     width: 19px;
     height: 19px;
-    border: 1px solid #F20D0D;
+    border: 1px solid rgb(41, 36, 36);
     border-radius: 20px;   
 }
 .mo__content__payment {
@@ -367,7 +367,7 @@
     justify-content: center;
     width: 10px;
     height: 10px;
-    border: 1px solid #F20D0D;
+    border: 1px solid rgb(41, 36, 36);
     border-radius: 10px;
 }
 .mo__content__payment__check__point {
@@ -402,7 +402,7 @@
     align-items: center;
     width: 180px;
     height: 40px;
-    border: 1px solid #F20D0D;
+    border: 1px solid rgb(41, 36, 36);
     border-radius: 20px;
 }
 .mo__delivery__add span {

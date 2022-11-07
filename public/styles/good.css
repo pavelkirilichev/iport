@@ -47,7 +47,9 @@
     flex-direction: column;
     justify-content: center;
     gap: 10px;
-    
+}
+.good__main__image__sidebar__slider img {
+    margin-left: 3px;
 }
 .good__main__image__sidebar__slider__item {
     display: flex;
@@ -55,6 +57,7 @@
     gap: 5px;
 }
 .good__main__slider__img{
+    background-size: 100% 100%;
     width: 70px;
     height: 70px;
 }
@@ -135,7 +138,7 @@
     font-weight: 300;
     font-size: 14px;
     text-decoration: line-through;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .good__main__down__left__cart {
     cursor: pointer;
@@ -271,7 +274,7 @@
 .good__main__staff__price span:nth-child(2) {
     font-weight: 400;
     font-size: 12px;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 
 .good__main__staff__btn {
@@ -324,7 +327,81 @@
 .pull__active .good__main-section {
     display: none;
 }
-
+.goodSlider {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    margin-top: -512px;
+    margin-left: -720px;
+    width: 1440px;
+    height: 1024px;
+    background: rgb(84, 84, 84);
+}
+.goodSlider-active {
+    display: flex;
+    align-items: center;
+}
+.goodSlider__sidebar {
+    gap: 20px;
+    width: 126px;
+    height: initial;
+    margin-left: 45px;
+}
+.goodSlider__image {
+    margin-left: 63px;
+    width: 990px;
+    height: 990px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: drop-shadow(0px 0px 16px rgba(0, 0, 0, 0.08));
+    border-radius: 10px;
+}
+.size_120 {
+    width: 120px;
+    height: 120px;
+}
+.GoodSlider__item-active {
+    width: 5px;
+    height: 120px;
+}
+@media (max-width: 1440px) {
+    .goodSlider {
+        margin-top: 0;
+        margin-left: 0;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+    .goodSlider__image {
+        margin-left: 100px;
+        width: 850px;
+        height: 850px;
+    }
+    .goodSlider__sidebar {
+        gap: 20px;
+        width: 126px;
+        height: initial;
+        margin-left: 50px;
+    }
+}
+@media (max-width: 1366px) {
+    .goodSlider__image {
+        margin-left: 100px;
+        width: 740px;
+        height: 740px;
+    }
+}
+@media (max-width: 1280px) {
+    .goodSlider__image {
+        margin-left: 100px;
+        width: 680px;
+        height: 680px;
+    }
+}
 @media (max-width: 1200px) {
     .good__reviews__left {
         width: 578px;

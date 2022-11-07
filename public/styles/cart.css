@@ -68,7 +68,7 @@
     font-size: 11px;
     line-height: 12px;
     letter-spacing: 0.01em;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 
 
@@ -222,7 +222,7 @@ ul {
     font-size: 16px;
     line-height: 20px;
     letter-spacing: 0.01em;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 
 .cart__main__content {
@@ -292,7 +292,7 @@ ul {
 }
 .cart__main__content__item__info__content span {
     margin-left: 10px;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .cart__main__content__item__count-price {
     margin-left: 25px;
@@ -318,14 +318,14 @@ ul {
     margin-top: -3px;
     text-decoration: line-through;
     font-size: 14px;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .cart__main__content__item__count {
     margin-left: 15px;
     font-weight: 600;
     font-size: 22px;
     line-height: 24px;
-    color: #F20D0D;
+    color: rgb(41, 36, 36);
 }
 .cart__main__content__item__count__title {
     font-size: 12px;
@@ -374,7 +374,7 @@ ul {
     padding: 0px 10px;
     width: 170px;
     height: 40px;
-    border: 1px solid #F20D0D;
+    border: 1px solid rgb(41, 36, 36);
     border-radius: 20px;
 }
 .cart__main__content__item__itog__title {

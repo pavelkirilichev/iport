@@ -63,7 +63,7 @@
     padding: 0px 10px;
     width: 220px;
     height: 40px;
-    border: 1px solid #DA5C34;
+    border: 1px solid rgb(41, 36, 36);
     border-radius: 20px;
 }
 .order__itog__info__price__title {
