@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { catalog } from "./CatalogJSON";
+import { catalog } from "../data/CatalogJSON";
 
 function Catalog({
   setPull,
@@ -40,105 +40,19 @@ function Catalog({
               }
             }}
           >
-            Спальня
+            Техника
           </span>
           <div className={"pull-catalog__list" + catalogMenuImgOne}>
             {catalog
               .filter((item) => item.type === "bedroom")
               .map((catalogItem) => {
                 return (
-                  <Link to={"/tkani"} state={{ chapter: "Спальня" }}>
+                  <Link to={"/tkani"} state={{ chapter: "Техника" }}>
                     <div
                       className="pull-catalog__item"
                       onClick={() => {
                         if (route == "tkani") {
                           setChapterTkani("Спальня");
-                          setPull("");
-                        }
-                      }}
-                    >
-                      <span> {catalogItem.title}</span>
-                    </div>
-                  </Link>
-                );
-              })}
-          </div>
-          <span
-            className="pull-menu__item"
-            onClick={() => {
-              if (catalogMenuImgTwo == "") {
-                setCatalogMenuImgTwo(" pull-catalog-active");
-                setCatalogMenuImgOne(" pull-catalog-disable");
-                setCatalogMenuImgThree(" pull-catalog-disable");
-                setTimeout(() => {
-                  setCatalogMenuImgOne("");
-                  setCatalogMenuImgThree("");
-                }, 500);
-              } else if (catalogMenuImgTwo == " pull-catalog-active") {
-                setCatalogMenuImgTwo(" pull-catalog-disable");
-                setTimeout(() => {
-                  setCatalogMenuImgTwo("");
-                }, 500);
-              } else {
-              }
-            }}
-          >
-            Одежда и обувь для дома
-          </span>
-          <div className={"pull-catalog__list" + catalogMenuImgTwo}>
-            {catalog
-              .filter((item) => item.type === "clothes")
-              .map((catalogItem) => {
-                return (
-                  <Link to={"/tkani"} state={{ chapter: "Одежда" }}>
-                    <div
-                      className="pull-catalog__item"
-                      onClick={() => {
-                        if (route == "tkani") {
-                          setChapterTkani("Одежда");
-                          setPull("");
-                        }
-                      }}
-                    >
-                      <span> {catalogItem.title}</span>
-                    </div>
-                  </Link>
-                );
-              })}
-          </div>
-          <span
-            className="pull-menu__item"
-            onClick={() => {
-              if (catalogMenuImgThree == "") {
-                setCatalogMenuImgThree(" pull-catalog-active");
-                setCatalogMenuImgTwo(" pull-catalog-disable");
-                setCatalogMenuImgOne(" pull-catalog-disable");
-                setTimeout(() => {
-                  setCatalogMenuImgTwo("");
-                  setCatalogMenuImgOne("");
-                }, 500);
-              } else if (catalogMenuImgThree == " pull-catalog-active") {
-                setCatalogMenuImgThree(" pull-catalog-disable");
-                setTimeout(() => {
-                  setCatalogMenuImgThree("");
-                }, 500);
-              } else {
-              }
-            }}
-          >
-            Кухня и интерьер
-          </span>
-          <div className={"pull-catalog__list" + catalogMenuImgThree}>
-            {catalog
-              .filter((item) => item.type === "kitchen")
-              .map((catalogItem) => {
-                return (
-                  <Link to={"/tkani"} state={{ chapter: "Кухня" }}>
-                    <div
-                      className="pull-catalog__item"
-                      onClick={() => {
-                        if (route == "tkani") {
-                          setChapterTkani("Кухня");
                           setPull("");
                         }
                       }}

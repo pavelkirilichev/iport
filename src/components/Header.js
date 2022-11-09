@@ -1,7 +1,7 @@
 import Catalog from "./Catalog";
-import { catalog } from "./CatalogJSON";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { catalog } from "../data/CatalogJSON";
 
 function Header({
   cartPrice,
@@ -191,7 +191,7 @@ function Header({
                   }
                 }}
               >
-                <span>Спальня</span>
+                <span>Техника</span>
                 <img
                   src="./images/header/mobile_arrow.png"
                   className="pull-menu-mobile__item-img"
@@ -201,90 +201,6 @@ function Header({
               <div className={"pull-catalog__list" + catalogMenuImgOne}>
                 {catalog
                   .filter((item) => item.type === "bedroom")
-                  .map((catalogItem) => {
-                    return (
-                      <div className="pull-catalog__item-mobile">
-                        <span>{catalogItem.title}</span>
-                      </div>
-                    );
-                  })}
-              </div>
-            </li>
-            <li className="pull-menu-mobile__item__container">
-              <div
-                className="pull-menu-mobile__item"
-                onClick={() => {
-                  if (catalogMenuImgTwo == "") {
-                    setCatalogMenuImgOne(" pull-catalog-disable");
-                    setCatalogMenuImgThree(" pull-catalog-disable");
-                    setTimeout(() => {
-                      setCatalogMenuImgTwo(" pull-catalog-active");
-                    }, 50);
-                    setTimeout(() => {
-                      setCatalogMenuImgOne("");
-                      setCatalogMenuImgThree("");
-                    }, 500);
-                  } else if (catalogMenuImgTwo == " pull-catalog-active") {
-                    setCatalogMenuImgTwo(" pull-catalog-disable");
-                    setTimeout(() => {
-                      setCatalogMenuImgTwo("");
-                    }, 500);
-                  } else {
-                  }
-                }}
-              >
-                <span>Одежда и обувь для дома</span>
-                <img
-                  src="./images/header/mobile_arrow.png"
-                  className="pull-menu-mobile__item-img"
-                />
-              </div>
-
-              <div className={"pull-catalog__list" + catalogMenuImgTwo}>
-                {catalog
-                  .filter((item) => item.type === "clothes")
-                  .map((catalogItem) => {
-                    return (
-                      <div className="pull-catalog__item-mobile">
-                        <span>{catalogItem.title}</span>
-                      </div>
-                    );
-                  })}
-              </div>
-            </li>
-            <li className="pull-menu-mobile__item__container">
-              <div
-                className="pull-menu-mobile__item"
-                onClick={() => {
-                  if (catalogMenuImgThree == "") {
-                    setCatalogMenuImgTwo(" pull-catalog-disable");
-                    setCatalogMenuImgOne(" pull-catalog-disable");
-                    setTimeout(() => {
-                      setCatalogMenuImgThree(" pull-catalog-active");
-                    }, 50);
-                    setTimeout(() => {
-                      setCatalogMenuImgTwo("");
-                      setCatalogMenuImgOne("");
-                    }, 500);
-                  } else if (catalogMenuImgThree == " pull-catalog-active") {
-                    setCatalogMenuImgThree(" pull-catalog-disable");
-                    setTimeout(() => {
-                      setCatalogMenuImgThree("");
-                    }, 500);
-                  } else {
-                  }
-                }}
-              >
-                <span>Кухня</span>
-                <img
-                  src="./images/header/mobile_arrow.png"
-                  className="pull-menu-mobile__item-img"
-                />
-              </div>
-
-              <div className={"pull-catalog__list" + catalogMenuImgThree}>
-                {catalog
-                  .filter((item) => item.type === "kitchen")
                   .map((catalogItem) => {
                     return (
                       <div className="pull-catalog__item-mobile">

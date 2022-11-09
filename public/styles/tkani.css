@@ -9,7 +9,7 @@
     min-height: calc(100vh - 180px);
 }
 .tkani__container {
-    max-width: 1200px;
+    max-width: 85%;
     margin: 20px auto;
     padding: 0 10px;
 }
@@ -179,7 +179,7 @@
 }
 .tkani__main__content {
     margin-left: 20px;
-    width: 880px;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;

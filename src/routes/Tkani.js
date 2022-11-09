@@ -3,6 +3,9 @@ import Footer from "../components/Footer";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { goods } from "../data/GoodsJSON";
+import NewArrayByCount from "../Services/Array";
+import strCut from "../Services/StrCutLimits";
 
 function Tkani(props) {
   const location = useLocation();
@@ -10,6 +13,7 @@ function Tkani(props) {
 
   const [pullMenuMob, setPullMenuMob] = useState("");
   const [pull, setPull] = useState("");
+  const [arrayCount, setArrayCount] = useState(NewArrayByCount(goods));
   return (
     <div className="wrapper">
       <Header
@@ -165,90 +169,63 @@ function Tkani(props) {
                 <span className="tkani__main__sort__text">Скидке</span>
                 <span className="tkani__main__sort__text">Новизне</span>
               </div>
-              <div className="home__goods__item">
-                <Link to={"/good"}>
-                  <div className="home__goods__item__image"></div>
-                </Link>
-                <Link to={"/good"}>
-                  <div className="home__goods__item__info">
-                    <div className="home__goods__item__price">
-                      <span className="home__goods__item__price__title">
-                        2120 ₽
-                      </span>
-                      <span className="home__goods__item__price__subtitle">
-                        2430 ₽
-                      </span>
+              {goods.map((good, key) => {
+                let title = strCut(good.title, 20);
+                return (
+                  <div className="home__goods__item">
+                    <Link to={"/good"}>
+                      <div
+                        className="home__goods__item__image"
+                        style={{
+                          backgroundImage:
+                            "url(../images/good/goods_image/" + good.src + ")",
+                        }}
+                      ></div>
+                    </Link>
+                    <Link to={"/good"}>
+                      <div className="home__goods__item__info">
+                        <div className="home__goods__item__price">
+                          <span className="home__goods__item__price__title">
+                            {good.price} ₽
+                          </span>
+                          <span className="home__goods__item__price__subtitle">
+                            {good.old_price} ₽
+                          </span>
+                        </div>
+                        <p className="home__goods__item__info__title">
+                          {title}
+                        </p>
+                      </div>
+                    </Link>
+                    <div className="home__goods__item__bottom">
+                      <div className="home__goods__item__bottom__left">
+                        <img
+                          src="../images/home/minus_icon.svg"
+                          onClick={() => {
+                            let copy = Object.assign([], arrayCount);
+                            let index = key;
+                            if (copy[index] > 0) {
+                              copy[index] -= 1;
+                            }
+                            setArrayCount(copy);
+                          }}
+                        />
+                        <span>{arrayCount[key]}</span>
+                        <img
+                          src="../images/home/plus_icon.svg"
+                          onClick={() => {
+                            let copy = Object.assign([], arrayCount);
+                            let index = key;
+                            copy[index] += 1;
+                            setArrayCount(copy);
+                          }}
+                        />
+                      </div>
+                      <img src="../images/home/cart.svg" />
                     </div>
-                    <p className="home__goods__item__info__title">
-                      Подушка “Memory Foam Roller”{" "}
-                    </p>
                   </div>
-                </Link>
-                <div className="home__goods__item__bottom">
-                  <div className="home__goods__item__bottom__left">
-                    <img src="../images/home/minus_icon.svg" />
-                    <span>2</span>
-                    <img src="../images/home/plus_icon.svg" />
-                  </div>
-                  <img src="../images/home/cart.svg" />
-                </div>
-              </div>
-              <div className="home__goods__item">
-                <Link to={"/good"}>
-                  <div className="home__goods__item__image"></div>
-                </Link>
-                <Link to={"/good"}>
-                  <div className="home__goods__item__info">
-                    <div className="home__goods__item__price">
-                      <span className="home__goods__item__price__title">
-                        2120 ₽
-                      </span>
-                      <span className="home__goods__item__price__subtitle">
-                        2430 ₽
-                      </span>
-                    </div>
-                    <p className="home__goods__item__info__title">
-                      Подушка “Memory Foam Roller”{" "}
-                    </p>
-                  </div>
-                </Link>
-                <div className="home__goods__item__bottom">
-                  <div className="home__goods__item__bottom__left">
-                    <img src="../images/home/minus_icon.svg" />
-                    <span>2</span>
-                    <img src="../images/home/plus_icon.svg" />
-                  </div>
-                  <img src="../images/home/cart.svg" />
-                </div>
-              </div>
-              <div className="home__goods__item">
-                <Link to={"/good"}>
-                  <div className="home__goods__item__image"></div>
-                </Link>
-                <Link to={"/good"}>
-                  <div className="home__goods__item__info">
-                    <div className="home__goods__item__price">
-                      <span className="home__goods__item__price__title">
-                        2120 ₽
-                      </span>
-                      <span className="home__goods__item__price__subtitle">
-                        2430 ₽
-                      </span>
-                    </div>
-                    <p className="home__goods__item__info__title">
-                      Подушка “Memory Foam Roller”{" "}
-                    </p>
-                  </div>
-                </Link>
-                <div className="home__goods__item__bottom">
-                  <div className="home__goods__item__bottom__left">
-                    <img src="../images/home/minus_icon.svg" />
-                    <span>2</span>
-                    <img src="../images/home/plus_icon.svg" />
-                  </div>
-                  <img src="../images/home/cart.svg" />
-                </div>
-              </div>
+                );
+              })}
             </div>
           </div>
         </div>
