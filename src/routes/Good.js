@@ -7,6 +7,7 @@ import GoodSlider from "../components/GoodSlider";
 import { goods } from "../data/GoodsJSON";
 import NewArrayByCount from "../Services/Array";
 import GoodMobile from "../components/GoodMobile";
+import strCut from "../Services/StrCutLimits";
 
 function Good() {
   const [pullMenuMob, setPullMenuMob] = useState("");
@@ -16,10 +17,10 @@ function Good() {
   const [goodSlider, setGoodSlider] = useState("");
   const [arrayCount, setArrayCount] = useState(NewArrayByCount(goods));
   const image_arr = [
-    "images/good/good_image_1.png",
-    "images/good/good_image_2.jpg",
-    "images/good/good_image_3.jpg",
-    "images/good/good_image_4.jpg",
+    "images/good/goods_image/good_1.jpg",
+    "images/good/goods_image/good_2.jpg",
+    "images/good/goods_image/good_3.jpg",
+    "images/good/goods_image/good_4.jpg",
   ];
   return (
     <div className="wrapper">
@@ -54,13 +55,7 @@ function Good() {
                 Каталог
               </li>
               <li class="tkani__navigation__chapter__item good__nav__item">
-                Спальня
-              </li>
-              <li class="tkani__navigation__chapter__item good__nav__item">
-                Постельное белье
-              </li>
-              <li class="tkani__navigation__chapter__item good__nav__item">
-                Комплект постельного белья
+                Техника
               </li>
             </ul>
           </div>
@@ -118,7 +113,7 @@ function Good() {
               <div className="good__main__down">
                 <div className="good__main__down__left">
                   <p className="good__main__down__left__title">
-                    Подушка Memory Foam Roller
+                    Apple iPhone 13 (6.1", 128GB, темная ночь)
                   </p>
                   <p className="good__main__down__left__subtitle">
                     Артикул: 40893654
@@ -216,10 +211,17 @@ function Good() {
           </div>
           <div className="home__goods__list good__list">
             {goods.map((good, key) => {
+              let title = strCut(good.title, 20);
               return (
                 <div className="home__goods__item">
                   <Link to={"/good"}>
-                    <div className="home__goods__item__image"></div>
+                    <div
+                      className="home__goods__item__image"
+                      style={{
+                        backgroundImage:
+                          "url(../images/good/goods_image/" + good.src + ")",
+                      }}
+                    ></div>
                   </Link>
                   <Link to={"/good"}>
                     <div className="home__goods__item__info">
@@ -231,9 +233,7 @@ function Good() {
                           {good.old_price} ₽
                         </span>
                       </div>
-                      <p className="home__goods__item__info__title">
-                        {good.type} “{good.title}”{" "}
-                      </p>
+                      <p className="home__goods__item__info__title">{title}</p>
                     </div>
                   </Link>
                   <div className="home__goods__item__bottom">

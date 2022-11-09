@@ -178,6 +178,9 @@
     align-items: flex-start;
     top: 130px;
     width: 100%;
+    background-image: url(../images/header/catalog/bed.jpeg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 
 .pull-catalog-bg {
@@ -185,7 +188,7 @@
     margin-top: 60px;
     margin-left: 60px;
     opacity: 1;
-    background-image: url(../images/header/catalog/bed.png);
+    
     background-size: 1329px;
     min-height: 900px;
     background-repeat: no-repeat;
@@ -352,9 +355,7 @@
 
 
 .pull-menu {
-    min-height: 100vh;
-    min-height: 1000px;
-    padding-top: 1px;
+    height: 100%;
     background: #fff;
     width: 550px;
 }
