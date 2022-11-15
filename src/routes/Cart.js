@@ -3,29 +3,30 @@ import Footer from "../components/Footer";
 import Orders from "../components/Orders";
 import { useState } from "react";
 import FooterMob from "../components/FooterMob";
+import strCut from "../Services/StrCutLimits";
 
 const goods = [
   {
     id: 0,
-    type: "Подушка",
-    name: "Memory Foam Roller",
+    name: 'Apple iPhone 13 (6.1", 128GB, темная ночь)',
     article_num: "121231311231",
     color: "белый",
     size: "60 x 40 x 12",
     price: 2120,
     old_price: 2430,
     count: 1,
+    src: "good_1.jpg",
   },
   {
     id: 1,
-    type: "Подушка 2",
-    name: "Memory Foam Roller 2",
+    name: "2020 Apple MacBook Air 13.3″ серый космос (Apple M1, 8Gb, SSD 256Gb, M1 (7 GPU))",
     article_num: "121231311231",
     color: "белый",
     size: "60 x 40 x 12",
     price: 2120,
     old_price: 2430,
     count: 1,
+    src: "good_2.jpg",
   },
 ];
 
@@ -146,18 +147,24 @@ function Cart() {
                   <div className="cart__main__content">
                     <ul className="cart__main__content__list">
                       {goodsState.map((good, key) => {
+                        let title = strCut(good.name, 20);
                         return (
                           <div className="cart__main__content__item">
                             <span className="cart__main__content__item__num">
                               {key + 1}
                             </span>
-                            <div className="cart__main__content__item__img-div">
-                              <img src="./images/cart/goods/image.png"></img>
-                            </div>
+                            <div
+                              className="cart__main__content__item__img-div"
+                              style={{
+                                backgroundImage:
+                                  "url(../images/good/goods_image/" +
+                                  good.src +
+                                  ")",
+                              }}
+                            ></div>
                             <div className="cart__main__content__item__info">
                               <span className="cart__main__content__item__info__title">
-                                {good.type} <br />
-                                {good.name}
+                                {title}
                               </span>
                               <div className="cart__main__content__item__info__content">
                                 <p>

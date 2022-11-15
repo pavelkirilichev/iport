@@ -264,7 +264,16 @@
     justify-content: center;
     align-items: center;
 }
-
+@media (max-width: 1390px) {
+    .tkani__container {
+        max-width: 90%;
+    }
+}
+@media (max-width: 1310px) {
+    .tkani__container {
+        max-width: 92%;
+    }
+}
 @media (max-width: 1189px) {
     .tkani__main__content {
         justify-content: center;

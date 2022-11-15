@@ -254,9 +254,8 @@ ul {
     color: #717171;
 }
 .cart__main__content__item__img-div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    cursor: pointer;
+    background-size: 100%;
     width: 140px;
     height: 140px;
     border-radius: 5px;
@@ -271,6 +270,7 @@ ul {
     flex-direction: column;
 }
 .cart__main__content__item__info__title {
+    width: 190px;
     font-weight: 500;
     font-size: 16px;
     line-height: 20px;

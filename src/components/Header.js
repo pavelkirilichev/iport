@@ -15,7 +15,9 @@ function Header({
   const [catalogChapter, setCatalogChapter] = useState("");
   const [catalogMenuImgActive, setCatalogMenuImgActive] = useState("");
 
-  const [catalogMenuImgOne, setCatalogMenuImgOne] = useState("");
+  const [catalogMenuImgOne, setCatalogMenuImgOne] = useState(
+    " pull-catalog-active"
+  );
   const [catalogMenuImgTwo, setCatalogMenuImgTwo] = useState("");
   const [catalogMenuImgThree, setCatalogMenuImgThree] = useState("");
 
@@ -80,7 +82,6 @@ function Header({
                   className="nav-bottom__burger"
                   onClick={() => {
                     setPull(pull == "" ? " pull__active" : "");
-                    setCatalogMenuImgOne("");
                     setCatalogMenuImgTwo("");
                     setCatalogMenuImgThree("");
                     setCatalogChapter("");
