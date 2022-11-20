@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { catalog } from "../data/CatalogJSON";
 import RegForm from "./RegForm";
 import LoginForm from "./LoginForm";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 function Header({
   cartPrice,
@@ -30,6 +32,7 @@ function Header({
   const [catalogMenuMobThree, setCatalogMenuMobThree] = useState("");
 
   const [modal, setModal] = useState();
+  const [cookiesState, setCookiesState] = useState(cookies);
 
   return (
     <header className="header">
@@ -110,19 +113,36 @@ function Header({
               </div>
               <div className="nav-bottom__row-right">
                 <div className="nav-bottom__row-right__icons">
-                  <div
-                    className="nav-bottom__burger"
-                    style={{ marginRight: 30 }}
-                    onClick={() => {
-                      setModal("login");
-                    }}
-                  >
-                    <span>Войти</span>
-                    <img
-                      src="./images/header/user.svg"
-                      className="nav-bottom__burger-img"
-                    />
-                  </div>
+                  {cookiesState.get("id") > 0 &&
+                  cookiesState.get("pass").length > 0 ? (
+                    <Link to="/cart">
+                      <div
+                        className="nav-bottom__burger"
+                        style={{ marginRight: 30 }}
+                      >
+                        <span>Кабинет</span>
+                        <img
+                          src="./images/header/user.svg"
+                          className="nav-bottom__burger-img"
+                        />
+                      </div>
+                    </Link>
+                  ) : (
+                    <div
+                      className="nav-bottom__burger"
+                      style={{ marginRight: 30 }}
+                      onClick={() => {
+                        setModal("login");
+                      }}
+                    >
+                      <span>Войти</span>
+                      <img
+                        src="./images/header/user.svg"
+                        className="nav-bottom__burger-img"
+                      />
+                    </div>
+                  )}
+
                   <div className="nav-bottom__row-right__icon cart-icon">
                     <Link to="/cart">
                       <img

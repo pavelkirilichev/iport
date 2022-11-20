@@ -67,6 +67,7 @@
     background: rgb(41, 36, 36);
 }
 .good__main__image__content {
+    margin-left: 15px;
     display: flex;
     align-items: center;
     justify-content: center;

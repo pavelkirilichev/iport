@@ -1,4 +1,41 @@
+import { useRef, useEffect } from "react";
+
 function RegForm({ modal, setModal }) {
+  const inputMail = useRef();
+  const inputPhone = useRef();
+  const inputPass = useRef();
+  const inputValidPass = useRef();
+
+  function sendRegForm() {
+    const mail = inputMail.current.value;
+    const phone = inputPhone.current.value;
+    const pass = inputPass.current.value;
+    const validPass = inputValidPass.current.value;
+
+    if (
+      mail.length > 0 &&
+      phone.length > 0 &&
+      pass.length > 0 &&
+      validPass.length > 0 &&
+      pass == validPass
+    ) {
+      const regData = {
+        mail: mail,
+        phone: phone,
+        pass: pass,
+      };
+      fetch("/registration", {
+        method: "POST",
+        body: JSON.stringify(regData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(() => {
+        window.location.reload();
+      });
+    }
+  }
+
   return (
     <div className="modal_form">
       <div className="reg">
@@ -8,24 +45,29 @@ function RegForm({ modal, setModal }) {
           <div className="reg__input__list">
             <div className="reg__input__item">
               <span className="reg__input__title">Почта</span>
-              <input className="reg__input" />
+              <input className="reg__input" ref={inputMail} />
             </div>
             <div className="reg__input__item">
               <span className="reg__input__title">Номер телефона</span>
-              <input className="reg__input" />
+              <input className="reg__input" ref={inputPhone} />
             </div>
             <div className="reg__input__item">
               <span className="reg__input__title">Пароль</span>
-              <input className="reg__input" />
+              <input className="reg__input" ref={inputPass} type="password" />
             </div>
             <div className="reg__input__item">
               <span className="reg__input__title">Подтвердите пароль</span>
-              <input className="reg__input" />
+              <input
+                className="reg__input"
+                ref={inputValidPass}
+                type="password"
+              />
             </div>
           </div>
           <div className="reg__form__buttons">
             <button
               className="reg__form__btn reg__btn-orange"
+              type="button"
               onClick={() => {
                 setModal("login");
               }}
@@ -34,6 +76,7 @@ function RegForm({ modal, setModal }) {
             </button>
             <button
               className="reg__form__btn reg__btn-white"
+              type="button"
               onClick={() => {
                 setModal();
               }}
@@ -45,6 +88,7 @@ function RegForm({ modal, setModal }) {
             <button
               className="reg__form__btn"
               onClick={() => {
+                sendRegForm();
                 setModal("");
               }}
             >

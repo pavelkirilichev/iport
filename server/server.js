@@ -1,5 +1,13 @@
 const express = require("express");
 const app = express();
+const sql = require("./get_data");
+const cookieParser = require("cookie-parser");
+const connectPool = require("./connecting_db");
+const getSearchData = sql.getSearchData;
+const getSearchDataTwoAnd = sql.getSearchDataTwoAnd;
+const getSearchDataTwoOr = sql.getSearchDataTwoOr;
+const getDataID = sql.getDataID;
+const updateDataID = sql.updateDataID;
 
 const goods = [
   {
@@ -38,8 +46,73 @@ const goods = [
   },
 ];
 
+app.use(express.json({}));
+app.use(cookieParser());
 app.get("/goods", (req, res) => {
   res.json(goods);
+});
+app.get("/getUserByID", (req, res) => {
+  const id = req.cookies.id;
+  getDataID("users", "*", id).then((result) => {
+    result = result[0];
+    res.json(result);
+  });
+});
+
+app.post("/registration", (req, res) => {
+  const regForm = req.body;
+  console.log(regForm.mail);
+  getSearchDataTwoOr(
+    "users",
+    "*",
+    "mail",
+    regForm.mail,
+    "phone",
+    regForm.phone
+  ).then((result) => {
+    console.log(result);
+    if (result.length == 0) {
+      connectPool
+        .query(
+          `INSERT INTO users (mail, phone, password) VALUES ('${regForm.mail}', '${regForm.phone}', '${regForm.pass}')`
+        )
+        .then(() => {
+          getSearchData("users", "*", "mail", regForm.mail).then(
+            (result_two) => {
+              result_two = result_two[0];
+              console.log(result_two);
+              res.cookie("id", result_two.ID);
+              res.cookie("pass", result_two.password);
+              res.send("ok");
+            }
+          );
+        });
+    } else {
+      console.log("error");
+    }
+  });
+});
+
+app.post("/login", (req, res) => {
+  const loginForm = req.body;
+  console.log(loginForm);
+  getSearchDataTwoAnd(
+    "users",
+    "*",
+    "mail",
+    loginForm.login,
+    "password",
+    loginForm.pass
+  ).then((result) => {
+    if (result.length > 0) {
+      result = result[0];
+      res.cookie("id", result.ID);
+      res.cookie("pass", result.password);
+      res.send("ok");
+    } else {
+      res.send("error");
+    }
+  });
 });
 
 app.listen(6000, () => {

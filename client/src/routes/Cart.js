@@ -1,9 +1,11 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Orders from "../components/Orders";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FooterMob from "../components/FooterMob";
 import strCut from "../Services/StrCutLimits";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 const goods = [
   {
@@ -36,6 +38,19 @@ function Cart() {
   const [goodsState, setGoodsState] = useState(goods);
   const [cartPrice, setCartPrice] = useState(4240);
   const [chapter, setChapter] = useState("cart");
+
+  const [backData, setBackData] = useState();
+
+  if (cookies.get("id") > 0 && cookies.get("pass").length > 0) {
+    useEffect(() => {
+      fetch("/getUserByID")
+        .then((response) => response.json())
+        .then((data) => {
+          setBackData(data);
+        });
+    }, []);
+  }
+
   return (
     <div className="wrapper">
       <Header
@@ -58,10 +73,25 @@ function Cart() {
                   src="./images/cart/profile_icon.svg"
                   className="cart__profile__icon"
                 />
-                <div className="cart__info__title">
-                  <span className="cart__info__main-title">Пользователь</span>
-                  <span className="cart__info__subtitle">8 909 999 99 99</span>
-                </div>
+                {typeof backData == "undefined" ||
+                (cookies.get("id") == undefined &&
+                  cookies.get("pass") == undefined) ? (
+                  <div className="cart__info__title">
+                    <span className="cart__info__main-title">Пользователь</span>
+                    <span className="cart__info__subtitle">
+                      8 909 999 99 99
+                    </span>
+                  </div>
+                ) : (
+                  <div className="cart__info__title">
+                    <span className="cart__info__main-title">
+                      {backData.mail}
+                    </span>
+                    <span className="cart__info__subtitle">
+                      {backData.phone}
+                    </span>
+                  </div>
+                )}
               </div>
               <ul className="cart__menu">
                 <li
