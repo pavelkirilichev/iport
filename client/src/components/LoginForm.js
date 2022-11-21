@@ -1,4 +1,30 @@
+import { useRef, useEffect } from "react";
+
 function LoginForm({ modal, setModal }) {
+  const inputLogin = useRef();
+  const inputPass = useRef();
+
+  function sendLoginForm() {
+    const login = inputLogin.current.value;
+    const pass = inputPass.current.value;
+
+    if (login.length > 0 && pass.length > 0) {
+      const loginData = {
+        login: login,
+        pass: pass,
+      };
+      fetch("/login", {
+        method: "POST",
+        body: JSON.stringify(loginData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((data) => {
+        window.location.reload();
+      });
+    }
+  }
+
   return (
     <div className="modal_form">
       <div className="reg login">
@@ -8,17 +34,27 @@ function LoginForm({ modal, setModal }) {
           <div className="reg__input__list">
             <div className="reg__input__item">
               <span className="reg__input__title">Логин</span>
-              <input className="reg__input" />
+              <input className="reg__input" ref={inputLogin} />
             </div>
             <div className="reg__input__item">
               <span className="reg__input__title">Пароль</span>
-              <input className="reg__input" />
+              <input className="reg__input" ref={inputPass} type="password" />
             </div>
           </div>
           <div className="reg__form__buttons login__form__buttons">
             <div className="reg__form__buttons__row">
-              <button className="reg__form__btn reg__btn-white">Войти</button>
               <button
+                className="reg__form__btn reg__btn-white"
+                onClick={(e) => {
+                  e.preventDefault();
+                  sendLoginForm();
+                  setModal();
+                }}
+              >
+                Войти
+              </button>
+              <button
+                type="button"
                 className="reg__form__btn reg__btn-orange"
                 onClick={() => {
                   setModal("reg");
@@ -30,6 +66,7 @@ function LoginForm({ modal, setModal }) {
 
             <button
               className="reg__form__btn reg__btn-white"
+              type="button"
               onClick={() => {
                 setModal();
               }}
