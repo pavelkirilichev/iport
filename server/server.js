@@ -61,6 +61,15 @@ app.get("/getUserByID", (req, res) => {
 
 app.post("/registration", (req, res) => {
 	const regForm = req.body;
+	let cartStr = "";
+	if (req.cookies.cart) {
+		cookiesCart = req.cookies.cart.split("_");
+		for (i = 0; i < cookiesCart.length - 1; i++) {
+			let [id, count] = cookiesCart[i].split("-");
+			cartStr += `{"id":${id},"count":${count}}, `;
+		}
+	}
+
 	console.log(regForm.mail);
 	getSearchDataTwoOr(
 		"users",
@@ -74,7 +83,7 @@ app.post("/registration", (req, res) => {
 		if (result.length == 0) {
 			connectPool
 				.query(
-					`INSERT INTO users (mail, phone, password) VALUES ('${regForm.mail}', '${regForm.phone}', '${regForm.pass}')`,
+					`INSERT INTO users (mail, phone, password, cart) VALUES ('${regForm.mail}', '${regForm.phone}', '${regForm.pass}', '${cartStr}')`,
 				)
 				.then(() => {
 					getSearchData("users", "*", "mail", regForm.mail).then(

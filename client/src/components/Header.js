@@ -1,5 +1,5 @@
 import Catalog from "./Catalog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { catalog } from "../data/CatalogJSON";
 import RegForm from "./RegForm";
@@ -15,6 +15,7 @@ function Header({
 	setPullMenuMob,
 	route,
 	setChapterTkani,
+	cartCount,
 }) {
 	const [catalogChapter, setCatalogChapter] = useState("");
 	const [catalogMenuImgActive, setCatalogMenuImgActive] = useState("");
@@ -149,9 +150,13 @@ function Header({
 												src='./images/header/cart.svg'
 												className='nav-bottom__row-right__icon-img cart-icon-img'
 											/>
-											<div className='lk-clients__sidebar__menu__item__count'>
-												<span>8</span>
-											</div>
+											{cartCount > 0 ? (
+												<div className='lk-clients__sidebar__menu__item__count'>
+													<span>{cartCount}</span>
+												</div>
+											) : (
+												""
+											)}
 										</Link>
 									</div>
 								</div>
