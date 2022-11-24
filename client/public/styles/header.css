@@ -153,6 +153,7 @@
 	border-radius: 20px;
 }
 .cart-icon {
+	position: relative;
 	cursor: pointer;
 }
 .cart-icon-img {
