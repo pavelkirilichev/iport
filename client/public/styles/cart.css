@@ -55,6 +55,7 @@
     margin-left: 13px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 .cart__info__main-title {
     font-weight: 500;

@@ -62,35 +62,60 @@ app.get("/getUserByID", (req, res) => {
 app.post("/registration", (req, res) => {
   const regForm = req.body;
   console.log(regForm.mail);
-  getSearchDataTwoOr(
-    "users",
-    "*",
-    "mail",
-    regForm.mail,
-    "phone",
-    regForm.phone
-  ).then((result) => {
-    console.log(result);
-    if (result.length == 0) {
-      connectPool
-        .query(
-          `INSERT INTO users (mail, phone, password) VALUES ('${regForm.mail}', '${regForm.phone}', '${regForm.pass}')`
-        )
-        .then(() => {
-          getSearchData("users", "*", "mail", regForm.mail).then(
-            (result_two) => {
-              result_two = result_two[0];
-              console.log(result_two);
-              res.cookie("id", result_two.ID);
-              res.cookie("pass", result_two.password);
-              res.send("ok");
-            }
-          );
-        });
-    } else {
-      console.log("error");
-    }
-  });
+  if (regForm.phone.length > 0) {
+    getSearchDataTwoOr(
+      "users",
+      "*",
+      "mail",
+      regForm.mail,
+      "phone",
+      regForm.phone
+    ).then((result) => {
+      console.log(result);
+      if (result.length == 0) {
+        connectPool
+          .query(
+            `INSERT INTO users (mail, phone, password) VALUES ('${regForm.mail}', '${regForm.phone}', '${regForm.pass}')`
+          )
+          .then(() => {
+            getSearchData("users", "*", "mail", regForm.mail).then(
+              (result_two) => {
+                result_two = result_two[0];
+                console.log(result_two);
+                res.cookie("id", result_two.ID);
+                res.cookie("pass", result_two.password);
+                res.send("ok");
+              }
+            );
+          });
+      } else {
+        res.send("Такой пользователь уже есть!");
+      }
+    });
+  } else {
+    getSearchData("users", "*", "mail", regForm.mail).then((result) => {
+      console.log(result);
+      if (result.length == 0) {
+        connectPool
+          .query(
+            `INSERT INTO users (mail, password) VALUES ('${regForm.mail}', '${regForm.pass}')`
+          )
+          .then(() => {
+            getSearchData("users", "*", "mail", regForm.mail).then(
+              (result_two) => {
+                result_two = result_two[0];
+                console.log(result_two);
+                res.cookie("id", result_two.ID);
+                res.cookie("pass", result_two.password);
+                res.send("ok");
+              }
+            );
+          });
+      } else {
+        res.send("Такой пользователь уже есть!");
+      }
+    });
+  }
 });
 
 app.post("/login", (req, res) => {
@@ -110,9 +135,39 @@ app.post("/login", (req, res) => {
       res.cookie("pass", result.password);
       res.send("ok");
     } else {
-      res.send("error");
+      res.send("Неверный логин или пароль!");
     }
   });
+});
+
+app.post("/addToCart", (req, res) => {
+  const goodData = req.body;
+  const goodDataJSON = JSON.stringify(goodData) + ", ";
+  console.log(goodDataJSON);
+
+  const goodID = goodData.id;
+  const goodCount = goodData.count;
+  const userID = req.cookies.id;
+  if (typeof userID == "undefined") {
+    const Cookie = req.cookies.cart;
+    const CookieCart = `${goodID}-${goodCount}_`;
+    console.log(CookieCart);
+    if (typeof Cookie == "undefined") {
+      res.cookie("cart", CookieCart);
+    } else {
+      cartCookie = Cookie.cart;
+      res.cookie("cart", Cookie + CookieCart);
+    }
+  } else {
+    getDataID("users", "*", userID).then((result) => {
+      result = result[0];
+      cart = result.cart + goodDataJSON;
+      updateDataID("users", "cart", cart, userID).then((result_two) => {
+        console.log("ok");
+      });
+    });
+  }
+  res.send("ok");
 });
 
 app.listen(6000, () => {

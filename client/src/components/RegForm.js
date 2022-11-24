@@ -1,6 +1,7 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 function RegForm({ modal, setModal }) {
+  const [error, setError] = useState("");
   const inputMail = useRef();
   const inputPhone = useRef();
   const inputPass = useRef();
@@ -12,27 +13,34 @@ function RegForm({ modal, setModal }) {
     const pass = inputPass.current.value;
     const validPass = inputValidPass.current.value;
 
-    if (
-      mail.length > 0 &&
-      phone.length > 0 &&
-      pass.length > 0 &&
-      validPass.length > 0 &&
-      pass == validPass
-    ) {
-      const regData = {
-        mail: mail,
-        phone: phone,
-        pass: pass,
-      };
-      fetch("/registration", {
-        method: "POST",
-        body: JSON.stringify(regData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then(() => {
-        window.location.reload();
-      });
+    if (mail.length > 0 && pass.length > 0 && validPass.length > 0) {
+      if (pass == validPass) {
+        const regData = {
+          mail: mail,
+          phone: phone != null ? phone : "",
+          pass: pass,
+        };
+        fetch("/registration", {
+          method: "POST",
+          body: JSON.stringify(regData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            if (data == "ok") {
+              setModal();
+              window.location.reload();
+            } else {
+              setError(data);
+            }
+          });
+      } else {
+        setError("Пароли не совпадают!");
+      }
+    } else {
+      setError("Заполнены не все поля!");
     }
   }
 
@@ -48,7 +56,9 @@ function RegForm({ modal, setModal }) {
               <input className="reg__input" ref={inputMail} />
             </div>
             <div className="reg__input__item">
-              <span className="reg__input__title">Номер телефона</span>
+              <span className="reg__input__title">
+                Номер телефона (если есть)
+              </span>
               <input className="reg__input" ref={inputPhone} />
             </div>
             <div className="reg__input__item">
@@ -64,6 +74,9 @@ function RegForm({ modal, setModal }) {
               />
             </div>
           </div>
+          <span className="modal__error">
+            {typeof error == "undefined" ? "" : error}
+          </span>
           <div className="reg__form__buttons">
             <button
               className="reg__form__btn reg__btn-orange"
@@ -87,9 +100,9 @@ function RegForm({ modal, setModal }) {
           <div className="reg__form__buttons reg__btn__center">
             <button
               className="reg__form__btn"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 sendRegForm();
-                setModal("");
               }}
             >
               Регистрация
