@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { goods } from "../data/GoodsJSON";
 import NewArrayByCount from "../Services/Array";
 import strCut from "../Services/StrCutLimits";
+import AddToCart from "../components/AddToCart";
 
 function Home() {
   const [backData, setBackData] = useState();
@@ -113,7 +114,12 @@ function Home() {
                               }}
                             />
                           </div>
-                          <img src="../images/home/cart.svg" />
+                          <img
+                            src="../images/home/cart.svg"
+                            onClick={() => {
+                              AddToCart(good.id, arrayCount[key]);
+                            }}
+                          />
                         </div>
                       </div>
                     );

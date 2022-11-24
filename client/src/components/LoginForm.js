@@ -1,6 +1,7 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 function LoginForm({ modal, setModal }) {
+  const [error, setError] = useState("");
   const inputLogin = useRef();
   const inputPass = useRef();
 
@@ -19,9 +20,18 @@ function LoginForm({ modal, setModal }) {
         headers: {
           "Content-Type": "application/json",
         },
-      }).then((data) => {
-        window.location.reload();
-      });
+      })
+        .then((response) => response.text())
+        .then((data) => {
+          if (data == "ok") {
+            setModal();
+            window.location.reload();
+          } else {
+            setError(data);
+          }
+        });
+    } else {
+      setError("Заполнены не все поля!");
     }
   }
 
@@ -41,6 +51,9 @@ function LoginForm({ modal, setModal }) {
               <input className="reg__input" ref={inputPass} type="password" />
             </div>
           </div>
+          <span className="modal__error">
+            {typeof error == "undefined" ? "" : error}
+          </span>
           <div className="reg__form__buttons login__form__buttons">
             <div className="reg__form__buttons__row">
               <button
@@ -48,7 +61,7 @@ function LoginForm({ modal, setModal }) {
                 onClick={(e) => {
                   e.preventDefault();
                   sendLoginForm();
-                  setModal();
+                  //setModal();
                 }}
               >
                 Войти

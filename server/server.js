@@ -115,6 +115,36 @@ app.post("/login", (req, res) => {
 	});
 });
 
+app.post("/addToCart", (req, res) => {
+	const goodData = req.body;
+	const goodDataJSON = JSON.stringify(goodData) + ", ";
+	console.log(goodDataJSON);
+
+	const goodID = goodData.id;
+	const goodCount = goodData.count;
+	const userID = req.cookies.id;
+	if (typeof userID == "undefined") {
+		const Cookie = req.cookies.cart;
+		const CookieCart = `${goodID}-${goodCount}_`;
+		console.log(CookieCart);
+		if (typeof Cookie == "undefined") {
+			res.cookie("cart", CookieCart);
+		} else {
+			cartCookie = Cookie.cart;
+			res.cookie("cart", Cookie + CookieCart);
+		}
+	} else {
+		getDataID("users", "*", userID).then((result) => {
+			result = result[0];
+			cart = result.cart + goodDataJSON;
+			updateDataID("users", "cart", cart, userID).then((result_two) => {
+				console.log("ok");
+			});
+		});
+	}
+	res.send("ok");
+});
+
 app.listen(6000, () => {
 	console.log("server start on 6000");
 });

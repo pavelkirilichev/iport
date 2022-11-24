@@ -68,31 +68,28 @@ function Cart() {
         <div className="cart__container">
           <div className="cart__row">
             <div className="cart__row__sidebar">
-              <div className="cart__row__sidebar__info">
-                <img
-                  src="./images/cart/profile_icon.svg"
-                  className="cart__profile__icon"
-                />
-                {typeof backData == "undefined" ||
-                (cookies.get("id") == undefined &&
-                  cookies.get("pass") == undefined) ? (
-                  <div className="cart__info__title">
-                    <span className="cart__info__main-title">Пользователь</span>
-                    <span className="cart__info__subtitle">
-                      8 909 999 99 99
-                    </span>
-                  </div>
-                ) : (
+              {typeof backData == "undefined" ||
+              cookies.get("id") == undefined ||
+              cookies.get("pass") == undefined ? (
+                ""
+              ) : (
+                <div className="cart__row__sidebar__info">
+                  <img
+                    src="./images/cart/profile_icon.svg"
+                    className="cart__profile__icon"
+                  />
+
                   <div className="cart__info__title">
                     <span className="cart__info__main-title">
                       {backData.mail}
                     </span>
                     <span className="cart__info__subtitle">
-                      {backData.phone}
+                      {backData.phone != backData.mail ? backData.phone : ""}
                     </span>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
+
               <ul className="cart__menu">
                 <li
                   className="cart__menu__item"
