@@ -1,0 +1,30 @@
+.city__main {
+	box-sizing: border-box;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 320px;
+	height: 192px;
+	background: #fff;
+	border-radius: 10px;
+}
+.city__title {
+	font-size: 25px;
+	font-weight: 600;
+	color: #545454;
+}
+.city__input {
+	margin-top: 20px;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	padding-left: 10px;
+	width: 280px;
+	height: 25px;
+	border-radius: 10px;
+	border: 1px solid #545454;
+}
+.city__btn {
+	margin-top: 27px;
+}

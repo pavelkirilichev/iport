@@ -1,10 +1,6 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import FooterMob from "../components/FooterMob";
-import RegForm from "../components/RegForm";
-import LoginForm from "../components/LoginForm";
-import RecChoise from "../components/RecChoise";
-import RecMail from "../components/RecMail";
 import HomeMob from "../components/HomeMob";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -17,7 +13,6 @@ const cookies = new Cookies();
 
 function Home() {
 	const [backData, setBackData] = useState();
-	const [cartData, setCartData] = useState();
 	const [cartCount, setCartCount] = useState(0);
 	if (cookies.get("id")) {
 		fetch("/getUserByID")
@@ -135,6 +130,9 @@ function Home() {
 														src='../images/home/cart.svg'
 														onClick={() => {
 															if (arrayCount[key] > 0) {
+																if (cartCount != 0) {
+																	setCartCount(cartCount + 1);
+																}
 																AddToCart(good.id, arrayCount[key]);
 															}
 														}}

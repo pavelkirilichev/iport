@@ -9,14 +9,14 @@ import Tkani from "./routes/Tkani";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/tkani" element={<Tkani />} />
-      <Route path="/good" element={<Good />} />
-      <Route path="/lk" element={<LK />} />
-      <Route path="/mo" element={<MakeOrder />} />
-    </Routes>
-  </BrowserRouter>
+	<BrowserRouter>
+		<Routes>
+			<Route path='/' element={<Home />} />
+			<Route path='/cart' element={<Cart />} />
+			<Route path='/tkani' element={<Tkani />} />
+			<Route path='/good/:id' element={<Good />} />
+			<Route path='/lk' element={<LK />} />
+			<Route path='/mo' element={<MakeOrder />} />
+		</Routes>
+	</BrowserRouter>,
 );

@@ -5,6 +5,7 @@ import { catalog } from "../data/CatalogJSON";
 import RegForm from "./RegForm";
 import LoginForm from "./LoginForm";
 import Cookies from "universal-cookie";
+import CityModal from "./CityModal";
 const cookies = new Cookies();
 
 function Header({
@@ -15,6 +16,7 @@ function Header({
 	setPullMenuMob,
 	route,
 	setChapterTkani,
+	setCategory,
 	cartCount,
 }) {
 	const [catalogChapter, setCatalogChapter] = useState("");
@@ -34,21 +36,33 @@ function Header({
 
 	const [modal, setModal] = useState();
 	const [cookiesState, setCookiesState] = useState(cookies);
+	const city = cookies.get("city") ? cookies.get("city") : "Москва";
+	const [cityState, setCity] = useState(city);
 
 	return (
 		<header className='header'>
 			{modal === "login" ? <LoginForm modal={modal} setModal={setModal} /> : ""}
 			{modal === "reg" ? <RegForm modal={modal} setModal={setModal} /> : ""}
+			{modal === "city" ? (
+				<CityModal modal={modal} setModal={setModal} setCity={setCity} />
+			) : (
+				""
+			)}
 
 			<div className='header-pc'>
 				<nav className='nav-top'>
 					<div className='header__container'>
 						<div className='nav-top__row'>
 							<div className='nav-top__left'>
-								<div className='nav-top__city'>
-									<span className='nav-top__city-text'>Новоалтайск</span>
+								<div
+									className='nav-top__city'
+									onClick={() => {
+										setModal("city");
+									}}
+								>
+									<span className='nav-top__city-text'>{cityState}</span>
 									<img
-										src='./images/header/geo_icon.svg'
+										src='../images/header/geo_icon.svg'
 										className='nav-top__city-img'
 									/>
 								</div>
@@ -56,21 +70,21 @@ function Header({
 							<div className='nav-top__right'>
 								<div className='nav-top__right__info'>
 									<img
-										src='./images/header/info_icon.svg'
+										src='../images/header/info_icon.svg'
 										className='nav-top__mail-img'
 									/>
 									<span className='nav-top__info-text'>О нас</span>
 								</div>
 								<div className='nav-top__right__email'>
 									<img
-										src='./images/header/mail_icon.svg'
+										src='../images/header/mail_icon.svg'
 										className='nav-top__mail-img'
 									/>
 									<span className='nav-top__mail-text'>svit22@mail.ru</span>
 								</div>
 								<div className='nav-top__right__phone'>
 									<img
-										src='./images/header/phone_icon.svg'
+										src='../images/header/phone_icon.svg'
 										className='nav-top__phone-img'
 									/>
 									<span className='nav-top__phone-text'>+7-3852-570-722</span>
@@ -85,7 +99,7 @@ function Header({
 							<div className='nav-bottom__row__left'>
 								<Link to='/'>
 									<img
-										src='./images/header/logo.svg'
+										src='../images/header/logo.svg'
 										className='nav-bottom__logo'
 									/>
 								</Link>
@@ -101,14 +115,14 @@ function Header({
 								>
 									<span>Каталог</span>
 									<img
-										src='./images/header/burger.svg'
+										src='../images/header/burger.svg'
 										className='nav-bottom__burger-img'
 									/>
 								</div>
 							</div>
 							<div className='nav-bottom__search'>
 								<img
-									src='./images/header/search.png'
+									src='../images/header/search.png'
 									className='nav-bottom__search-img'
 								/>
 							</div>
@@ -123,7 +137,7 @@ function Header({
 											>
 												<span>Кабинет</span>
 												<img
-													src='./images/header/user.svg'
+													src='../images/header/user.svg'
 													className='nav-bottom__burger-img'
 												/>
 											</div>
@@ -138,7 +152,7 @@ function Header({
 										>
 											<span>Войти</span>
 											<img
-												src='./images/header/user.svg'
+												src='../images/header/user.svg'
 												className='nav-bottom__burger-img'
 											/>
 										</div>
@@ -147,7 +161,7 @@ function Header({
 									<div className='nav-bottom__row-right__icon cart-icon'>
 										<Link to='/cart'>
 											<img
-												src='./images/header/cart.svg'
+												src='../images/header/cart.svg'
 												className='nav-bottom__row-right__icon-img cart-icon-img'
 											/>
 											{cartCount > 0 ? (
@@ -181,18 +195,19 @@ function Header({
 				setCatalogMenuImgThree={setCatalogMenuImgThree}
 				route={route}
 				setChapterTkani={setChapterTkani}
+				setCategory={setCategory}
 			/>
 			<div className='header-mobile'>
 				<nav className='nav-mobile'>
-					<img src='./images/header/logo_mobile.svg' />
+					<img src='../images/header/logo_mobile.svg' />
 					<div className='nav-mobile__search'>
 						<img
-							src='./images/header/search.png'
+							src='../images/header/search.png'
 							className='nav-mobile__search-img'
 						/>
 					</div>
 					<img
-						src='./images/header/burger_mobile.svg'
+						src='../images/header/burger_mobile.svg'
 						className='nav-mobile__burger'
 						onClick={() => {
 							setPullMenuMob(
@@ -232,7 +247,7 @@ function Header({
 							>
 								<span>Техника</span>
 								<img
-									src='./images/header/mobile_arrow.png'
+									src='../images/header/mobile_arrow.png'
 									className='pull-menu-mobile__item-img'
 								/>
 							</div>
