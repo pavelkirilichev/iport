@@ -1,5 +1,5 @@
 import Catalog from "./Catalog";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { catalog } from "../data/CatalogJSON";
 import RegForm from "./RegForm";
@@ -15,9 +15,11 @@ function Header({
 	pullMenuMob,
 	setPullMenuMob,
 	route,
-	setChapterTkani,
 	setCategory,
 	cartCount,
+	searchRef,
+	setBackData,
+	isSearch,
 }) {
 	const [catalogChapter, setCatalogChapter] = useState("");
 	const [catalogMenuImgActive, setCatalogMenuImgActive] = useState("");
@@ -120,12 +122,38 @@ function Header({
 									/>
 								</div>
 							</div>
-							<div className='nav-bottom__search'>
-								<img
-									src='../images/header/search.png'
-									className='nav-bottom__search-img'
-								/>
-							</div>
+							{isSearch == 1 ? (
+								<div className='nav-bottom__search'>
+									<input
+										className='nav-bottom__search__input'
+										ref={searchRef}
+										onInput={() => {
+											console.log(searchRef.current.value);
+											const searchData = {
+												search: searchRef.current.value,
+											};
+											fetch("/goodsSearch", {
+												method: "POST",
+												body: JSON.stringify(searchData),
+												headers: {
+													"Content-Type": "application/json",
+												},
+											})
+												.then((response) => response.json())
+												.then((data) => {
+													setBackData(data);
+												});
+										}}
+									/>
+									<img
+										src='../images/header/search.png'
+										className='nav-bottom__search-img'
+									/>
+								</div>
+							) : (
+								""
+							)}
+
 							<div className='nav-bottom__row-right'>
 								<div className='nav-bottom__row-right__icons'>
 									{cookiesState.get("id") > 0 &&
@@ -174,7 +202,9 @@ function Header({
 										</Link>
 									</div>
 								</div>
-								<span className='nav-bottom__cart-price'>{cartPrice}₽</span>
+								<span className='nav-bottom__cart-price'>
+									{cartPrice > 0 ? cartPrice : 0}₽
+								</span>
 							</div>
 						</div>
 					</div>
@@ -194,8 +224,8 @@ function Header({
 				catalogMenuImgThree={catalogMenuImgThree}
 				setCatalogMenuImgThree={setCatalogMenuImgThree}
 				route={route}
-				setChapterTkani={setChapterTkani}
 				setCategory={setCategory}
+				setBackData={setBackData}
 			/>
 			<div className='header-mobile'>
 				<nav className='nav-mobile'>

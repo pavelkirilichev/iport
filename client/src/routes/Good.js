@@ -7,13 +7,19 @@ import GoodSlider from "../components/GoodSlider";
 import { goods } from "../data/GoodsJSON";
 import NewArrayByCount from "../Services/Array";
 import GoodMobile from "../components/GoodMobile";
-import strCut from "../Services/StrCutLimits";
 import { useParams } from "react-router-dom";
+import AddToCart from "../components/AddToCart";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 // Get ID from URL
 
 function Good() {
 	const params = useParams();
+	const goodID = params.id;
+	const [backData, setBackData] = useState();
+	const [cartCount, setCartCount] = useState(0);
+
 	//console.log(params);
 	const [pullMenuMob, setPullMenuMob] = useState("");
 	const [pull, setPull] = useState("");
@@ -27,6 +33,51 @@ function Good() {
 		"../images/good/goods_image/good_3.jpg",
 		"../images/good/goods_image/good_4.jpg",
 	];
+	const idData = {
+		id: goodID,
+	};
+	if (typeof backData == "undefined") {
+		fetch("/goodID", {
+			method: "POST",
+			body: JSON.stringify(idData),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				setBackData(data);
+			});
+	}
+	const [cartData, setCartData] = useState("initial");
+	const [cartPrice, setCartPrice] = useState(0);
+	if (cartData == "initial" && typeof backData == "undefined") {
+		console.log("test");
+		fetch("/cart")
+			.then((response) => response.json())
+			.then((data) => {
+				setCartData(data);
+				let cart_summ = 0;
+				data.map((good) => {
+					cart_summ += good.price * good.count;
+				});
+				setCartPrice(cart_summ);
+			});
+	}
+	if (cookies.get("id")) {
+		fetch("/getUserByID")
+			.then((response) => response.json())
+			.then((data) => {
+				setCartCount(data.cart.split(", ").length - 1);
+			});
+	} else {
+		if (cookies.get("cart")) {
+			setTimeout(() => {
+				if (cartCount == 0)
+					setCartCount(cookies.get("cart").split("_").length - 1);
+			}, 1);
+		}
+	}
 	return (
 		<div className='wrapper'>
 			<GoodSlider
@@ -35,13 +86,17 @@ function Good() {
 				img={img}
 				setImg={setImg}
 				image_arr={image_arr}
+				backData={backData}
 			/>
 			<Header
-				cartPrice={2120}
+				cartPrice={typeof cartPrice == "undefined" ? "" : cartPrice}
 				pull={pull}
 				setPull={setPull}
 				pullMenuMob={pullMenuMob}
 				setPullMenuMob={setPullMenuMob}
+				cartCount={cartCount}
+				setBackData={setBackData}
+				isSearch={0}
 			/>
 			<div
 				className={
@@ -64,213 +119,170 @@ function Good() {
 							</li>
 						</ul>
 					</div>
-					<div className='good__main'>
-						<div className='good__main__image'>
-							<div className='good__main__image__sidebar'>
-								<img
-									src='../images/good/arrow_up.svg'
-									onClick={() => {
-										if (img == 0) {
-											setImg(image_arr.length - 1);
-										} else {
-											setImg(img - 1);
-										}
-									}}
-								/>
-								<div className='good__main__image__sidebar__slider'>
-									{image_arr.map((item, key) => {
-										return (
-											<div className='good__main__image__sidebar__slider__item'>
-												{key == img ? (
-													<div className='good__main__slider__img-active'></div>
-												) : (
-													""
-												)}
-												<div
-													className='good__main__slider__img'
-													style={{
-														backgroundImage: "url(../" + item + ")",
-													}}
-												></div>
-											</div>
-										);
-									})}
+					{typeof backData == "undefined" ? (
+						""
+					) : (
+						<div className='good__main'>
+							<div className='good__main__image'>
+								<div className='good__main__image__sidebar'>
+									<img
+										src='../images/good/arrow_up.svg'
+										onClick={() => {
+											if (img == 0) {
+												setImg(image_arr.length - 1);
+											} else {
+												setImg(img - 1);
+											}
+										}}
+									/>
+									<div className='good__main__image__sidebar__slider'>
+										{image_arr.map((item, key) => {
+											return (
+												<div className='good__main__image__sidebar__slider__item'>
+													{key == img ? (
+														<div className='good__main__slider__img-active'></div>
+													) : (
+														""
+													)}
+													<div
+														className='good__main__slider__img'
+														style={{
+															backgroundImage: `url(../images/good/goods_image/${backData.images_name})`,
+														}}
+													></div>
+												</div>
+											);
+										})}
+									</div>
+									<img
+										src='../images/good/arrow_down.svg'
+										onClick={() => {
+											if (img == image_arr.length - 1) {
+												setImg(0);
+											} else {
+												setImg(img + 1);
+											}
+										}}
+									/>
 								</div>
-								<img
-									src='../images/good/arrow_down.svg'
+								<div
+									className='good__main__image__content'
 									onClick={() => {
-										if (img == image_arr.length - 1) {
-											setImg(0);
-										} else {
-											setImg(img + 1);
-										}
+										setGoodSlider(" goodSlider-active");
 									}}
-								/>
-							</div>
-							<div
-								className='good__main__image__content'
-								onClick={() => {
-									setGoodSlider(" goodSlider-active");
-								}}
-							>
-								<img src={image_arr[img]} />
-							</div>
-							<div className='good__main__down'>
-								<div className='good__main__down__left'>
-									<p className='good__main__down__left__title'>
-										Apple iPhone 13 (6.1", 128GB, темная ночь)
-									</p>
-									<p className='good__main__down__left__subtitle'>
-										Артикул: 40893654
-									</p>
-									<div className='good__main__down__left__price'>
-										<div className='good__main__down__left__wish'>
-											<div className='good__main__wish__price'>
-												<p className='good__main__wish__price__title'>2120 ₽</p>
-												<p className='good__main__wish__price__subtitle'>
-													2430 ₽
-												</p>
+								>
+									<img
+										src={"../images/good/goods_image/" + backData.images_name}
+									/>
+								</div>
+								<div className='good__main__down'>
+									<div className='good__main__down__left'>
+										<p className='good__main__down__left__title'>
+											{backData.full_name}
+										</p>
+										<p className='good__main__down__left__subtitle'>
+											Артикул: {backData.articul}
+										</p>
+										<div className='good__main__down__left__price'>
+											<div className='good__main__down__left__wish'>
+												<div className='good__main__wish__price'>
+													<p className='good__main__wish__price__title'>
+														{backData.price} ₽
+													</p>
+													{backData.old_price > 0 ? (
+														<p className='good__main__wish__price__subtitle'>
+															{backData.old_price} ₽
+														</p>
+													) : (
+														""
+													)}
+												</div>
 											</div>
-										</div>
-										<div className='good__main__down__head'>
-											<div className='good__main__down__choice'>
-												<div className='good__main__down__count'>
-													<img
-														src='../images/good/minus.svg'
+											<div className='good__main__down__head'>
+												<div className='good__main__down__choice'>
+													<div className='good__main__down__count'>
+														<img
+															src='../images/good/minus.svg'
+															onClick={() => {
+																if (goodCount != 0) {
+																	setGoodCount(goodCount - 1);
+																}
+															}}
+														/>
+														<span className='cart__main__content__item__count-price__bottom-btn-cnt unselectable'>
+															{goodCount}
+														</span>
+														<img
+															src='../images/good/plus.svg'
+															onClick={() => {
+																setGoodCount(goodCount + 1);
+															}}
+														/>
+													</div>
+												</div>
+												<div className='good__main__staff'>
+													<div className='good__main__staff__price'>
+														<span>товара на: </span>
+														<span>{goodCount * 2120} р.</span>
+													</div>
+													<div
+														className='good__main__staff__btn'
 														onClick={() => {
-															if (goodCount != 0) {
-																setGoodCount(goodCount - 1);
+															if (goodCount > 0) {
+																if (cartCount != 0) {
+																	//setCartCount(cartCount + 1);
+																}
+																AddToCart(backData.ID, goodCount, setCartCount);
+																setCartPrice(
+																	cartPrice + backData.price * goodCount,
+																);
+																//window.location.reload();
 															}
 														}}
-													/>
-													<span className='cart__main__content__item__count-price__bottom-btn-cnt unselectable'>
-														{goodCount}
-													</span>
-													<img
-														src='../images/good/plus.svg'
-														onClick={() => {
-															setGoodCount(goodCount + 1);
-														}}
-													/>
-												</div>
-											</div>
-											<div className='good__main__staff'>
-												<div className='good__main__staff__price'>
-													<span>товара на: </span>
-													<span>{goodCount * 2120} р.</span>
-												</div>
-												<div className='good__main__staff__btn'>
-													<span className='good__main__staff__btn__title'>
-														В корзину
-													</span>
+													>
+														<span className='good__main__staff__btn__title'>
+															В корзину
+														</span>
+													</div>
 												</div>
 											</div>
 										</div>
+										<div className='good__main__down__left__wish'>
+											<div className='good__main__down__size'>
+												<span>цвет</span>
+												<div className='good__main__down__size__box'>
+													<div className='good__main__down__size__item'>
+														<span>{backData.color}</span>
+													</div>
+													<div className='good__main__down__size__item'>
+														<span>голубой</span>
+													</div>
+												</div>
+											</div>
+											<div className='good__main__down__size'>
+												<span>память</span>
+												<div className='good__main__down__size__box'>
+													<div className='good__main__down__size__item'>
+														<span>{backData.memory}GB</span>
+													</div>
+													<div className='good__main__down__size__item'>
+														<span>64GB</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div></div>
 									</div>
-									<div className='good__main__down__left__wish'>
-										<div className='good__main__down__info'>
-											<span>цвет</span>
-											<div className='good__main__down__color'>
-												<div className='good__main__down__color__left'></div>
-												<div className='good__main__down__color__right'></div>
-											</div>
+									<div className='good__main__down__right'>
+										<p className='good__main__down__right__title'>Описание</p>
+										<div className='good__main__down__right__content'>
+											<p>{backData.description}</p>
 										</div>
-										<div className='good__main__down__size'>
-											<span>размер</span>
-											<div className='good__main__down__size__box'>
-												<div className='good__main__down__size__item'>
-													<span> 115×205 см</span>
-												</div>
-												<div className='good__main__down__size__item'>
-													<span> 115×205 см</span>
-												</div>
-												<div className='good__main__down__size__item'>
-													<span> 115×205 см</span>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div></div>
-								</div>
-								<div className='good__main__down__right'>
-									<p className='good__main__down__right__title'>Описание</p>
-									<div className='good__main__down__right__content'>
-										<p>
-											Подушка «Memory Foam Roller», два валика под шею - 13 и 11
-											см. Наполнитель - инновационная пена последнего поколения
-											из модифицированного пенополиуретана. Два ролика в подушке
-											сделаны для того, чтобы вы сами могли регулировать, как
-											вам удобнее на ней спать или сидеть. Хоть на боку, хоть на
-											спине – устраивайтесь поудобнее!
-										</p>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div className='good__reviews'>
-						<p className='good__reviews__title'>Похожие товары</p>
-						<div className='good__reviews__btn'>
-							<span>Смотреть всё</span>
-						</div>
-					</div>
-					<div className='home__goods__list good__list'>
-						{goods.map((good, key) => {
-							let title = strCut(good.title, 20);
-							return (
-								<div className='home__goods__item'>
-									<Link to={"/good"}>
-										<div
-											className='home__goods__item__image'
-											style={{
-												backgroundImage:
-													"url(../images/good/goods_image/" + good.src + ")",
-											}}
-										></div>
-									</Link>
-									<Link to={"/good"}>
-										<div className='home__goods__item__info'>
-											<div className='home__goods__item__price'>
-												<span className='home__goods__item__price__title'>
-													{good.price} ₽
-												</span>
-												<span className='home__goods__item__price__subtitle'>
-													{good.old_price} ₽
-												</span>
-											</div>
-											<p className='home__goods__item__info__title'>{title}</p>
-										</div>
-									</Link>
-									<div className='home__goods__item__bottom'>
-										<div className='home__goods__item__bottom__left'>
-											<img
-												src='../images/home/minus_icon.svg'
-												onClick={() => {
-													let copy = Object.assign([], arrayCount);
-													let index = key;
-													if (copy[index] > 0) {
-														copy[index] -= 1;
-													}
-													setArrayCount(copy);
-												}}
-											/>
-											<span>{arrayCount[key]}</span>
-											<img
-												src='../images/home/plus_icon.svg'
-												onClick={() => {
-													let copy = Object.assign([], arrayCount);
-													let index = key;
-													copy[index] += 1;
-													setArrayCount(copy);
-												}}
-											/>
-										</div>
-										<img src='../images/home/cart.svg' />
-									</div>
-								</div>
-							);
-						})}
-					</div>
+					)}
 				</div>
 				<GoodMobile />
 			</div>

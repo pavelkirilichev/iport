@@ -188,6 +188,7 @@
 	gap: 20px;
 }
 .tkani__main__sort {
+	cursor: pointer;
 	display: flex;
 	gap: 20px;
 	align-items: baseline;
@@ -278,7 +279,6 @@
 }
 @media (max-width: 1189px) {
 	.tkani__main__content {
-		justify-content: center;
 		margin-top: -4px;
 		gap: 20px;
 	}

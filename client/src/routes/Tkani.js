@@ -1,19 +1,24 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useState, useRef } from "react";
+import { useAsyncError, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { goods } from "../data/GoodsJSON";
 import NewArrayByCount from "../Services/Array";
 import strCut from "../Services/StrCutLimits";
 import AddToCart from "../components/AddToCart";
 import Cookies from "universal-cookie";
+import { useParams } from "react-router-dom";
 const cookies = new Cookies();
 
 function Tkani(props) {
+	const params = useParams();
+	const [backData, setBackData] = useState();
 	const location = useLocation();
-	const [chapter, setChapterTkani] = useState(location.state?.chapter);
 	const [category, setCategory] = useState(location.state?.category);
+	const [sortDirection, setSortDirection] = useState("up");
+	const [cartData, setCartData] = useState("initial");
+	const [cartPrice, setCartPrice] = useState(0);
 
 	const [pullMenuMob, setPullMenuMob] = useState("");
 	const [pull, setPull] = useState("");
@@ -34,19 +39,73 @@ function Tkani(props) {
 			}, 1);
 		}
 	}
+
+	const categoryData = {
+		category: params.category,
+	};
+	const [checkData, setCheckData] = useState(0);
+	if (sortDirection == "up") {
+		if (typeof backData == "undefined") {
+			fetch("/goodsCategory", {
+				method: "POST",
+				body: JSON.stringify(categoryData),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					setBackData(data);
+				});
+		}
+	} else {
+		if (checkData == 0) {
+			console.log("yes");
+			fetch("/goodsCategoryDesc", {
+				method: "POST",
+				body: JSON.stringify(categoryData),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					setBackData(data);
+					setCheckData(1);
+				});
+		}
+	}
+	if (cartData == "initial" && typeof backData == "undefined") {
+		console.log("test");
+		fetch("/cart")
+			.then((response) => response.json())
+			.then((data) => {
+				setCartData(data);
+				let cart_summ = 0;
+				data.map((good) => {
+					cart_summ += good.price * good.count;
+				});
+				setCartPrice(cart_summ);
+			});
+	}
+
+	const searchRef = useRef();
 	return (
 		<div className='wrapper'>
 			<Header
-				cartPrice={2120}
+				cartPrice={typeof cartPrice == "undefined" ? "" : cartPrice}
 				pull={pull}
 				setPull={setPull}
 				pullMenuMob={pullMenuMob}
 				setPullMenuMob={setPullMenuMob}
 				route={"tkani"}
-				setChapterTkani={setChapterTkani}
 				setCategory={setCategory}
 				cartCount={cartCount}
+				searchRef={searchRef}
+				setBackData={setBackData}
+				isSearch={1}
 			/>
+
 			<div
 				className={
 					pull == "" && pullMenuMob == ""
@@ -61,8 +120,10 @@ function Tkani(props) {
 						</Link>
 						<ul className='tkani__navigation__chapter-list'>
 							<li className='tkani__navigation__chapter__item'>Каталог</li>
-							<li className='tkani__navigation__chapter__item'>{chapter}</li>
-							<li className='tkani__navigation__chapter__item'>{category}</li>
+							<li className='tkani__navigation__chapter__item'>Техника</li>
+							<li className='tkani__navigation__chapter__item'>
+								{params.category}
+							</li>
 						</ul>
 					</div>
 					<div className='tkani__main'>
@@ -186,79 +247,98 @@ function Tkani(props) {
 							</div>
 						</div>
 						<div className='tkani__main__content'>
-							<div className='tkani__main__sort'>
+							<div
+								className='tkani__main__sort'
+								onClick={() => {
+									setSortDirection(sortDirection == "up" ? "down" : "up");
+								}}
+							>
 								<span className='tkani__main__sort__text'>Сортировать по:</span>
-								<span className='tkani__main__sort__text text-red'>Цене 🠕</span>
-								<span className='tkani__main__sort__text'>Скидке</span>
-								<span className='tkani__main__sort__text'>Новизне</span>
+								<span className='tkani__main__sort__text text-red'>
+									{sortDirection == "up" ? "Цене ↑" : "Цене ↓"}
+								</span>
 							</div>
-							{goods.map((good, key) => {
-								let title = strCut(good.title, 20);
-								return (
-									<div className='home__goods__item'>
-										<Link to={"/good"}>
-											<div
-												className='home__goods__item__image'
-												style={{
-													backgroundImage:
-														"url(../images/good/goods_image/" + good.src + ")",
-												}}
-											></div>
-										</Link>
-										<Link to={"/good"}>
-											<div className='home__goods__item__info'>
-												<div className='home__goods__item__price'>
-													<span className='home__goods__item__price__title'>
-														{good.price} ₽
-													</span>
-													<span className='home__goods__item__price__subtitle'>
-														{good.old_price} ₽
-													</span>
+							{typeof backData == "undefined"
+								? ""
+								: backData.map((good, key) => {
+										let title = strCut(good.full_name, 20);
+										return (
+											<div className='home__goods__item'>
+												<Link to={"/good/" + good.ID}>
+													<div
+														className='home__goods__item__image'
+														style={{
+															backgroundImage:
+																"url(../images/good/goods_image/" +
+																good.images_name +
+																")",
+														}}
+													></div>
+												</Link>
+												<Link to={"/good/" + good.ID}>
+													<div className='home__goods__item__info'>
+														<div className='home__goods__item__price'>
+															<span className='home__goods__item__price__title'>
+																{good.price} ₽
+															</span>
+															<span className='home__goods__item__price__subtitle'>
+																{good.old_price != 0
+																	? `${good.old_price}₽`
+																	: ""}
+															</span>
+														</div>
+														<p className='home__goods__item__info__title'>
+															{title}
+														</p>
+													</div>
+												</Link>
+												<div className='home__goods__item__bottom'>
+													<div className='home__goods__item__bottom__left'>
+														<img
+															src='../images/home/minus_icon.svg'
+															onClick={() => {
+																let copy = Object.assign([], arrayCount);
+																let index = key;
+																if (copy[index] > 0) {
+																	copy[index] -= 1;
+																}
+																setArrayCount(copy);
+															}}
+														/>
+														<span>{arrayCount[key]}</span>
+														<img
+															src='../images/home/plus_icon.svg'
+															onClick={() => {
+																let copy = Object.assign([], arrayCount);
+																let index = key;
+																copy[index] += 1;
+																setArrayCount(copy);
+															}}
+														/>
+													</div>
+													<img
+														src='../images/home/cart.svg'
+														onClick={() => {
+															if (arrayCount[key] > 0) {
+																if (cartCount != 0) {
+																	//setCartCount(cartCount + 1);
+																}
+																AddToCart(
+																	good.ID,
+																	arrayCount[key],
+																	setCartCount,
+																);
+																setCartPrice(
+																	cartPrice + good.price * arrayCount[key],
+																);
+																//window.location.reload();
+															}
+														}}
+													/>
 												</div>
-												<p className='home__goods__item__info__title'>
-													{title}
-												</p>
 											</div>
-										</Link>
-										<div className='home__goods__item__bottom'>
-											<div className='home__goods__item__bottom__left'>
-												<img
-													src='../images/home/minus_icon.svg'
-													onClick={() => {
-														let copy = Object.assign([], arrayCount);
-														let index = key;
-														if (copy[index] > 0) {
-															copy[index] -= 1;
-														}
-														setArrayCount(copy);
-													}}
-												/>
-												<span>{arrayCount[key]}</span>
-												<img
-													src='../images/home/plus_icon.svg'
-													onClick={() => {
-														let copy = Object.assign([], arrayCount);
-														let index = key;
-														copy[index] += 1;
-														setArrayCount(copy);
-													}}
-												/>
-											</div>
-											<img
-												src='../images/home/cart.svg'
-												onClick={() => {
-													if (arrayCount[key] > 0) {
-														if (cartCount != 0) {
-															setCartCount(cartCount + 1);
-														}
-														AddToCart(good.id, arrayCount[key]);
-													}
-												}}
-											/>
-										</div>
-									</div>
-								);
-							})}
+										);
+								  })}
 						</div>
 					</div>
 				</div>

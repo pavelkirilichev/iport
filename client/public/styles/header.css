@@ -129,6 +129,11 @@
 	background: #f2f4f5;
 	border-radius: 20px;
 }
+.nav-bottom__search__input {
+	width: calc(100% - 50px);
+	height: 25px;
+	border-radius: 5px;
+}
 .nav-bottom__search-img {
 	width: 24px;
 	height: 24px;
@@ -162,7 +167,6 @@
 }
 .nav-bottom__cart-price {
 	width: 70px;
-	margin-right: -30px;
 	font-weight: 500;
 	font-size: 16px;
 	letter-spacing: 0.01em;

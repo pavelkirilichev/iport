@@ -18,8 +18,10 @@ function CityModal({ modal, setModal, setCity }) {
 				<button
 					className='reg__form__btn reg__btn-white city__btn'
 					onClick={() => {
-						setCity(cityRef.current.value);
-						cookies.set("city", cityRef.current.value);
+						if (cityRef.current.value.length > 0) {
+							setCity(cityRef.current.value);
+							cookies.set("city", cityRef.current.value);
+						}
 						setModal();
 					}}
 				>

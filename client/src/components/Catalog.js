@@ -14,8 +14,8 @@ function Catalog({
 	catalogMenuImgThree,
 	setCatalogMenuImgThree,
 	route,
-	setChapterTkani,
 	setCategory,
+	setBackData,
 }) {
 	return (
 		<div className={"pull__main" + pull}>
@@ -46,15 +46,12 @@ function Catalog({
 					<div className={"pull-catalog__list" + catalogMenuImgOne}>
 						{catalog.map((catalogItem) => {
 							return (
-								<Link
-									to={"/tkani"}
-									state={{ chapter: "Техника", category: catalogItem.title }}
-								>
+								<Link to={"/tkani/" + catalogItem.src}>
 									<div
 										className='pull-catalog__item'
 										onClick={() => {
 											if (route == "tkani") {
-												setChapterTkani("Спальня");
+												setBackData();
 												setCategory(catalogItem.title);
 												setPull("");
 											}

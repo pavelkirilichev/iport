@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import FooterMob from "../components/FooterMob";
 import HomeMob from "../components/HomeMob";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { goods } from "../data/GoodsJSON";
 import NewArrayByCount from "../Services/Array";
 import strCut from "../Services/StrCutLimits";
@@ -14,39 +14,73 @@ const cookies = new Cookies();
 function Home() {
 	const [backData, setBackData] = useState();
 	const [cartCount, setCartCount] = useState(0);
-	if (cookies.get("id")) {
-		fetch("/getUserByID")
-			.then((response) => response.json())
-			.then((data) => {
-				setCartCount(data.cart.split(", ").length - 1);
-			});
-	} else {
-		if (cookies.get("cart")) {
-			setTimeout(() => {
-				if (cartCount == 0)
-					setCartCount(cookies.get("cart").split("_").length - 1);
-			}, 1);
+	const [goodsAll, setGoodsAll] = useState(0);
+	const searchRef = useRef();
+	useEffect(() => {
+		if (cartCount == 0) {
+			if (cookies.get("id")) {
+				fetch("/getUserByID")
+					.then((response) => response.json())
+					.then((data) => {
+						setCartCount(data.cart.split(", ").length - 1);
+					});
+			} else {
+				if (cookies.get("cart")) {
+					setTimeout(() => {
+						if (cartCount == 0)
+							setCartCount(cookies.get("cart").split("_").length - 1);
+					}, 1);
+				}
+			}
 		}
-	}
 
-	fetch("/goods")
-		.then((response) => response.json())
-		.then((data) => {
-			setBackData(data);
-		});
+		if (typeof backData == "undefined") {
+			if (goodsAll == 1) {
+				fetch("/goods")
+					.then((response) => response.json())
+					.then((data) => {
+						setBackData(data);
+					});
+			} else {
+				fetch("/goodsLimit")
+					.then((response) => response.json())
+					.then((data) => {
+						setBackData(data);
+					});
+			}
+		}
+	});
 
 	const [pullMenuMob, setPullMenuMob] = useState("");
 	const [pull, setPull] = useState("");
 	const [arrayCount, setArrayCount] = useState(NewArrayByCount(goods));
+	const [cartData, setCartData] = useState("initial");
+	const [cartPrice, setCartPrice] = useState(0);
+	if (cartData == "initial" && typeof backData == "undefined") {
+		console.log("test");
+		fetch("/cart")
+			.then((response) => response.json())
+			.then((data) => {
+				setCartData(data);
+				let cart_summ = 0;
+				data.map((good) => {
+					cart_summ += good.price * good.count;
+				});
+				setCartPrice(cart_summ);
+			});
+	}
 	return (
 		<div className='wrapper'>
 			<Header
-				cartPrice={2120}
+				cartPrice={typeof cartPrice == "undefined" ? "" : cartPrice}
 				pull={pull}
 				setPull={setPull}
 				pullMenuMob={pullMenuMob}
 				setPullMenuMob={setPullMenuMob}
 				cartCount={cartCount}
+				searchRef={searchRef}
+				setBackData={setBackData}
+				isSearch={1}
 			/>
 			<div
 				className={
@@ -55,17 +89,6 @@ function Home() {
 			>
 				<div className='home__main__image'></div>
 				<section className='home__container'>
-					<div className='home__menu'>
-						<div className='home__menu__item'>
-							<span className='text-red'>Новинки</span>
-						</div>
-						<div className='home__menu__item__border'></div>
-						<Link to={"/tkani"} state={{ chapter: "Техника" }}>
-							<div className='home__menu__item'>
-								<span>Техника</span>
-							</div>
-						</Link>
-					</div>
 					<div className='home__goods'>
 						<span className='home__goods__title'>Лучшие цены на сайте</span>
 						<HomeMob />
@@ -73,28 +96,30 @@ function Home() {
 							{typeof backData == "undefined"
 								? ""
 								: backData.map((good, key) => {
-										let title = strCut(good.title, 20);
+										let title = strCut(good.full_name, 20);
 										return (
 											<div className='home__goods__item'>
-												<Link to={"/good"}>
+												<Link to={"/good/" + good.ID}>
 													<div
 														className='home__goods__item__image'
 														style={{
 															backgroundImage:
 																"url(../images/good/goods_image/" +
-																good.src +
+																good.images_name +
 																")",
 														}}
 													></div>
 												</Link>
-												<Link to={"/good"}>
+												<Link to={"/good/" + good.ID}>
 													<div className='home__goods__item__info'>
 														<div className='home__goods__item__price'>
 															<span className='home__goods__item__price__title'>
 																{good.price} ₽
 															</span>
 															<span className='home__goods__item__price__subtitle'>
-																{good.old_price} ₽
+																{good.old_price != 0
+																	? `${good.old_price}₽`
+																	: ""}
 															</span>
 														</div>
 														<p className='home__goods__item__info__title'>
@@ -131,9 +156,17 @@ function Home() {
 														onClick={() => {
 															if (arrayCount[key] > 0) {
 																if (cartCount != 0) {
-																	setCartCount(cartCount + 1);
+																	//setCartCount(cartCount + 1);
 																}
-																AddToCart(good.id, arrayCount[key]);
+																AddToCart(
+																	good.ID,
+																	arrayCount[key],
+																	setCartCount,
+																);
+																setCartPrice(
+																	cartPrice + good.price * arrayCount[key],
+																);
+																//window.location.reload();
 															}
 														}}
 													/>
@@ -143,9 +176,18 @@ function Home() {
 								  })}
 						</div>
 					</div>
-					<div className='home__view-all'>
-						<span>Смотреть всё</span>
-					</div>
+					{goodsAll == 0 ? (
+						<div
+							className='home__view-all'
+							onClick={() => {
+								setGoodsAll(1);
+							}}
+						>
+							<span>Смотреть всё</span>
+						</div>
+					) : (
+						""
+					)}
 				</section>
 			</div>
 			<Footer />
