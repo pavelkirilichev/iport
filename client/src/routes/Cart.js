@@ -149,18 +149,21 @@ function Cart() {
 										<div className='cart__main__header'>
 											<span className='cart__main__header__title'>Корзина</span>
 											<div className='cart__main__header__btn-div'>
-												<div className='cart__main__header__order'>
-													<span className='cart__main__header__order__title'>
-														Оформить заказ
-													</span>
-													<span className='cart__main__header__order__price-cart'>
-														{typeof cartPrice == "undefined" ? "" : cartPrice}₽
-													</span>
-													<img
-														className='cart__main__header__order__img'
-														src='../images/cart/cart_icon-light.png'
-													/>
-												</div>
+												<Link to={"/mo"}>
+													<div className='cart__main__header__order'>
+														<span className='cart__main__header__order__title'>
+															Оформить заказ
+														</span>
+														<span className='cart__main__header__order__price-cart'>
+															{typeof cartPrice == "undefined" ? "" : cartPrice}
+															₽
+														</span>
+														<img
+															className='cart__main__header__order__img'
+															src='../images/cart/cart_icon-light.png'
+														/>
+													</div>
+												</Link>
 												<div
 													className='cart__main__header__del-cart'
 													onClick={() => {

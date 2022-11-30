@@ -16,44 +16,26 @@ function Home() {
 	const [cartCount, setCartCount] = useState(0);
 	const [goodsAll, setGoodsAll] = useState(0);
 	const searchRef = useRef();
-	useEffect(() => {
-		if (cartCount == 0) {
-			if (cookies.get("id")) {
-				fetch("/getUserByID")
-					.then((response) => response.json())
-					.then((data) => {
-						setCartCount(data.cart.split(", ").length - 1);
-					});
-			} else {
-				if (cookies.get("cart")) {
-					setTimeout(() => {
-						if (cartCount == 0)
-							setCartCount(cookies.get("cart").split("_").length - 1);
-					}, 1);
-				}
+	if (cartCount == 0) {
+		if (cookies.get("id")) {
+			fetch("/getUserByID")
+				.then((response) => response.json())
+				.then((data) => {
+					setCartCount(data.cart.split(", ").length - 1);
+				});
+		} else {
+			if (cookies.get("cart")) {
+				setTimeout(() => {
+					if (cartCount == 0)
+						setCartCount(cookies.get("cart").split("_").length - 1);
+				}, 1);
 			}
 		}
-
-		if (typeof backData == "undefined") {
-			if (goodsAll == 1) {
-				fetch("/goods")
-					.then((response) => response.json())
-					.then((data) => {
-						setBackData(data);
-					});
-			} else {
-				fetch("/goodsLimit")
-					.then((response) => response.json())
-					.then((data) => {
-						setBackData(data);
-					});
-			}
-		}
-	});
+	}
 
 	const [pullMenuMob, setPullMenuMob] = useState("");
 	const [pull, setPull] = useState("");
-	const [arrayCount, setArrayCount] = useState(NewArrayByCount(goods));
+	const [arrayCount, setArrayCount] = useState(NewArrayByCount());
 	const [cartData, setCartData] = useState("initial");
 	const [cartPrice, setCartPrice] = useState(0);
 	if (cartData == "initial" && typeof backData == "undefined") {
@@ -67,6 +49,13 @@ function Home() {
 					cart_summ += good.price * good.count;
 				});
 				setCartPrice(cart_summ);
+			});
+	}
+	if (typeof backData == "undefined" && cartData == "initial") {
+		fetch("/goodsLimit")
+			.then((response) => response.json())
+			.then((data) => {
+				setBackData(data);
 			});
 	}
 	return (
@@ -96,17 +85,16 @@ function Home() {
 							{typeof backData == "undefined"
 								? ""
 								: backData.map((good, key) => {
-										let title = strCut(good.full_name, 20);
+										let title = strCut(good.full_name, 50);
 										return (
 											<div className='home__goods__item'>
 												<Link to={"/good/" + good.ID}>
 													<div
 														className='home__goods__item__image'
 														style={{
-															backgroundImage:
-																"url(../images/good/goods_image/" +
-																good.images_name +
-																")",
+															backgroundImage: `url(../images/good/goods_image/${
+																good.images_name.split(", ")[0]
+															}.webp)`,
 														}}
 													></div>
 												</Link>
@@ -180,7 +168,12 @@ function Home() {
 						<div
 							className='home__view-all'
 							onClick={() => {
-								setGoodsAll(1);
+								fetch("/goods")
+									.then((response) => response.json())
+									.then((data) => {
+										setBackData(data);
+										setGoodsAll(1);
+									});
 							}}
 						>
 							<span>Смотреть всё</span>

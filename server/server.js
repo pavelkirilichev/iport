@@ -11,24 +11,51 @@ const updateDataID = sql.updateDataID;
 
 app.use(express.json({}));
 app.use(cookieParser());
+
+app.post("/goodsOther", (req, res) => {
+	const otherData = req.body;
+	const goodValue = otherData.goodValue;
+	const model = otherData.model;
+	const otherType = otherData.type;
+	const othervalue = otherData.value;
+
+	if (otherType == "color") {
+		connectPool
+			.query(
+				`SELECT * FROM goods WHERE model = ${model} AND color = ${othervalue} AND memory = ${goodValue}`,
+			)
+			.then((goods) => {
+				res.json(goods[0]);
+			});
+	} else {
+		connectPool
+			.query(
+				`SELECT * FROM goods WHERE model = ${model} AND memory = ${othervalue} AND color = ${goodValue}`,
+			)
+			.then((goods) => {
+				res.json(goods[0]);
+			});
+	}
+});
 app.get("/goods", (req, res) => {
-	connectPool.query(`SELECT * FROM goods ORDER BY price`).then((goods) => {
-		res.json(goods[0]);
-	});
+	connectPool
+		.query(`SELECT * FROM goods GROUP BY model ORDER BY price`)
+		.then((goods) => {
+			res.json(goods[0]);
+		});
 });
 app.get("/goodsLimit", (req, res) => {
 	connectPool
-		.query(`SELECT * FROM goods ORDER BY price LIMIT 30`)
+		.query(`SELECT * FROM goods GROUP BY model ORDER BY price LIMIT 20`)
 		.then((goods) => {
 			res.json(goods[0]);
 		});
 });
 app.post("/goodsSearch", (req, res) => {
 	search = req.body.search;
-	console.log(req.body);
 	connectPool
 		.query(
-			`SELECT * FROM goods WHERE full_name LIKE '%${search}%' ORDER BY price`,
+			`SELECT * FROM goods WHERE full_name LIKE '%${search}%' GROUP BY model ORDER BY price`,
 		)
 		.then((goods) => {
 			res.json(goods[0]);
@@ -37,7 +64,9 @@ app.post("/goodsSearch", (req, res) => {
 app.post("/goodsCategory", (req, res) => {
 	category = req.body.category;
 	connectPool
-		.query(`SELECT * FROM goods WHERE category = '${category}' ORDER BY price`)
+		.query(
+			`SELECT * FROM goods WHERE category = '${category}' GROUP BY model ORDER BY price`,
+		)
 		.then((goods) => {
 			res.json(goods[0]);
 		});
@@ -46,7 +75,7 @@ app.post("/goodsCategoryDesc", (req, res) => {
 	category = req.body.category;
 	connectPool
 		.query(
-			`SELECT * FROM goods WHERE category = '${category}' ORDER BY price DESC`,
+			`SELECT * FROM goods WHERE category = '${category}' GROUP BY model ORDER BY price DESC`,
 		)
 		.then((goods) => {
 			res.json(goods[0]);
@@ -61,16 +90,13 @@ app.post("/goodID", (req, res) => {
 app.post("/updateCart", (req, res) => {
 	req_data = req.body;
 	if (req_data.type == "delete") {
-		console.log("delete");
 		if (req.cookies.id) {
 			connectPool
 				.query(`SELECT * FROM users WHERE ID = ${req.cookies.id}`)
 				.then((user_data) => {
 					user_data = user_data[0][0];
-					console.log(user_data);
 
 					cart = user_data.cart.split(", ");
-					//console.log(cart);
 					for (i = 0; i < cart.length - 1; i++) {
 						cart_item = JSON.parse(cart[i]);
 						if (cart_item.id == req_data.id) {
@@ -78,7 +104,6 @@ app.post("/updateCart", (req, res) => {
 						}
 					}
 					cart_str = cart.join(", ");
-					console.log(cart_str);
 					updateDataID("users", "cart", cart_str, req.cookies.id);
 					res.send("ok");
 				});
@@ -110,10 +135,8 @@ app.post("/updateCart", (req, res) => {
 				.query(`SELECT * FROM users WHERE ID = ${req.cookies.id}`)
 				.then((user_data) => {
 					user_data = user_data[0][0];
-					console.log(user_data);
 
 					cart = user_data.cart.split(", ");
-					console.log(cart);
 					for (i = 0; i < cart.length - 1; i++) {
 						cart_item = JSON.parse(cart[i]);
 						if (cart_item.id == req_data.id) {
@@ -162,7 +185,6 @@ app.get("/cart", (req, res) => {
 							let key_count = cart_array_id.indexOf(good.ID);
 							goods[key]["count"] = cart_array_count[key_count];
 						});
-						console.log(goods);
 						res.json(goods);
 					});
 			} else {
@@ -182,7 +204,6 @@ app.get("/cart", (req, res) => {
 					cart_array_count.push(Number(cart_item_count));
 				}
 				cart_str_id = cart_array_id.join(", ");
-				console.log(cart_array_count);
 				connectPool
 					.query(`SELECT * FROM goods WHERE ID IN (${cart_str_id})`)
 					.then((goods) => {
@@ -191,7 +212,6 @@ app.get("/cart", (req, res) => {
 							let key_count = cart_array_id.indexOf(good.ID);
 							goods[key]["count"] = Number(cart_array_count[key_count]);
 						});
-						console.log(goods);
 						res.json(goods);
 					});
 			} else {
@@ -221,7 +241,6 @@ app.post("/registration", (req, res) => {
 		}
 	}
 
-	console.log(regForm.mail);
 	getSearchDataTwoOr(
 		"users",
 		"*",
@@ -230,7 +249,6 @@ app.post("/registration", (req, res) => {
 		"phone",
 		regForm.phone,
 	).then((result) => {
-		console.log(result);
 		if (result.length == 0) {
 			connectPool
 				.query(
@@ -240,7 +258,6 @@ app.post("/registration", (req, res) => {
 					getSearchData("users", "*", "mail", regForm.mail).then(
 						(result_two) => {
 							result_two = result_two[0];
-							console.log(result_two);
 							res.cookie("id", result_two.ID);
 							res.cookie("pass", result_two.password);
 							res.send("ok");
@@ -248,14 +265,12 @@ app.post("/registration", (req, res) => {
 					);
 				});
 		} else {
-			console.log("error");
 		}
 	});
 });
 
 app.post("/login", (req, res) => {
 	const loginForm = req.body;
-	console.log(loginForm);
 
 	getSearchDataTwoAnd(
 		"users",
@@ -275,9 +290,9 @@ app.post("/login", (req, res) => {
 					cartStr += `{"id":${id},"count":${count}}, `;
 				}
 			}
-			updateDataID("users", "cart", cartStr, result.ID).then((result_two) => {
-				console.log("ok");
-			});
+			updateDataID("users", "cart", cartStr, result.ID).then(
+				(result_two) => {},
+			);
 
 			res.cookie("id", result.ID);
 			res.cookie("pass", result.password);
@@ -291,7 +306,6 @@ app.post("/login", (req, res) => {
 app.post("/addToCart", (req, res) => {
 	const goodData = req.body;
 	const goodDataJSON = JSON.stringify(goodData) + ", ";
-	console.log(goodDataJSON);
 
 	const goodID = goodData.id;
 	const goodCount = goodData.count;
@@ -299,17 +313,14 @@ app.post("/addToCart", (req, res) => {
 	if (typeof userID == "undefined") {
 		const Cookie = req.cookies.cart;
 		const CookieCart = `${goodID}-${goodCount}_`;
-		console.log(CookieCart);
 		if (typeof Cookie == "undefined") {
 			res.cookie("cart", CookieCart);
 			res.send("1");
 		} else {
 			cartCookie = Cookie + CookieCart;
-			console.log(cartCookie);
 			let cart_array = cartCookie.split("_");
 			for (i = 0; i < cart_array.length - 1; i++) {
 				elem = cart_array[i];
-				console.log(elem);
 				[elem_id, elem_count] = elem.split("-");
 				elem_id = Number(elem_id);
 				elem_count = Number(elem_count);
@@ -346,9 +357,7 @@ app.post("/addToCart", (req, res) => {
 				}
 			}
 			cart = cart_array.join(", ");
-			updateDataID("users", "cart", cart, userID).then((result_two) => {
-				console.log("ok");
-			});
+			updateDataID("users", "cart", cart, userID).then((result_two) => {});
 			res.send(cart_array);
 		});
 	}

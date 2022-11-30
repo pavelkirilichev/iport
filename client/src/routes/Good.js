@@ -10,6 +10,7 @@ import GoodMobile from "../components/GoodMobile";
 import { useParams } from "react-router-dom";
 import AddToCart from "../components/AddToCart";
 import Cookies from "universal-cookie";
+import strCut from "../Services/StrCutLimits";
 const cookies = new Cookies();
 
 // Get ID from URL
@@ -147,7 +148,9 @@ function Good() {
 													<div
 														className='good__main__slider__img'
 														style={{
-															backgroundImage: `url(../images/good/goods_image/${backData.images_name})`,
+															backgroundImage: `url(../images/good/goods_image/${
+																backData.images_name.split(", ")[key]
+															}.webp)`,
 														}}
 													></div>
 												</div>
@@ -167,14 +170,15 @@ function Good() {
 								</div>
 								<div
 									className='good__main__image__content'
+									style={{
+										backgroundImage: `url(../images/good/goods_image/${
+											backData.images_name.split(", ")[img]
+										}.webp)`,
+									}}
 									onClick={() => {
 										setGoodSlider(" goodSlider-active");
 									}}
-								>
-									<img
-										src={"../images/good/goods_image/" + backData.images_name}
-									/>
-								</div>
+								></div>
 								<div className='good__main__down'>
 									<div className='good__main__down__left'>
 										<p className='good__main__down__left__title'>
@@ -251,23 +255,45 @@ function Good() {
 											<div className='good__main__down__size'>
 												<span>цвет</span>
 												<div className='good__main__down__size__box'>
-													<div className='good__main__down__size__item'>
-														<span>{backData.color}</span>
+													<div className='good__main__down__size__item color-iport-border-2'>
+														<span className='color-iport'>
+															{backData.color}
+														</span>
 													</div>
-													<div className='good__main__down__size__item'>
-														<span>голубой</span>
-													</div>
+													{backData.other_colors.split(", ").map((item) => {
+														return (
+															<div className='good__main__down__size__item'>
+																<span>{item}</span>
+															</div>
+														);
+													})}
 												</div>
 											</div>
 											<div className='good__main__down__size'>
 												<span>память</span>
 												<div className='good__main__down__size__box'>
-													<div className='good__main__down__size__item'>
-														<span>{backData.memory}GB</span>
+													<div className='good__main__down__size__item color-iport-border-2'>
+														<span className='color-iport'>
+															{Number(backData.memory) % 1024 == 0 &&
+															Number(backData.memory) >= 1024
+																? backData.memory / 1024 + "TB"
+																: backData.memory + "GB"}
+														</span>
 													</div>
-													<div className='good__main__down__size__item'>
-														<span>64GB</span>
-													</div>
+													{backData.other_memory.split(", ").map((item) => {
+														item = Number(item);
+														console.log(item);
+														if (item % 1024 == 0 && item >= 1024) {
+															item = `${item / 1024}TB`;
+														} else {
+															item = `${item}GB`;
+														}
+														return (
+															<div className='good__main__down__size__item'>
+																<span>{item}</span>
+															</div>
+														);
+													})}
 												</div>
 											</div>
 										</div>
@@ -276,7 +302,7 @@ function Good() {
 									<div className='good__main__down__right'>
 										<p className='good__main__down__right__title'>Описание</p>
 										<div className='good__main__down__right__content'>
-											<p>{backData.description}</p>
+											<p>{strCut(backData.description, 500)}</p>
 										</div>
 									</div>
 								</div>

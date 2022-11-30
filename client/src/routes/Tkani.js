@@ -45,7 +45,7 @@ function Tkani(props) {
 	};
 	const [checkData, setCheckData] = useState(0);
 	if (sortDirection == "up") {
-		if (typeof backData == "undefined") {
+		if (typeof backData == "undefined" && cartData == "initial") {
 			fetch("/goodsCategory", {
 				method: "POST",
 				body: JSON.stringify(categoryData),
@@ -261,17 +261,16 @@ function Tkani(props) {
 							{typeof backData == "undefined"
 								? ""
 								: backData.map((good, key) => {
-										let title = strCut(good.full_name, 20);
+										let title = strCut(good.full_name, 50);
 										return (
 											<div className='home__goods__item'>
 												<Link to={"/good/" + good.ID}>
 													<div
 														className='home__goods__item__image'
 														style={{
-															backgroundImage:
-																"url(../images/good/goods_image/" +
-																good.images_name +
-																")",
+															backgroundImage: `url(../images/good/goods_image/${
+																good.images_name.split(", ")[0]
+															}.webp)`,
 														}}
 													></div>
 												</Link>

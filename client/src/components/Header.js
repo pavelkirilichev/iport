@@ -185,9 +185,8 @@ function Header({
 											/>
 										</div>
 									)}
-
-									<div className='nav-bottom__row-right__icon cart-icon'>
-										<Link to='/cart'>
+									<Link to='/cart'>
+										<div className='nav-bottom__row-right__icon cart-icon'>
 											<img
 												src='../images/header/cart.svg'
 												className='nav-bottom__row-right__icon-img cart-icon-img'
@@ -199,8 +198,8 @@ function Header({
 											) : (
 												""
 											)}
-										</Link>
-									</div>
+										</div>
+									</Link>
 								</div>
 								<span className='nav-bottom__cart-price'>
 									{cartPrice > 0 ? cartPrice : 0}₽
