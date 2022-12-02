@@ -252,9 +252,11 @@ ul {
 }
 .cart__main__content__item__img-div {
 	cursor: pointer;
-	background-size: 100%;
-	width: 140px;
-	height: 140px;
+	background-repeat: no-repeat;
+	background-size: auto 100%;
+	background-position: center center;
+	width: 120px;
+	height: 120px;
 	border-radius: 5px;
 }
 .cart__main__content__item__img-div img {
@@ -288,7 +290,6 @@ ul {
 	color: #545454;
 }
 .cart__main__content__item__info__content span {
-	margin-left: 10px;
 	color: rgb(41, 36, 36);
 }
 .cart__main__content__item__count-price {
@@ -434,7 +435,7 @@ ul {
 	}
 
 	.cart__main__header__del-cart {
-		width: 130px;
+		width: 140px;
 	}
 	.cart__row__sidebar {
 		width: 260px;
@@ -448,7 +449,7 @@ ul {
 		margin: 20px;
 	}
 	.cart__menu {
-		width: 220px;
+		width: 240px;
 		margin: 20px auto;
 		display: flex;
 		flex-direction: column;

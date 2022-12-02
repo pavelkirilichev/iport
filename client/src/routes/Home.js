@@ -5,7 +5,6 @@ import HomeMob from "../components/HomeMob";
 import { Link } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { goods } from "../data/GoodsJSON";
-import NewArrayByCount from "../Services/Array";
 import strCut from "../Services/StrCutLimits";
 import AddToCart from "../components/AddToCart";
 import Cookies from "universal-cookie";
@@ -16,7 +15,34 @@ function Home() {
 	const [cartCount, setCartCount] = useState(0);
 	const [goodsAll, setGoodsAll] = useState(0);
 	const searchRef = useRef();
-	if (cartCount == 0) {
+
+	const [pullMenuMob, setPullMenuMob] = useState("");
+	const [pull, setPull] = useState("");
+	const [cartData, setCartData] = useState("initial");
+	const [cartPrice, setCartPrice] = useState(0);
+
+	if (cartData == "initial" && typeof backData == "undefined") {
+		console.log("test");
+		fetch("/cart")
+			.then((response) => response.json())
+			.then((data) => {
+				setCartData(data);
+
+				let cart_summ = 0;
+				data.map((good) => {
+					cart_summ += good.price * good.count;
+				});
+				setCartPrice(cart_summ);
+			});
+	}
+	if (typeof backData == "undefined" && cartData == "initial") {
+		fetch("/goodsLimit")
+			.then((response) => response.json())
+			.then((data) => {
+				setBackData(data);
+			});
+	}
+	if (cartCount == 0 && typeof backData == "undefined") {
 		if (cookies.get("id")) {
 			fetch("/getUserByID")
 				.then((response) => response.json())
@@ -31,32 +57,6 @@ function Home() {
 				}, 1);
 			}
 		}
-	}
-
-	const [pullMenuMob, setPullMenuMob] = useState("");
-	const [pull, setPull] = useState("");
-	const [arrayCount, setArrayCount] = useState(NewArrayByCount());
-	const [cartData, setCartData] = useState("initial");
-	const [cartPrice, setCartPrice] = useState(0);
-	if (cartData == "initial" && typeof backData == "undefined") {
-		console.log("test");
-		fetch("/cart")
-			.then((response) => response.json())
-			.then((data) => {
-				setCartData(data);
-				let cart_summ = 0;
-				data.map((good) => {
-					cart_summ += good.price * good.count;
-				});
-				setCartPrice(cart_summ);
-			});
-	}
-	if (typeof backData == "undefined" && cartData == "initial") {
-		fetch("/goodsLimit")
-			.then((response) => response.json())
-			.then((data) => {
-				setBackData(data);
-			});
 	}
 	return (
 		<div className='wrapper'>
@@ -115,49 +115,27 @@ function Home() {
 														</p>
 													</div>
 												</Link>
-												<div className='home__goods__item__bottom'>
-													<div className='home__goods__item__bottom__left'>
-														<img
-															src='../images/home/minus_icon.svg'
-															onClick={() => {
-																let copy = Object.assign([], arrayCount);
-																let index = key;
-																if (copy[index] > 0) {
-																	copy[index] -= 1;
-																}
-																setArrayCount(copy);
-															}}
-														/>
-														<span>{arrayCount[key]}</span>
-														<img
-															src='../images/home/plus_icon.svg'
-															onClick={() => {
-																let copy = Object.assign([], arrayCount);
-																let index = key;
-																copy[index] += 1;
-																setArrayCount(copy);
-															}}
-														/>
-													</div>
-													<img
-														src='../images/home/cart.svg'
-														onClick={() => {
-															if (arrayCount[key] > 0) {
-																if (cartCount != 0) {
-																	//setCartCount(cartCount + 1);
-																}
-																AddToCart(
-																	good.ID,
-																	arrayCount[key],
-																	setCartCount,
-																);
-																setCartPrice(
-																	cartPrice + good.price * arrayCount[key],
-																);
-																//window.location.reload();
-															}
-														}}
-													/>
+												<div
+													className='home__goods__item__bottom'
+													onClick={(event) => {
+														AddToCart(good.ID, 1, setCartCount);
+														setCartPrice(cartPrice + good.price);
+														let copy = { ID: good.ID };
+														cartData.push(copy);
+													}}
+												>
+													{cartData != "initial" &&
+													cartData.length > 0 &&
+													cartData.filter((item) => item.ID == good.ID).length >
+														0 ? (
+														<div className='home__goods__item__bottom__left'>
+															<span>Добавлено</span>
+														</div>
+													) : (
+														<div className='home__goods__item__bottom__left'>
+															<span>В корзину</span>
+														</div>
+													)}
 												</div>
 											</div>
 										);

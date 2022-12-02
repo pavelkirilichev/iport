@@ -103,6 +103,9 @@ function Header({
 									<img
 										src='../images/header/logo.svg'
 										className='nav-bottom__logo'
+										onClick={() => {
+											setPull("");
+										}}
 									/>
 								</Link>
 								<div

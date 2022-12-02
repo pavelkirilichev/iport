@@ -46,15 +46,13 @@ function Catalog({
 					<div className={"pull-catalog__list" + catalogMenuImgOne}>
 						{catalog.map((catalogItem) => {
 							return (
-								<Link to={"/tkani/" + catalogItem.src}>
+								<Link to={"/catalog/" + catalogItem.src}>
 									<div
 										className='pull-catalog__item'
 										onClick={() => {
-											if (route == "tkani") {
-												setBackData();
-												setCategory(catalogItem.title);
-												setPull("");
-											}
+											setBackData();
+											setCategory(catalogItem.title);
+											setPull("");
 										}}
 									>
 										<span> {catalogItem.title}</span>

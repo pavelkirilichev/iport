@@ -13,7 +13,7 @@ root.render(
 		<Routes>
 			<Route path='/' element={<Home />} />
 			<Route path='/cart' element={<Cart />} />
-			<Route path='/tkani/:category' element={<Tkani />} />
+			<Route path='/catalog/:category' element={<Tkani />} />
 			<Route path='/good/:id' element={<Good />} />
 			<Route path='/lk' element={<LK />} />
 			<Route path='/mo' element={<MakeOrder />} />

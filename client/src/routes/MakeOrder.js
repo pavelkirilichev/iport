@@ -1,10 +1,13 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import FooterMob from "../components/FooterMob";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
 import Cookies from "universal-cookie";
 
 function MakeOrder() {
+	const phone = useRef();
+	const mail = useRef();
+	const adress = useRef();
 	const cookies = new Cookies();
 	const [buyer, setBuyer] = useState("company");
 	const [delivery, setDelivery] = useState("local");
@@ -79,6 +82,7 @@ function MakeOrder() {
 								className='mo__content__left__require__input'
 								style={{ width: 225 }}
 								value={typeof backData == "undefined" ? "" : backData.phone}
+								ref={phone}
 							/>
 						</div>
 					</div>
@@ -91,6 +95,7 @@ function MakeOrder() {
 								className='mo__content__left__require__input'
 								style={{ width: 225 }}
 								value={typeof backData == "undefined" ? "" : backData.mail}
+								ref={mail}
 							/>
 						</div>
 					</div>
@@ -122,6 +127,7 @@ function MakeOrder() {
 							<input
 								className='mo__content__left__require__input'
 								style={{ width: 225 }}
+								ref={adress}
 							/>
 						</div>
 					</div>
@@ -190,7 +196,40 @@ function MakeOrder() {
 									</span>
 									<BuyerDate />
 									<Delivery />
-									<div className='mo__content__payment__confirm'>
+									<div
+										className='mo__content__payment__confirm'
+										onClick={() => {
+											if (
+												(cookies.cart && cookies.cart.length > 0) ||
+												cartCount > 0
+											) {
+												if (
+													phone.current.value.length > 0 &&
+													adress.current.value.length > 0
+												) {
+													const orderData = {
+														address: adress.current.value,
+														mail: mail.current.value,
+														phone: phone.current.value,
+														summ: cartPrice,
+													};
+													fetch("/orderAdd", {
+														method: "POST",
+														body: JSON.stringify(orderData),
+														headers: {
+															"Content-Type": "application/json",
+														},
+													}).then((res) => {
+														alert("Заказ оформлен успешно!");
+													});
+												} else {
+													alert("Не заполнены обязательные поля!");
+												}
+											} else {
+												alert("Корзина пуста!");
+											}
+										}}
+									>
 										<span className='mo__header__left__information__person'>
 											Подтвердить заказ
 										</span>

@@ -8,6 +8,30 @@ body {
 	background: #f2f4f5;
 	font-family: "Montserrat", sans-serif;
 }
+body::-webkit-scrollbar {
+	width: 12px; /* ширина scrollbar */
+}
+body::-webkit-scrollbar-track {
+	background: #f2f4f5; /* цвет дорожки */
+}
+body::-webkit-scrollbar-thumb {
+	background-color: rgb(41, 36, 36); /* цвет плашки */
+	border-radius: 20px; /* закругления плашки */
+	border: 3px solid #f2f4f5; /* padding вокруг плашки */
+}
+
+.good__main__down__right::-webkit-scrollbar {
+	width: 12px; /* ширина scrollbar */
+}
+.good__main__down__right::-webkit-scrollbar-track {
+	background: #f2f4f5; /* цвет дорожки */
+}
+.good__main__down__right::-webkit-scrollbar-thumb {
+	background-color: rgb(41, 36, 36); /* цвет плашки */
+	border-radius: 20px; /* закругления плашки */
+	border: 3px solid #f2f4f5; /* padding вокруг плашки */
+}
+
 a {
 	text-decoration: none;
 }
@@ -95,9 +119,10 @@ a {
 	background-repeat: no-repeat;
 	background-size: auto 100%;
 	background-position: center center;
+	margin-top: 15px;
 }
 .home__goods__item__info {
-	margin-top: 22px;
+	margin-top: 9px;
 }
 .home__goods__item__price {
 	display: flex;
@@ -122,21 +147,23 @@ a {
 	color: #545454;
 }
 .home__goods__item__bottom {
-	margin-top: 30px;
+	cursor: pointer;
+	padding: 4px 10px;
+	margin-top: -9px;
 	display: flex;
-	justify-content: space-between;
-	width: 100%;
+	justify-content: center;
 	height: 40px;
+	border: 1px solid #545454;
+	border-radius: 25px;
 }
+
 .home__goods__item__bottom__left {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 .home__goods__item__bottom__left span {
-	text-align: center;
-	width: 55px;
-	font-weight: 600;
+	font-weight: 500;
 	font-size: 20px;
 	color: rgb(41, 36, 36);
 }

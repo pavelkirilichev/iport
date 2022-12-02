@@ -17,19 +17,6 @@ function Cart() {
 
 	const [backData, setBackData] = useState();
 
-	if (
-		cookies.get("id") > 0 &&
-		cookies.get("pass").length > 0 &&
-		typeof backData == "undefined"
-	) {
-		fetch("/getUserByID")
-			.then((response) => response.json())
-			.then((data) => {
-				console.log("test");
-				setBackData(data);
-			});
-	}
-
 	const [cartData, setCartData] = useState("initial");
 	const [cartPrice, setCartPrice] = useState(0);
 	if (cartData == "initial" && typeof backData == "undefined") {
@@ -47,18 +34,21 @@ function Cart() {
 			});
 	}
 	const [cartCount, setCartCount] = useState(0);
-	if (cookies.get("id")) {
-		fetch("/getUserByID")
-			.then((response) => response.json())
-			.then((data) => {
-				setCartCount(data.cart.split(", ").length - 1);
-			});
-	} else {
-		if (cookies.get("cart")) {
-			setTimeout(() => {
-				if (cartCount == 0)
-					setCartCount(cookies.get("cart").split("_").length - 1);
-			}, 1);
+	if (cartCount == 0 && typeof backData == "undefined") {
+		if (cookies.get("id")) {
+			fetch("/getUserByID")
+				.then((response) => response.json())
+				.then((data) => {
+					setCartCount(data.cart.split(", ").length - 1);
+					setBackData(data);
+				});
+		} else {
+			if (cookies.get("cart")) {
+				setTimeout(() => {
+					if (cartCount == 0)
+						setCartCount(cookies.get("cart").split("_").length - 1);
+				}, 1);
+			}
 		}
 	}
 
@@ -94,10 +84,10 @@ function Cart() {
 
 										<div className='cart__info__title'>
 											<span className='cart__info__main-title'>
-												{backData.mail}
+												{backData.initials}
 											</span>
 											<span className='cart__info__subtitle'>
-												{backData.phone != backData.mail ? backData.phone : ""}
+												{backData.mail}
 											</span>
 										</div>
 									</div>
@@ -148,40 +138,47 @@ function Cart() {
 									<div className='cart__main__inner'>
 										<div className='cart__main__header'>
 											<span className='cart__main__header__title'>Корзина</span>
-											<div className='cart__main__header__btn-div'>
-												<Link to={"/mo"}>
-													<div className='cart__main__header__order'>
-														<span className='cart__main__header__order__title'>
-															Оформить заказ
-														</span>
-														<span className='cart__main__header__order__price-cart'>
-															{typeof cartPrice == "undefined" ? "" : cartPrice}
-															₽
+											{cartCount > 0 ? (
+												<div className='cart__main__header__btn-div'>
+													<Link to={"/mo"}>
+														<div className='cart__main__header__order'>
+															<span className='cart__main__header__order__title'>
+																Оформить заказ
+															</span>
+															<span className='cart__main__header__order__price-cart'>
+																{typeof cartPrice == "undefined"
+																	? ""
+																	: cartPrice}
+																₽
+															</span>
+															<img
+																className='cart__main__header__order__img'
+																src='../images/cart/cart_icon-light.png'
+															/>
+														</div>
+													</Link>
+
+													<div
+														className='cart__main__header__del-cart'
+														onClick={() => {
+															setCartPrice(0);
+															setCartCount();
+															setCartData("delete");
+															UpdateCart(0, 0, 2);
+														}}
+													>
+														<span className='cart__main__header__del-cart__title'>
+															Очистить корзину
 														</span>
 														<img
-															className='cart__main__header__order__img'
-															src='../images/cart/cart_icon-light.png'
+															className='cart__main__header__del-cart__img'
+															src='../images/cart/close_icon.png'
 														/>
 													</div>
-												</Link>
-												<div
-													className='cart__main__header__del-cart'
-													onClick={() => {
-														setCartPrice(0);
-														setCartCount();
-														setCartData("delete");
-														UpdateCart(0, 0, 2);
-													}}
-												>
-													<span className='cart__main__header__del-cart__title'>
-														Очистить корзину
-													</span>
-													<img
-														className='cart__main__header__del-cart__img'
-														src='../images/cart/close_icon.png'
-													/>
 												</div>
-											</div>
+											) : (
+												""
+											)}
 											<div className='cart__main__header__total'>
 												<span className='cart__main__header__total__title'>
 													Итого:
@@ -206,10 +203,9 @@ function Cart() {
 																		<div
 																			className='cart__main__content__item__img-div'
 																			style={{
-																				backgroundImage:
-																					"url(../images/good/goods_image/" +
-																					good.images_name +
-																					")",
+																				backgroundImage: `url(../images/good/goods_image/${
+																					good.images_name.split(", ")[0]
+																				}.webp)`,
 																			}}
 																		></div>
 																	</Link>

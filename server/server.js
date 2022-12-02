@@ -12,6 +12,54 @@ const updateDataID = sql.updateDataID;
 app.use(express.json({}));
 app.use(cookieParser());
 
+app.post("/orderAdd", (req, res) => {
+	var date = new Date().toLocaleString();
+	const orderData = req.body;
+	const address = orderData.address;
+	const phone = orderData.phone;
+	const mail = orderData.mail;
+	const summ = orderData.summ;
+	if (req.cookies.id) {
+		let user_id = req.cookies.id;
+		connectPool
+			.query(`SELECT * FROM users WHERE ID = ${user_id}`)
+			.then((user_data) => {
+				let cart = user_data[0][0].cart;
+				connectPool
+					.query(
+						`INSERT INTO orders (goods, user_id, date, adress, status, phone, mail, summ) VALUES ('${cart}', ${user_id}, '${date}', '${address}', 'Обработка', '${phone}', '${mail}', ${summ})`,
+					)
+					.then(() => {
+						res.json("ok");
+					});
+			});
+	} else {
+		let cart = req.cookies.cart;
+		cart = cart.split("_");
+		for (i = 0; i < cart.length - 1; i++) {
+			let [id, count] = cart[i].split("-");
+			id = Number(id);
+			count = Number(count);
+			cart[i] = `{"id":${id},"count":${count}}`;
+		}
+		goods = cart.join(", ");
+		connectPool
+			.query(
+				`INSERT INTO orders (goods, date, adress, status, phone, mail) VALUES ('${goods}', '${date}', '${address}', 'Обработка', '${phone}', '${mail}', ${summ})`,
+			)
+			.then(() => {
+				res.json("ok");
+			});
+	}
+});
+app.get("/ordersAll", (req, res) => {
+	connectPool
+		.query(`SELECT * FROM orders WHERE user_id = '${req.cookies.id}'`)
+		.then((orders) => {
+			res.json(orders[[0]]);
+		});
+});
+
 app.post("/goodsOther", (req, res) => {
 	const otherData = req.body;
 	const goodValue = otherData.goodValue;
@@ -22,18 +70,18 @@ app.post("/goodsOther", (req, res) => {
 	if (otherType == "color") {
 		connectPool
 			.query(
-				`SELECT * FROM goods WHERE model = ${model} AND color = ${othervalue} AND memory = ${goodValue}`,
+				`SELECT * FROM goods WHERE model = '${model}' AND color = '${othervalue}' AND memory = ${goodValue}`,
 			)
 			.then((goods) => {
-				res.json(goods[0]);
+				res.json(goods[0][0]);
 			});
 	} else {
 		connectPool
 			.query(
-				`SELECT * FROM goods WHERE model = ${model} AND memory = ${othervalue} AND color = ${goodValue}`,
+				`SELECT * FROM goods WHERE model = '${model}' AND memory = ${othervalue} AND color = '${goodValue}'`,
 			)
 			.then((goods) => {
-				res.json(goods[0]);
+				res.json(goods[0][0]);
 			});
 	}
 });
@@ -252,7 +300,7 @@ app.post("/registration", (req, res) => {
 		if (result.length == 0) {
 			connectPool
 				.query(
-					`INSERT INTO users (mail, phone, password, cart) VALUES ('${regForm.mail}', '${regForm.phone}', '${regForm.pass}', '${cartStr}')`,
+					`INSERT INTO users (mail, phone, password, cart, initials) VALUES ('${regForm.mail}', '${regForm.phone}', '${regForm.pass}', '${cartStr}', '${regForm.name}')`,
 				)
 				.then(() => {
 					getSearchData("users", "*", "mail", regForm.mail).then(

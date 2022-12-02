@@ -1,6 +1,6 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAsyncError, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { goods } from "../data/GoodsJSON";
@@ -24,26 +24,23 @@ function Tkani(props) {
 	const [pull, setPull] = useState("");
 	const [arrayCount, setArrayCount] = useState(NewArrayByCount(goods));
 
-	const [cartCount, setCartCount] = useState(0);
-	if (cookies.get("id")) {
-		fetch("/getUserByID")
-			.then((response) => response.json())
-			.then((data) => {
-				setCartCount(data.cart.split(", ").length - 1);
-			});
-	} else {
-		if (cookies.get("cart")) {
-			setTimeout(() => {
-				if (cartCount == 0)
-					setCartCount(cookies.get("cart").split("_").length - 1);
-			}, 1);
-		}
-	}
-
 	const categoryData = {
 		category: params.category,
 	};
 	const [checkData, setCheckData] = useState(0);
+	useEffect(() => {
+		fetch("/goodsCategory", {
+			method: "POST",
+			body: JSON.stringify(categoryData),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				setBackData(data);
+			});
+	}, [category]);
 	if (sortDirection == "up") {
 		if (typeof backData == "undefined" && cartData == "initial") {
 			fetch("/goodsCategory", {
@@ -75,7 +72,11 @@ function Tkani(props) {
 				});
 		}
 	}
-	if (cartData == "initial" && typeof backData == "undefined") {
+	if (
+		cartData == "initial" &&
+		typeof backData == "undefined" &&
+		cartPrice == 0
+	) {
 		console.log("test");
 		fetch("/cart")
 			.then((response) => response.json())
@@ -87,6 +88,29 @@ function Tkani(props) {
 				});
 				setCartPrice(cart_summ);
 			});
+	}
+	const [cartCount, setCartCount] = useState(0);
+	if (
+		cartCount == 0 &&
+		typeof backData == "undefined" &&
+		cartData == "initial"
+	) {
+		if (cookies.get("id")) {
+			fetch("/getUserByID")
+				.then((response) => response.json())
+				.then((data) => {
+					setCartCount(data.cart.split(", ").length - 1);
+					//setBackData(data);
+				});
+		} else {
+			if (cookies.get("cart")) {
+				setTimeout(() => {
+					if (cartCount == 0)
+						setCartCount(cookies.get("cart").split("_").length - 1);
+					//setBackData(data);
+				}, 1);
+			}
+		}
 	}
 
 	const searchRef = useRef();
@@ -291,49 +315,27 @@ function Tkani(props) {
 														</p>
 													</div>
 												</Link>
-												<div className='home__goods__item__bottom'>
-													<div className='home__goods__item__bottom__left'>
-														<img
-															src='../images/home/minus_icon.svg'
-															onClick={() => {
-																let copy = Object.assign([], arrayCount);
-																let index = key;
-																if (copy[index] > 0) {
-																	copy[index] -= 1;
-																}
-																setArrayCount(copy);
-															}}
-														/>
-														<span>{arrayCount[key]}</span>
-														<img
-															src='../images/home/plus_icon.svg'
-															onClick={() => {
-																let copy = Object.assign([], arrayCount);
-																let index = key;
-																copy[index] += 1;
-																setArrayCount(copy);
-															}}
-														/>
-													</div>
-													<img
-														src='../images/home/cart.svg'
-														onClick={() => {
-															if (arrayCount[key] > 0) {
-																if (cartCount != 0) {
-																	//setCartCount(cartCount + 1);
-																}
-																AddToCart(
-																	good.ID,
-																	arrayCount[key],
-																	setCartCount,
-																);
-																setCartPrice(
-																	cartPrice + good.price * arrayCount[key],
-																);
-																//window.location.reload();
-															}
-														}}
-													/>
+												<div
+													className='home__goods__item__bottom'
+													onClick={(event) => {
+														AddToCart(good.ID, 1, setCartCount);
+														setCartPrice(cartPrice + good.price);
+														let copy = { ID: good.ID };
+														cartData.push(copy);
+													}}
+												>
+													{cartData != "initial" &&
+													cartData.length > 0 &&
+													cartData.filter((item) => item.ID == good.ID).length >
+														0 ? (
+														<div className='home__goods__item__bottom__left'>
+															<span>Добавлено</span>
+														</div>
+													) : (
+														<div className='home__goods__item__bottom__left'>
+															<span>В корзину</span>
+														</div>
+													)}
 												</div>
 											</div>
 										);
