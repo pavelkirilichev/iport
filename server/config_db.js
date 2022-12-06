@@ -1,4 +1,4 @@
-const config = process.env.NODE_ENV === 'development' ? {
+const config = process.env.NODE_ENV !== 'production' ? {
   host: "vip87.hosting.reg.ru",
   user: "u1688586_test",
   password: "Pk8848205123",
