@@ -173,7 +173,12 @@ function MakeOrder() {
                 </span>
                 <span>{cartPrice}₽</span>
               </div>
-              <div className="mo__header__essential__cancel">
+              <div
+                className="mo__header__essential__cancel"
+                onClick={() => {
+                  window.location.replace("/cart");
+                }}
+              >
                 <span>Отмена</span>
                 <img src="./images/make_order/Close.svg" />
               </div>

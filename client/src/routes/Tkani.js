@@ -214,19 +214,17 @@ function Tkani(props) {
                           ? ""
                           : filterColorData.map((item) => {
                               return (
-                                <label
-                                  className="tkani__filter__item__inner__label"
-                                  onClick={() => {
-                                    console.log("click");
-                                    let copy = Object.assign([], filterColor);
-                                    if (copy.indexOf(item.color) == -1) {
-                                      copy.push(item.color);
-                                      setFilterColor(copy);
-                                    }
-                                  }}
-                                >
+                                <label className="tkani__filter__item__inner__label">
                                   <input
                                     type="checkbox"
+                                    onChange={() => {
+                                      console.log("change");
+                                      let copy = Object.assign([], filterColor);
+                                      if (copy.indexOf(item.color) == -1) {
+                                        copy.push(item.color);
+                                        setFilterColor(copy);
+                                      }
+                                    }}
                                     className="tkani__filter__item__inner__check__input"
                                   />
                                   <div className="tkani__filter__item__inner__check__box"></div>
