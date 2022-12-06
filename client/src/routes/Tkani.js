@@ -215,17 +215,17 @@ function Tkani(props) {
                               return (
                                 <label
                                   className="tkani__filter__item__inner__label"
-                                  onClick={() => {
-                                    console.log("ok");
-                                    let copy = Object.assign([], filterColor);
-                                    if (copy.indexOf(item.color) == -1) {
-                                      copy.push(item.color);
-                                      setFilterColor(copy);
-                                    }
-                                  }}
                                 >
                                   <input
                                     type="checkbox"
+                                    onChange={() => {
+                                      console.log("ok");
+                                      let copy = Object.assign([], filterColor);
+                                      if (copy.indexOf(item.color) == -1) {
+                                        copy.push(item.color);
+                                        setFilterColor(copy);
+                                      }
+                                    }}
                                     className="tkani__filter__item__inner__check__input"
                                   />
                                   <div className="tkani__filter__item__inner__check__box"></div>
