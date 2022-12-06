@@ -1,7 +1,7 @@
 function RecMail() {
   return (
     <div className="rec">
-      <img src="../images/recovery/shield.svg" className="rec__logo" />
+      <img src="/images/recovery/shield.svg" className="rec__logo" />
       <span className="rec__title">Восстановление</span>
       <div className="rec__input__div">
         <span className="rec__input__title">

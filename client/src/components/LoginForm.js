@@ -38,7 +38,7 @@ function LoginForm({ modal, setModal }) {
   return (
     <div className="modal_form">
       <div className="reg login">
-        <img src="../images/auth/logo.svg" className="reg__logo" />
+        <img src="/images/auth/logo.svg" className="reg__logo" />
         <span className="reg__title">Войти</span>
         <form className="reg__form">
           <div className="reg__input__list">

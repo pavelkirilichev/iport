@@ -13,7 +13,7 @@ function HomeMob() {
               2430 ₽
             </span>
           </div>
-          <img src="../images/good/cart_mob.svg" />
+          <img src="/images/good/cart_mob.svg" />
         </div>
       </div>
       <div className="home__goods__item home-mob__goods__item">
@@ -37,7 +37,7 @@ function HomeMob() {
                 шт
               </span>
             </div>
-            <img src="../images/good/cart_white_icon.svg" />
+            <img src="/images/good/cart_white_icon.svg" />
           </div>
         </div>
       </div>
@@ -53,7 +53,7 @@ function HomeMob() {
               2430 ₽
             </span>
           </div>
-          <img src="../images/good/cart_mob.svg" />
+          <img src="/images/good/cart_mob.svg" />
         </div>
       </div>
       <div className="home__goods__item home-mob__goods__item">
@@ -68,7 +68,7 @@ function HomeMob() {
               2430 ₽
             </span>
           </div>
-          <img src="../images/good/cart_mob.svg" />
+          <img src="/images/good/cart_mob.svg" />
         </div>
       </div>
     </div>

@@ -66,7 +66,7 @@ function Header({
                 >
                   <span className="nav-top__city-text">{cityState}</span>
                   <img
-                    src="../images/header/geo_icon.svg"
+                    src="/images/header/geo_icon.svg"
                     className="nav-top__city-img"
                   />
                 </div>
@@ -74,21 +74,21 @@ function Header({
               <div className="nav-top__right">
                 <div className="nav-top__right__info">
                   <img
-                    src="../images/header/info_icon.svg"
+                    src="/images/header/info_icon.svg"
                     className="nav-top__mail-img"
                   />
                   <span className="nav-top__info-text">О нас</span>
                 </div>
                 <div className="nav-top__right__email">
                   <img
-                    src="../images/header/mail_icon.svg"
+                    src="/images/header/mail_icon.svg"
                     className="nav-top__mail-img"
                   />
                   <span className="nav-top__mail-text">svit22@mail.ru</span>
                 </div>
                 <div className="nav-top__right__phone">
                   <img
-                    src="../images/header/phone_icon.svg"
+                    src="/images/header/phone_icon.svg"
                     className="nav-top__phone-img"
                   />
                   <span className="nav-top__phone-text">+7-3852-570-722</span>
@@ -103,7 +103,7 @@ function Header({
               <div className="nav-bottom__row__left">
                 <Link to="/">
                   <img
-                    src="../images/header/logo.svg"
+                    src="/images/header/logo.svg"
                     className="nav-bottom__logo"
                     onClick={() => {
                       setPull("");
@@ -122,7 +122,7 @@ function Header({
                 >
                   <span>Каталог</span>
                   <img
-                    src="../images/header/burger.svg"
+                    src="/images/header/burger.svg"
                     className="nav-bottom__burger-img"
                   />
                 </div>
@@ -151,7 +151,7 @@ function Header({
                     }}
                   />
                   <img
-                    src="../images/header/search.png"
+                    src="/images/header/search.png"
                     className="nav-bottom__search-img"
                   />
                 </div>
@@ -170,7 +170,7 @@ function Header({
                       >
                         <span>Кабинет</span>
                         <img
-                          src="../images/header/user.svg"
+                          src="/images/header/user.svg"
                           className="nav-bottom__burger-img"
                         />
                       </div>
@@ -185,7 +185,7 @@ function Header({
                     >
                       <span>Войти</span>
                       <img
-                        src="../images/header/user.svg"
+                        src="/images/header/user.svg"
                         className="nav-bottom__burger-img"
                       />
                     </div>
@@ -193,7 +193,7 @@ function Header({
                   <Link to="/cart">
                     <div className="nav-bottom__row-right__icon cart-icon">
                       <img
-                        src="../images/header/cart.svg"
+                        src="/images/header/cart.svg"
                         className="nav-bottom__row-right__icon-img cart-icon-img"
                       />
                       {cartCount > 0 ? (
@@ -233,15 +233,15 @@ function Header({
       />
       <div className="header-mobile">
         <nav className="nav-mobile">
-          <img src="../images/header/logo_mobile.svg" />
+          <img src="/images/header/logo_mobile.svg" />
           <div className="nav-mobile__search">
             <img
-              src="../images/header/search.png"
+              src="/images/header/search.png"
               className="nav-mobile__search-img"
             />
           </div>
           <img
-            src="../images/header/burger_mobile.svg"
+            src="/images/header/burger_mobile.svg"
             className="nav-mobile__burger"
             onClick={() => {
               setPullMenuMob(
@@ -281,7 +281,7 @@ function Header({
               >
                 <span>Техника</span>
                 <img
-                  src="../images/header/mobile_arrow.png"
+                  src="/images/header/mobile_arrow.png"
                   className="pull-menu-mobile__item-img"
                 />
               </div>

@@ -25,14 +25,14 @@ function LK_1({ setChapter }) {
               <div className="lk-clients__sidebar__menu__item__count">
                 <span>8</span>
               </div>
-              <img src="../images/lk/order_icon.svg" />
+              <img src="/images/lk/order_icon.svg" />
               <span className="lk-clients__sidebar__menu__item__title">
                 Заказы
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
               <img
-                src="../images/lk/delivery_icon.svg"
+                src="/images/lk/delivery_icon.svg"
                 style={{ marginTop: 3.5, marginRight: 1 }}
               />
               <span className="lk-clients__sidebar__menu__item__title">
@@ -40,13 +40,13 @@ function LK_1({ setChapter }) {
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
-              <img src="../images/lk/report_icon.svg" />
+              <img src="/images/lk/report_icon.svg" />
               <span className="lk-clients__sidebar__menu__item__title">
                 Отчеты
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
-              <img src="../images/lk/box_icon.svg" />
+              <img src="/images/lk/box_icon.svg" />
               <span className="lk-clients__sidebar__menu__item__title">
                 Отгрузка
               </span>
@@ -58,7 +58,7 @@ function LK_1({ setChapter }) {
               }}
             >
               <img
-                src="../images/lk/users_w_icon.svg"
+                src="/images/lk/users_w_icon.svg"
                 style={{ marginTop: 3 }}
               />
               <span className="lk-clients__sidebar__menu__item__title">
@@ -66,13 +66,13 @@ function LK_1({ setChapter }) {
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
-              <img src="../images/lk/goods_icon.svg" />
+              <img src="/images/lk/goods_icon.svg" />
               <span className="lk-clients__sidebar__menu__item__title">
                 Товары
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
-              <img src="../images/lk/mail_icon.svg" style={{ marginTop: 2 }} />
+              <img src="/images/lk/mail_icon.svg" style={{ marginTop: 2 }} />
               <span className="lk-clients__sidebar__menu__item__title">
                 Отзывы
               </span>
@@ -91,7 +91,7 @@ function LK_1({ setChapter }) {
               className="lk-clients__content__header__input"
               placeholder="номер заказа / наименование фирмы / "
             />
-            <img src="../images/lk/search_icon.svg" />
+            <img src="/images/lk/search_icon.svg" />
           </div>
 
           <button className="lk-clients__content__header__btn">
@@ -109,7 +109,7 @@ function LK_1({ setChapter }) {
             }}
           >
             <div className="lk-clients__content__main__item__top">
-              <img src="../images/lk/user_icon.png" />
+              <img src="/images/lk/user_icon.png" />
               <div className="lk-clients__content__main__item__top__info">
                 <span className="lk-clients__content__main__item__top__title">
                   Наименование фирмы
@@ -131,7 +131,7 @@ function LK_1({ setChapter }) {
           </div>
           <div className="lk-clients__content__main__item">
             <div className="lk-clients__content__main__item__top">
-              <img src="../images/lk/user_icon.png" />
+              <img src="/images/lk/user_icon.png" />
               <div className="lk-clients__content__main__item__top__info">
                 <span className="lk-clients__content__main__item__top__title">
                   Наименование фирмы
@@ -152,7 +152,7 @@ function LK_1({ setChapter }) {
           </div>
           <div className="lk-clients__content__main__item">
             <div className="lk-clients__content__main__item__top">
-              <img src="../images/lk/user_icon.png" />
+              <img src="/images/lk/user_icon.png" />
               <div className="lk-clients__content__main__item__top__info">
                 <span className="lk-clients__content__main__item__top__title">
                   Наименование фирмы
@@ -173,7 +173,7 @@ function LK_1({ setChapter }) {
           </div>
           <div className="lk-clients__content__main__item">
             <div className="lk-clients__content__main__item__top">
-              <img src="../images/lk/user_icon.png" />
+              <img src="/images/lk/user_icon.png" />
               <div className="lk-clients__content__main__item__top__info">
                 <span className="lk-clients__content__main__item__top__title">
                   Наименование фирмы

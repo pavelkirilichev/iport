@@ -53,7 +53,7 @@ function SidabarFilter() {
               </div>
             </div>
             <img
-              src="../images/tkani/down_icon.png"
+              src="/images/tkani/down_icon.png"
               className="tkani__filter__item__down"
             />
           </div>
@@ -108,7 +108,7 @@ function SidabarFilter() {
               </div>
             </div>
             <img
-              src="../images/tkani/down_icon.png"
+              src="/images/tkani/down_icon.png"
               className="tkani__filter__item__down"
             />
           </div>

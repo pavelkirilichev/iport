@@ -1,7 +1,7 @@
 function RecChoise() {
   return (
     <div className="rec">
-      <img src="../images/recovery/shield.svg" className="rec__logo" />
+      <img src="/images/recovery/shield.svg" className="rec__logo" />
       <span className="rec__title">Восстановление</span>
       <span className="rec__subtitle">Что вы хотите восстановить?</span>
       <div className="reg__form__buttons rec__row__btn">

@@ -25,14 +25,14 @@ function LK_4({ setChapter }) {
               <div className="lk-clients__sidebar__menu__item__count">
                 <span>8</span>
               </div>
-              <img src="../images/lk/order_icon.svg" />
+              <img src="/images/lk/order_icon.svg" />
               <span className="lk-clients__sidebar__menu__item__title">
                 Заказы
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
               <img
-                src="../images/lk/delivery_icon.svg"
+                src="/images/lk/delivery_icon.svg"
                 style={{ marginTop: 3.5, marginRight: 1 }}
               />
               <span className="lk-clients__sidebar__menu__item__title">
@@ -40,13 +40,13 @@ function LK_4({ setChapter }) {
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
-              <img src="../images/lk/report_icon.svg" />
+              <img src="/images/lk/report_icon.svg" />
               <span className="lk-clients__sidebar__menu__item__title">
                 Отчеты
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
-              <img src="../images/lk/box_icon.svg" />
+              <img src="/images/lk/box_icon.svg" />
               <span className="lk-clients__sidebar__menu__item__title">
                 Отгрузка
               </span>
@@ -58,7 +58,7 @@ function LK_4({ setChapter }) {
               }}
             >
               <img
-                src="../images/lk/users_w_icon.svg"
+                src="/images/lk/users_w_icon.svg"
                 style={{ marginTop: 3 }}
               />
               <span className="lk-clients__sidebar__menu__item__title">
@@ -66,13 +66,13 @@ function LK_4({ setChapter }) {
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
-              <img src="../images/lk/goods_icon.svg" />
+              <img src="/images/lk/goods_icon.svg" />
               <span className="lk-clients__sidebar__menu__item__title">
                 Товары
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
-              <img src="../images/lk/mail_icon.svg" style={{ marginTop: 2 }} />
+              <img src="/images/lk/mail_icon.svg" style={{ marginTop: 2 }} />
               <span className="lk-clients__sidebar__menu__item__title">
                 Отзывы
               </span>
@@ -97,7 +97,7 @@ function LK_4({ setChapter }) {
         <div className="lk-clients__content__main">
           <div className="lk-comp__main">
             <div className="lk-comp__main__left">
-              <img src="../images/lk/company_logo.png" />
+              <img src="/images/lk/company_logo.png" />
               <div className="lk-comp__main__left__info">
                 <span className="lk-comp__main__left__name">
                   Наименование фирмы{" "}
@@ -134,7 +134,7 @@ function LK_4({ setChapter }) {
                 <span className="lk-comp__main__right__bottom__title">
                   Покупатель
                 </span>
-                <img src="../images/lk/company_arrow_down.svg" />
+                <img src="/images/lk/company_arrow_down.svg" />
               </div>
             </div>
           </div>
@@ -159,7 +159,7 @@ function LK_4({ setChapter }) {
                 </p>
               </div>
               <img
-                src="../images/lk/company_pen.svg"
+                src="/images/lk/company_pen.svg"
                 className="lk-comp__info__item__pen"
               />
             </div>
@@ -183,7 +183,7 @@ function LK_4({ setChapter }) {
                 </p>
               </div>
               <img
-                src="../images/lk/company_pen.svg"
+                src="/images/lk/company_pen.svg"
                 className="lk-comp__info__item__pen"
               />
             </div>
@@ -207,7 +207,7 @@ function LK_4({ setChapter }) {
                 </p>
               </div>
               <img
-                src="../images/lk/company_pen.svg"
+                src="/images/lk/company_pen.svg"
                 className="lk-comp__info__item__pen"
               />
             </div>

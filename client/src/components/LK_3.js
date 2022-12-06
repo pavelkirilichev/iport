@@ -25,14 +25,14 @@ function LK_3({ setChapter }) {
               <div className="lk-clients__sidebar__menu__item__count">
                 <span>8</span>
               </div>
-              <img src="../images/lk/order_w_icon.svg" />
+              <img src="/images/lk/order_w_icon.svg" />
               <span className="lk-clients__sidebar__menu__item__title">
                 Заказы
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
               <img
-                src="../images/lk/delivery_icon.svg"
+                src="/images/lk/delivery_icon.svg"
                 style={{ marginTop: 3.5, marginRight: 1 }}
               />
               <span className="lk-clients__sidebar__menu__item__title">
@@ -40,13 +40,13 @@ function LK_3({ setChapter }) {
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
-              <img src="../images/lk/report_icon.svg" />
+              <img src="/images/lk/report_icon.svg" />
               <span className="lk-clients__sidebar__menu__item__title">
                 Отчеты
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
-              <img src="../images/lk/box_icon.svg" />
+              <img src="/images/lk/box_icon.svg" />
               <span className="lk-clients__sidebar__menu__item__title">
                 Отгрузка
               </span>
@@ -57,19 +57,19 @@ function LK_3({ setChapter }) {
                 setChapter(1);
               }}
             >
-              <img src="../images/lk/users_icon.svg" style={{ marginTop: 3 }} />
+              <img src="/images/lk/users_icon.svg" style={{ marginTop: 3 }} />
               <span className="lk-clients__sidebar__menu__item__title">
                 Клиенты
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
-              <img src="../images/lk/goods_icon.svg" />
+              <img src="/images/lk/goods_icon.svg" />
               <span className="lk-clients__sidebar__menu__item__title">
                 Товары
               </span>
             </div>
             <div className="lk-clients__sidebar__menu__item">
-              <img src="../images/lk/mail_icon.svg" style={{ marginTop: 2 }} />
+              <img src="/images/lk/mail_icon.svg" style={{ marginTop: 2 }} />
               <span className="lk-clients__sidebar__menu__item__title">
                 Отзывы
               </span>
@@ -79,7 +79,7 @@ function LK_3({ setChapter }) {
         <div className="lk-order_inner__main__responsible">
           <div className="lk-order_inner__main__responsible__item">
             <div className="lk-order_inner__main__responsible__item-left">
-              <img src="../images/lk/user_icon-big.png" />
+              <img src="/images/lk/user_icon-big.png" />
               <div className="lk-order_inner__main__responsible__item__info">
                 <span className="lk-clients__content__main__item__top__subtitle lk-order_inner__content__main__item__top__subtitle">
                   Основной менеджер
@@ -92,11 +92,11 @@ function LK_3({ setChapter }) {
                 </span>
               </div>
             </div>
-            <img src="../images/lk/reveal.png" className="lk__reveal" />
+            <img src="/images/lk/reveal.png" className="lk__reveal" />
           </div>
           <div className="lk-order_inner__main__responsible__item">
             <div className="lk-order_inner__main__responsible__item-left">
-              <img src="../images/lk/user_icon-big.png" />
+              <img src="/images/lk/user_icon-big.png" />
               <div className="lk-order_inner__main__responsible__item__info">
                 <span className="lk-clients__content__main__item__top__subtitle lk-order_inner__content__main__item__top__subtitle">
                   Менеджер заказа
@@ -109,7 +109,7 @@ function LK_3({ setChapter }) {
                 </span>
               </div>
             </div>
-            <img src="../images/lk/reveal.png" className="lk__reveal" />
+            <img src="/images/lk/reveal.png" className="lk__reveal" />
           </div>
         </div>
         <div className="lk__side__notes">
@@ -137,7 +137,7 @@ function LK_3({ setChapter }) {
             </div>
             <div className="lk__side__notes__sent">
               <input placeholder="Сообщение" />
-              <img src="../images/lk/sent_icon.svg" />
+              <img src="/images/lk/sent_icon.svg" />
             </div>
           </div>
         </div>
@@ -160,7 +160,7 @@ function LK_3({ setChapter }) {
             </div>
             <div className="lk__side__notes__sent">
               <input placeholder="Сообщение" />
-              <img src="../images/lk/sent_icon.svg" />
+              <img src="/images/lk/sent_icon.svg" />
             </div>
           </div>
         </div>
@@ -183,7 +183,7 @@ function LK_3({ setChapter }) {
           <div className="lk-order_inner__main__info">
             <div className="lk-order_inner__main__info__left">
               <div className="lk-clients__content__main__item__top">
-                <img src="../images/lk/user_icon.png" />
+                <img src="/images/lk/user_icon.png" />
                 <div className="lk-clients__content__main__item__top__info">
                   <span className="lk-clients__content__main__item__top__title">
                     Наименование фирмы
@@ -248,13 +248,13 @@ function LK_3({ setChapter }) {
                 <span className="lk-order_inner__main__bottom__shipment__title">
                   Статус оплаты
                 </span>
-                <img src="../images/lk/edit_icon.svg" />
+                <img src="/images/lk/edit_icon.svg" />
               </div>
               <div className="lk-order_inner__main__bottom__shipment lk-order_inner__main__bottom__status">
                 <span className="lk-order_inner__main__bottom__shipment__title">
                   Статус оплаты
                 </span>
-                <img src="../images/lk/edit_icon.svg" />
+                <img src="/images/lk/edit_icon.svg" />
               </div>
             </div>
           </div>
@@ -271,8 +271,8 @@ function LK_3({ setChapter }) {
                   </span>
                 </span>
                 <div className="lk-order_inner__main__goods__header__count__images">
-                  <img src="../images/lk/prod_icon.svg" />
-                  <img src="../images/lk/reserve_icon.svg" />
+                  <img src="/images/lk/prod_icon.svg" />
+                  <img src="/images/lk/reserve_icon.svg" />
                 </div>
               </div>
             </div>
@@ -280,7 +280,7 @@ function LK_3({ setChapter }) {
               <div className="lk-order_inner__main__goods__item">
                 <img
                   className="lk-order_inner__main__goods__item__img"
-                  src="../images/lk/pilow_good.png"
+                  src="/images/lk/pilow_good.png"
                 />
                 <div className="lk-order_inner__main__goods__item__info">
                   <span className="lk-order_inner__main__goods__item__info__title">
@@ -313,9 +313,9 @@ function LK_3({ setChapter }) {
                   </div>
                   <div className="lk-order_inner__main__goods__item__price__bottom">
                     <div className="lk-order_inner__main__goods__item__price__bottom__count">
-                      <img src="../images/lk/minus.svg" />
+                      <img src="/images/lk/minus.svg" />
                       <span>2</span>
-                      <img src="../images/lk/plus.svg" />
+                      <img src="/images/lk/plus.svg" />
                     </div>
                     <div className="lk-order_inner__main__goods__item__price__bottom__info">
                       <span>В наличии:</span>
@@ -325,8 +325,8 @@ function LK_3({ setChapter }) {
                 </div>
                 <div className="lk-order_inner__main__goods__item__result">
                   <div className="lk-order_inner__main__goods__item__result__top">
-                    <img src="../images/lk/fabric.svg" />
-                    <img src="../images/lk/reserve.svg" />
+                    <img src="/images/lk/fabric.svg" />
+                    <img src="/images/lk/reserve.svg" />
                   </div>
                   <div className="lk-order_inner__main__goods__item__result__bottom">
                     <span>Итого:</span>
@@ -334,13 +334,13 @@ function LK_3({ setChapter }) {
                   </div>
                 </div>
                 <img
-                  src="../images/lk/close.svg"
+                  src="/images/lk/close.svg"
                   className="lk-order_inner__main__goods__item__close"
                 />
               </div>
             </div>
             <img
-              src="../images/lk/arrow_down.svg"
+              src="/images/lk/arrow_down.svg"
               className="lk-order_inner__main__goods__arrow"
             />
           </div>

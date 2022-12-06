@@ -135,7 +135,7 @@ function Good() {
                 <div className="good__main__image">
                   <div className="good__main__image__sidebar">
                     <img
-                      src="../images/good/arrow_up.svg"
+                      src="/images/good/arrow_up.svg"
                       onClick={() => {
                         if (img == 0) {
                           setImg(image_arr.length - 1);
@@ -166,7 +166,7 @@ function Good() {
                       })}
                     </div>
                     <img
-                      src="../images/good/arrow_down.svg"
+                      src="/images/good/arrow_down.svg"
                       onClick={() => {
                         if (img == image_arr.length - 1) {
                           setImg(0);
