@@ -124,31 +124,61 @@ app.post("/goodsCategoryFilter", (req, res) => {
   colorArr = req.body.color;
   memoryArr = req.body.memory;
   console.log(req.body);
-  if (memoryArr && colorArr && memoryArr.length > 0 && colorArr.length > 0) {
+
+  if (memoryArr[0] != "initial" && colorArr[0] != "initial") {
     connectPool
       .query(
-        `SELECT * FROM goods WHERE category = '${category}' AND color IN (${colorArr.join(
-          ", "
-        )}) AND WHERE memory IN (${memoryArr.join(", ")}) ORDER BY price`
+        `SELECT * FROM goods WHERE category = '${category}' AND color IN (?) AND memory IN (?) ORDER BY price`,
+        [colorArr, memoryArr]
       )
       .then((goods) => {
         res.json(goods[0]);
       });
-  } else if (memoryArr && memoryArr.length > 0) {
+  } else if (memoryArr[0] != "initial") {
     connectPool
       .query(
-        `SELECT * FROM goods WHERE category = '${category}' AND memory IN (${memoryArr.join(
-          ", "
-        )}) ORDER BY price`
+        `SELECT * FROM goods WHERE category = '${category}' AND memory IN (?) ORDER BY price`,
+        [memoryArr]
       )
       .then((goods) => {
         res.json(goods[0]);
       });
-  } else if (colorArr && colorArr.length > 0) {
+  } else if (colorArr[0] != "initial") {
     connectPool
       .query(
         `SELECT * FROM goods WHERE category = '${category}' AND color IN (?) ORDER BY price`,
         [colorArr]
+      )
+      .then((goods) => {
+        res.json(goods[0]);
+      });
+  } else if (
+    (memoryArr.length == 0 && colorArr.length == 0) ||
+    (colorArr[0] == "initial" && memoryArr.length == 0) ||
+    (memoryArr[0] == "initial" && colorArr.length == 0)
+  ) {
+    console.log("yes");
+    connectPool
+      .query(
+        `SELECT * FROM goods WHERE category = '${category}' ORDER BY price`
+      )
+      .then((goods) => {
+        res.json(goods[0]);
+      });
+  } else if (memoryArr.length == 0 && colorArr.length != 0) {
+    connectPool
+      .query(
+        `SELECT * FROM goods WHERE category = '${category}' AND color IN (?) ORDER BY price`,
+        [colorArr]
+      )
+      .then((goods) => {
+        res.json(goods[0]);
+      });
+  } else if (memoryArr.length != 0 && colorArr.length != 0) {
+    connectPool
+      .query(
+        `SELECT * FROM goods WHERE category = '${category}' AND memory IN (?) ORDER BY price`,
+        [memoryArr]
       )
       .then((goods) => {
         res.json(goods[0]);

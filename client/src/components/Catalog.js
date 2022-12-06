@@ -50,8 +50,8 @@ function Catalog({
                   <div
                     className="pull-catalog__item"
                     onClick={() => {
-                      setBackData();
                       if (setCategory) {
+                        setBackData();
                         setCategory(catalogItem.title);
                       }
 

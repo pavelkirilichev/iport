@@ -26,8 +26,8 @@ function Tkani(props) {
   const [filterColorData, setFilterColorData] = useState();
   const [filterMemoryData, setFilterMemoryData] = useState();
 
-  const [filterColor, setFilterColor] = useState([]);
-  const [filterMemory, setFilterMemory] = useState([]);
+  const [filterColor, setFilterColor] = useState(["initial"]);
+  const [filterMemory, setFilterMemory] = useState(["initial"]);
 
   const categoryData = {
     category: params.category,
@@ -71,7 +71,8 @@ function Tkani(props) {
   }, [category]);
 
   useEffect(() => {
-    if (filterColor.length > 0 || filterMemory.length > 0) {
+    if (filterColor[0] != "initial" || filterMemory[0] != "initial") {
+      console.log("access");
       const categoryDataFilter = {
         category: params.category,
         color: filterColor,
@@ -216,7 +217,7 @@ function Tkani(props) {
                                 <label
                                   className="tkani__filter__item__inner__label"
                                   onClick={() => {
-                                    console.log("ok");
+                                    console.log("click");
                                     let copy = Object.assign([], filterColor);
                                     if (copy.indexOf(item.color) == -1) {
                                       copy.push(item.color);
@@ -260,13 +261,25 @@ function Tkani(props) {
                                   <label
                                     className="tkani__filter__item__inner__label"
                                     onClick={() => {
-                                      console.log("ok");
+                                      console.log("click");
                                       let copy = Object.assign(
                                         [],
                                         filterMemory
                                       );
                                       if (copy.indexOf(item_memory) == -1) {
+                                        copy.shift();
                                         copy.push(item_memory);
+                                        setFilterMemory(copy);
+                                      } else {
+                                        let copy = Object.assign(
+                                          [],
+                                          filterMemory
+                                        );
+                                        copy = copy.filter(
+                                          (item_copy) =>
+                                            item_copy != item_memory
+                                        );
+                                        console.log(copy);
                                         setFilterMemory(copy);
                                       }
                                     }}
