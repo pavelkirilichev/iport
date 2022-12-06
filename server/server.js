@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const path = require('path');
 const express = require("express");
 const app = express();
 const sql = require("./get_data");
@@ -470,6 +471,18 @@ app.post("/addToCart", (req, res) => {
   }
 });
 
-app.listen(6000, () => {
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.resolve('./public')))
+  
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(process.cwd(), 'public/index.html'))
+  })
+
+  app.post('*', (req, res) => {
+    res.sendStatus(404)
+  })
+}
+
+app.listen(process.env.PORT || 6000, () => {
   console.log("server start on 6000");
 });
