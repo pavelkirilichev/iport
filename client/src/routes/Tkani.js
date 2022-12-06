@@ -12,341 +12,360 @@ import { useParams } from "react-router-dom";
 const cookies = new Cookies();
 
 function Tkani(props) {
-	const params = useParams();
-	const [backData, setBackData] = useState();
-	const location = useLocation();
-	const [category, setCategory] = useState(location.state?.category);
-	const [sortDirection, setSortDirection] = useState("up");
-	const [cartData, setCartData] = useState("initial");
-	const [cartPrice, setCartPrice] = useState(0);
+  const params = useParams();
+  const [backData, setBackData] = useState();
+  const location = useLocation();
+  const [category, setCategory] = useState(location.state?.category);
+  const [sortDirection, setSortDirection] = useState("up");
+  const [cartData, setCartData] = useState("initial");
+  const [cartPrice, setCartPrice] = useState(0);
 
-	const [pullMenuMob, setPullMenuMob] = useState("");
-	const [pull, setPull] = useState("");
-	const [arrayCount, setArrayCount] = useState(NewArrayByCount(goods));
+  const [pullMenuMob, setPullMenuMob] = useState("");
+  const [pull, setPull] = useState("");
+  const [arrayCount, setArrayCount] = useState(NewArrayByCount(goods));
+  const [filterColorData, setFilterColorData] = useState();
+  const [filterMemoryData, setFilterMemoryData] = useState();
 
-	const categoryData = {
-		category: params.category,
-	};
-	const [checkData, setCheckData] = useState(0);
-	useEffect(() => {
-		fetch("/goodsCategory", {
-			method: "POST",
-			body: JSON.stringify(categoryData),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				setBackData(data);
-			});
-	}, [category]);
-	if (sortDirection == "up") {
-		if (typeof backData == "undefined" && cartData == "initial") {
-			fetch("/goodsCategory", {
-				method: "POST",
-				body: JSON.stringify(categoryData),
-				headers: {
-					"Content-Type": "application/json",
-				},
-			})
-				.then((response) => response.json())
-				.then((data) => {
-					setBackData(data);
-				});
-		}
-	} else {
-		if (checkData == 0) {
-			console.log("yes");
-			fetch("/goodsCategoryDesc", {
-				method: "POST",
-				body: JSON.stringify(categoryData),
-				headers: {
-					"Content-Type": "application/json",
-				},
-			})
-				.then((response) => response.json())
-				.then((data) => {
-					setBackData(data);
-					setCheckData(1);
-				});
-		}
-	}
-	if (
-		cartData == "initial" &&
-		typeof backData == "undefined" &&
-		cartPrice == 0
-	) {
-		console.log("test");
-		fetch("/cart")
-			.then((response) => response.json())
-			.then((data) => {
-				setCartData(data);
-				let cart_summ = 0;
-				data.map((good) => {
-					cart_summ += good.price * good.count;
-				});
-				setCartPrice(cart_summ);
-			});
-	}
-	const [cartCount, setCartCount] = useState(0);
-	if (
-		cartCount == 0 &&
-		typeof backData == "undefined" &&
-		cartData == "initial"
-	) {
-		if (cookies.get("id")) {
-			fetch("/getUserByID")
-				.then((response) => response.json())
-				.then((data) => {
-					setCartCount(data.cart.split(", ").length - 1);
-					//setBackData(data);
-				});
-		} else {
-			if (cookies.get("cart")) {
-				setTimeout(() => {
-					if (cartCount == 0)
-						setCartCount(cookies.get("cart").split("_").length - 1);
-					//setBackData(data);
-				}, 1);
-			}
-		}
-	}
+  const [filterColor, setFilterColor] = useState([]);
+  const [filterMemory, setFilterMemory] = useState([]);
 
-	const searchRef = useRef();
-	return (
-		<div className='wrapper'>
-			<Header
-				cartPrice={typeof cartPrice == "undefined" ? "" : cartPrice}
-				pull={pull}
-				setPull={setPull}
-				pullMenuMob={pullMenuMob}
-				setPullMenuMob={setPullMenuMob}
-				route={"tkani"}
-				setCategory={setCategory}
-				cartCount={cartCount}
-				searchRef={searchRef}
-				setBackData={setBackData}
-				isSearch={1}
-			/>
+  const categoryData = {
+    category: params.category,
+  };
+  const [checkData, setCheckData] = useState(0);
+  useEffect(() => {
+    fetch("/goodsCategory", {
+      method: "POST",
+      body: JSON.stringify(categoryData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setBackData(data);
+      });
+    fetch("/goodsFilterColor", {
+      method: "POST",
+      body: JSON.stringify(categoryData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFilterColorData(data);
+      });
+    fetch("/goodsFilterMemory", {
+      method: "POST",
+      body: JSON.stringify(categoryData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setFilterMemoryData(data);
+      });
+  }, [category]);
 
-			<div
-				className={
-					pull == "" && pullMenuMob == ""
-						? "tkani__main_section-active"
-						: "tkani__main_section"
-				}
-			>
-				<div className='tkani__container'>
-					<div className='tkani__navigation'>
-						<Link to={"/"}>
-							<div className='tkani__navigation__back-btn'>Назад</div>
-						</Link>
-						<ul className='tkani__navigation__chapter-list'>
-							<li className='tkani__navigation__chapter__item'>Каталог</li>
-							<li className='tkani__navigation__chapter__item'>Техника</li>
-							<li className='tkani__navigation__chapter__item'>
-								{params.category}
-							</li>
-						</ul>
-					</div>
-					<div className='tkani__main'>
-						<div className='tkani__main__sidebar'>
-							<div className='tkani__main__sidebar__filter'>
-								<span className='tkani__filter__title'>Фильтры</span>
-								<div className='tkani__filter__list'>
-									<div className='tkani__filter__item'>
-										<span className='tkani__filter__item__title'>
-											Основной цвет
-										</span>
-										<div className='tkani__filter__item__inner'>
-											<div className='tkani__filter__item__inner-flex'>
-												<div className='tkani__filter__item__inner-left'>
-													<label className='tkani__filter__item__inner__label'>
-														<input
-															type='checkbox'
-															className='tkani__filter__item__inner__check__input'
-														/>
-														<div className='tkani__filter__item__inner__check__box'></div>
-														<span className='tkani__filter__item__inner__label__text'>
-															белое
-														</span>
-													</label>
-													<label className='tkani__filter__item__inner__label'>
-														<input
-															type='checkbox'
-															className='tkani__filter__item__inner__check__input'
-														/>
-														<div className='tkani__filter__item__inner__check__box'></div>
-														<span className='tkani__filter__item__inner__label__text'>
-															красное
-														</span>
-													</label>
-												</div>
-												<div className='tkani__filter__item__inner-right'>
-													<label className='tkani__filter__item__inner__label'>
-														<input
-															type='checkbox'
-															className='tkani__filter__item__inner__check__input'
-														/>
-														<div className='tkani__filter__item__inner__check__box'></div>
-														<span className='tkani__filter__item__inner__label__text'>
-															чёрное
-														</span>
-													</label>
-													<label className='tkani__filter__item__inner__label'>
-														<input
-															type='checkbox'
-															className='tkani__filter__item__inner__check__input'
-														/>
-														<div className='tkani__filter__item__inner__check__box'></div>
-														<span className='tkani__filter__item__inner__label__text'>
-															синее
-														</span>
-													</label>
-												</div>
-											</div>
-											<img
-												src='../images/tkani/down_icon.png'
-												className='tkani__filter__item__down'
-											/>
-										</div>
-									</div>
-									<div className='tkani__filter__item'>
-										<span className='tkani__filter__item__title'>Цвет</span>
-										<div className='tkani__filter__item__inner'>
-											<div className='tkani__filter__item__inner-flex'>
-												<div className='tkani__filter__item__inner-left'>
-													<label className='tkani__filter__item__inner__label'>
-														<input
-															type='checkbox'
-															className='tkani__filter__item__inner__check__input'
-														/>
-														<div className='tkani__filter__item__inner__check__box'></div>
-														<span className='tkani__filter__item__inner__label__text'>
-															белое
-														</span>
-													</label>
-													<label className='tkani__filter__item__inner__label'>
-														<input
-															type='checkbox'
-															className='tkani__filter__item__inner__check__input'
-														/>
-														<div className='tkani__filter__item__inner__check__box'></div>
-														<span className='tkani__filter__item__inner__label__text'>
-															красное
-														</span>
-													</label>
-												</div>
-												<div className='tkani__filter__item__inner-right'>
-													<label className='tkani__filter__item__inner__label'>
-														<input
-															type='checkbox'
-															className='tkani__filter__item__inner__check__input'
-														/>
-														<div className='tkani__filter__item__inner__check__box'></div>
-														<span className='tkani__filter__item__inner__label__text'>
-															чёрное
-														</span>
-													</label>
-													<label className='tkani__filter__item__inner__label'>
-														<input
-															type='checkbox'
-															className='tkani__filter__item__inner__check__input'
-														/>
-														<div className='tkani__filter__item__inner__check__box'></div>
-														<span className='tkani__filter__item__inner__label__text'>
-															синее
-														</span>
-													</label>
-												</div>
-											</div>
-											<img
-												src='../images/tkani/down_icon.png'
-												className='tkani__filter__item__down'
-											/>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className='tkani__main__content'>
-							<div
-								className='tkani__main__sort'
-								onClick={() => {
-									setSortDirection(sortDirection == "up" ? "down" : "up");
-								}}
-							>
-								<span className='tkani__main__sort__text'>Сортировать по:</span>
-								<span className='tkani__main__sort__text text-red'>
-									{sortDirection == "up" ? "Цене ↑" : "Цене ↓"}
-								</span>
-							</div>
-							{typeof backData == "undefined"
-								? ""
-								: backData.map((good, key) => {
-										let title = strCut(good.full_name, 50);
-										return (
-											<div className='home__goods__item'>
-												<Link to={"/good/" + good.ID}>
-													<div
-														className='home__goods__item__image'
-														style={{
-															backgroundImage: `url(../images/good/goods_image/${
-																good.images_name.split(", ")[0]
-															}.webp)`,
-														}}
-													></div>
-												</Link>
-												<Link to={"/good/" + good.ID}>
-													<div className='home__goods__item__info'>
-														<div className='home__goods__item__price'>
-															<span className='home__goods__item__price__title'>
-																{good.price} ₽
-															</span>
-															<span className='home__goods__item__price__subtitle'>
-																{good.old_price != 0
-																	? `${good.old_price}₽`
-																	: ""}
-															</span>
-														</div>
-														<p className='home__goods__item__info__title'>
-															{title}
-														</p>
-													</div>
-												</Link>
-												<div
-													className='home__goods__item__bottom'
-													onClick={(event) => {
-														AddToCart(good.ID, 1, setCartCount);
-														setCartPrice(cartPrice + good.price);
-														let copy = { ID: good.ID };
-														cartData.push(copy);
-													}}
-												>
-													{cartData != "initial" &&
-													cartData.length > 0 &&
-													cartData.filter((item) => item.ID == good.ID).length >
-														0 ? (
-														<div className='home__goods__item__bottom__left'>
-															<span>Добавлено</span>
-														</div>
-													) : (
-														<div className='home__goods__item__bottom__left'>
-															<span>В корзину</span>
-														</div>
-													)}
-												</div>
-											</div>
-										);
-								  })}
-						</div>
-					</div>
-				</div>
-			</div>
-			<Footer />
-		</div>
-	);
+  useEffect(() => {
+    if (filterColor.length > 0 || filterMemory.length > 0) {
+      const categoryDataFilter = {
+        category: params.category,
+        color: filterColor,
+        memory: filterMemory,
+      };
+      fetch("/goodsCategoryFilter", {
+        method: "POST",
+        body: JSON.stringify(categoryDataFilter),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setBackData(data);
+        });
+    }
+  }, [category, filterColor, filterMemory]);
+
+  if (sortDirection == "up") {
+    if (typeof backData == "undefined" && cartData == "initial") {
+      fetch("/goodsCategory", {
+        method: "POST",
+        body: JSON.stringify(categoryData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setBackData(data);
+        });
+    }
+  } else {
+    if (checkData == 0) {
+      console.log("yes");
+      fetch("/goodsCategoryDesc", {
+        method: "POST",
+        body: JSON.stringify(categoryData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setBackData(data);
+          setCheckData(1);
+        });
+    }
+  }
+  if (
+    cartData == "initial" &&
+    typeof backData == "undefined" &&
+    cartPrice == 0
+  ) {
+    console.log("test");
+    fetch("/cart")
+      .then((response) => response.json())
+      .then((data) => {
+        setCartData(data);
+        let cart_summ = 0;
+        data.map((good) => {
+          cart_summ += good.price * good.count;
+        });
+        setCartPrice(cart_summ);
+      });
+  }
+  const [cartCount, setCartCount] = useState(0);
+  if (
+    cartCount == 0 &&
+    typeof backData == "undefined" &&
+    cartData == "initial"
+  ) {
+    if (cookies.get("id")) {
+      fetch("/getUserByID")
+        .then((response) => response.json())
+        .then((data) => {
+          setCartCount(data.cart.split(", ").length - 1);
+          //setBackData(data);
+        });
+    } else {
+      if (cookies.get("cart")) {
+        setTimeout(() => {
+          if (cartCount == 0)
+            setCartCount(cookies.get("cart").split("_").length - 1);
+          //setBackData(data);
+        }, 1);
+      }
+    }
+  }
+
+  const searchRef = useRef();
+  return (
+    <div className="wrapper">
+      <Header
+        cartPrice={typeof cartPrice == "undefined" ? "" : cartPrice}
+        pull={pull}
+        setPull={setPull}
+        pullMenuMob={pullMenuMob}
+        setPullMenuMob={setPullMenuMob}
+        route={"tkani"}
+        setCategory={setCategory}
+        cartCount={cartCount}
+        searchRef={searchRef}
+        setBackData={setBackData}
+        isSearch={1}
+      />
+
+      <div
+        className={
+          pull == "" && pullMenuMob == ""
+            ? "tkani__main_section-active"
+            : "tkani__main_section"
+        }
+      >
+        <div className="tkani__container">
+          <div className="tkani__navigation">
+            <Link to={"/"}>
+              <div className="tkani__navigation__back-btn">Назад</div>
+            </Link>
+            <ul className="tkani__navigation__chapter-list">
+              <li className="tkani__navigation__chapter__item">Каталог</li>
+              <li className="tkani__navigation__chapter__item">Техника</li>
+              <li className="tkani__navigation__chapter__item">
+                {params.category}
+              </li>
+            </ul>
+          </div>
+          <div className="tkani__main">
+            <div className="tkani__main__sidebar">
+              <div className="tkani__main__sidebar__filter">
+                <span className="tkani__filter__title">Фильтры</span>
+                <div className="tkani__filter__list">
+                  <div className="tkani__filter__item">
+                    <span className="tkani__filter__item__title">Цвет</span>
+                    <div className="tkani__filter__item__inner">
+                      <div className="tkani__filter__item__inner-flex">
+                        {typeof filterColorData == "undefined"
+                          ? ""
+                          : filterColorData.map((item) => {
+                              return (
+                                <label
+                                  className="tkani__filter__item__inner__label"
+                                  onClick={() => {
+                                    console.log("ok");
+                                    let copy = Object.assign([], filterColor);
+                                    if (copy.indexOf(item.color) == -1) {
+                                      copy.push(item.color);
+                                      setFilterColor(copy);
+                                    }
+                                  }}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    className="tkani__filter__item__inner__check__input"
+                                  />
+                                  <div className="tkani__filter__item__inner__check__box"></div>
+                                  <span className="tkani__filter__item__inner__label__text">
+                                    {item.color}
+                                  </span>
+                                </label>
+                              );
+                            })}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="tkani__filter__item">
+                    <span className="tkani__filter__item__title">Память</span>
+                    <div className="tkani__filter__item__inner">
+                      <div className="tkani__filter__item__inner-flex">
+                        <div className="tkani__filter__item__inner-left flex-wrap">
+                          {typeof filterMemoryData == "undefined"
+                            ? ""
+                            : filterMemoryData.map((item) => {
+                                item = item.memory;
+                                let item_memory = item;
+                                if (
+                                  Number(item) % 1024 == 0 &&
+                                  Number(item) >= 1024
+                                ) {
+                                  item = `${item / 1024}TB`;
+                                } else {
+                                  item = `${item}GB`;
+                                }
+                                return (
+                                  <label
+                                    className="tkani__filter__item__inner__label"
+                                    onClick={() => {
+                                      console.log("ok");
+                                      let copy = Object.assign(
+                                        [],
+                                        filterMemory
+                                      );
+                                      if (copy.indexOf(item_memory) == -1) {
+                                        copy.push(item_memory);
+                                        setFilterMemory(copy);
+                                      }
+                                    }}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      className="tkani__filter__item__inner__check__input"
+                                    />
+                                    <div className="tkani__filter__item__inner__check__box"></div>
+                                    <span className="tkani__filter__item__inner__label__text">
+                                      {item}
+                                    </span>
+                                  </label>
+                                );
+                              })}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="tkani__main__content">
+              <div
+                className="tkani__main__sort"
+                onClick={() => {
+                  setSortDirection(sortDirection == "up" ? "down" : "up");
+                }}
+              >
+                <span className="tkani__main__sort__text">Сортировать по:</span>
+                <span className="tkani__main__sort__text text-red">
+                  {sortDirection == "up" ? "Цене ↑" : "Цене ↓"}
+                </span>
+              </div>
+              {typeof backData == "undefined"
+                ? ""
+                : backData.map((good, key) => {
+                    let title = strCut(good.full_name, 50);
+                    return (
+                      <div className="home__goods__item">
+                        <Link to={"/good/" + good.ID}>
+                          <div
+                            className="home__goods__item__image"
+                            style={{
+                              backgroundImage: `url(../images/good/goods_image/${
+                                good.images_name.split(", ")[0]
+                              }.webp)`,
+                            }}
+                          ></div>
+                        </Link>
+                        <Link to={"/good/" + good.ID}>
+                          <div className="home__goods__item__info">
+                            <div className="home__goods__item__price">
+                              <span className="home__goods__item__price__title">
+                                {good.price} ₽
+                              </span>
+                              <span className="home__goods__item__price__subtitle">
+                                {good.old_price != 0
+                                  ? `${good.old_price}₽`
+                                  : ""}
+                              </span>
+                            </div>
+                            <p className="home__goods__item__info__title">
+                              {title}
+                            </p>
+                          </div>
+                        </Link>
+                        <div
+                          className="home__goods__item__bottom"
+                          onClick={(event) => {
+                            AddToCart(good.ID, 1, setCartCount);
+                            setCartPrice(cartPrice + good.price);
+                            let copy = { ID: good.ID };
+                            cartData.push(copy);
+                          }}
+                        >
+                          {cartData != "initial" &&
+                          cartData.length > 0 &&
+                          cartData.filter((item) => item.ID == good.ID).length >
+                            0 ? (
+                            <div className="home__goods__item__bottom__left">
+                              <span>Добавлено</span>
+                            </div>
+                          ) : (
+                            <div className="home__goods__item__bottom__left">
+                              <span>В корзину</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+            </div>
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
 }
 
 export default Tkani;
