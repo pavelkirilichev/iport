@@ -148,6 +148,13 @@
 	display: flex;
 	align-items: center;
 }
+.tkani__filter__item__inner__label-price {
+	max-width: calc(50% - 20px);
+	width: 100%;
+}
+.tkani__filter__item__inner__label-separator {
+	width: 30px;
+}
 .tkani__filter__item__inner__check__input {
 	-webkit-appearance: none;
 }
