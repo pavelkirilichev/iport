@@ -86,13 +86,6 @@ function Header({
                   />
                   <span className="nav-top__mail-text">svit22@mail.ru</span>
                 </div>
-                <div className="nav-top__right__phone">
-                  <img
-                    src="/images/header/phone_icon.svg"
-                    className="nav-top__phone-img"
-                  />
-                  <span className="nav-top__phone-text">+7-3852-570-722</span>
-                </div>
               </div>
             </div>
           </div>

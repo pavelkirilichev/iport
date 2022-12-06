@@ -26,8 +26,8 @@ function Tkani(props) {
   const [filterColorData, setFilterColorData] = useState();
   const [filterMemoryData, setFilterMemoryData] = useState();
 
-  const [filterColor, setFilterColor] = useState([]);
-  const [filterMemory, setFilterMemory] = useState([]);
+  const [filterColor, setFilterColor] = useState(["initial"]);
+  const [filterMemory, setFilterMemory] = useState(["initial"]);
 
   const [price, setPrice] = useState({ min: null, max: null })
 
@@ -246,13 +246,11 @@ function Tkani(props) {
                           ? ""
                           : filterColorData.map((item) => {
                               return (
-                                <label
-                                  className="tkani__filter__item__inner__label"
-                                >
+                                <label className="tkani__filter__item__inner__label">
                                   <input
                                     type="checkbox"
                                     onChange={() => {
-                                      console.log("ok");
+                                      console.log("change");
                                       let copy = Object.assign([], filterColor);
                                       const indexOfItem = copy.indexOf(item.color)
                                       if (indexOfItem == -1) {
@@ -297,7 +295,7 @@ function Tkani(props) {
                                   <label
                                     className="tkani__filter__item__inner__label"
                                     onClick={() => {
-                                      console.log("ok");
+                                      console.log("click");
                                       let copy = Object.assign(
                                         [],
                                         filterMemory
