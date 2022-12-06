@@ -126,37 +126,76 @@ app.post("/goodsCategoryFilter", (req, res) => {
   category = req.body.category;
   colorArr = req.body.color;
   memoryArr = req.body.memory;
-  console.log(req.body);
-  if (memoryArr && colorArr && memoryArr.length > 0 && colorArr.length > 0) {
-    connectPool
-      .query(
-        `SELECT * FROM goods WHERE category = '${category}' AND color IN (${colorArr.join(
-          ", "
-        )}) AND WHERE memory IN (${memoryArr.join(", ")}) ORDER BY price`
-      )
-      .then((goods) => {
-        res.json(goods[0]);
-      });
-  } else if (memoryArr && memoryArr.length > 0) {
-    connectPool
-      .query(
-        `SELECT * FROM goods WHERE category = '${category}' AND memory IN (${memoryArr.join(
-          ", "
-        )}) ORDER BY price`
-      )
-      .then((goods) => {
-        res.json(goods[0]);
-      });
-  } else if (colorArr && colorArr.length > 0) {
-    connectPool
-      .query(
-        `SELECT * FROM goods WHERE category = '${category}' AND color IN (?) ORDER BY price`,
-        [colorArr]
-      )
-      .then((goods) => {
-        res.json(goods[0]);
-      });
+  sortDirection = req.body.sort
+  price = req.body.price
+  let queryString = `SELECT * FROM goods WHERE category = ?`
+  let queryData = [category]
+
+  if (memoryArr && memoryArr.length) {
+    queryString += ` AND memory IN (?)`
+    queryData.push(memoryArr)
   }
+  if (colorArr && colorArr.length) {
+    queryString += ` AND color IN (?)`
+    queryData.push(colorArr)
+  }
+  if (price) {
+    price = {
+      min: Number(price.min) || 0,
+      max: Number(price.max) || null
+    }
+    if (price.min) {
+      queryString += ` AND price >= ${price.min}`
+    }
+    if (price.max) {
+      queryString += ` AND price <= ${price.max}`
+    }
+  }
+  queryString += ` ORDER BY price`
+  if (sortDirection) {
+    switch (sortDirection) {
+      case "up": queryString += ` ASC`
+        break;
+      case "down": queryString += ` DESC`
+    }
+  }
+
+  console.log(req.body);
+  console.log(queryString, queryData)
+  // if (memoryArr && colorArr && memoryArr.length > 0 && colorArr.length > 0) {
+  //   connectPool
+  //     .query(
+  //       `SELECT * FROM goods WHERE category = '${category}' AND color IN (${colorArr.join(
+  //         ", "
+  //       )}) AND WHERE memory IN (${memoryArr.join(", ")}) ORDER BY price`
+  //     )
+  //     .then((goods) => {
+  //       res.json(goods[0]);
+  //     });
+  // } else if (memoryArr && memoryArr.length > 0) {
+  //   connectPool
+  //     .query(
+  //       `SELECT * FROM goods WHERE category = '${category}' AND memory IN (${memoryArr.join(
+  //         ", "
+  //       )}) ORDER BY price`
+  //     )
+  //     .then((goods) => {
+  //       res.json(goods[0]);
+  //     });
+  // } else if (colorArr && colorArr.length > 0) {
+  //   connectPool
+  //     .query(
+  //       `SELECT * FROM goods WHERE category = '${category}' AND color IN (?) ORDER BY price`,
+  //       [colorArr]
+  //     )
+  //     .then((goods) => {
+  //       res.json(goods[0]);
+  //     });
+  // }
+  connectPool.query(queryString, queryData)
+  .then((goods) => {
+    res.json(goods[0]);
+  });
 });
 app.post("/goodsFilterColor", (req, res) => {
   category = req.body.category;
