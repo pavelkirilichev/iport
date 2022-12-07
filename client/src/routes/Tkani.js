@@ -26,8 +26,8 @@ function Tkani(props) {
   const [filterColorData, setFilterColorData] = useState();
   const [filterMemoryData, setFilterMemoryData] = useState();
 
-  const [filterColor, setFilterColor] = useState(["initial"]);
-  const [filterMemory, setFilterMemory] = useState(["initial"]);
+  const [filterColor, setFilterColor] = useState([]);
+  const [filterMemory, setFilterMemory] = useState([]);
 
   const [price, setPrice] = useState({ min: null, max: null })
 
@@ -100,7 +100,8 @@ function Tkani(props) {
   }, [price])
 
   useEffect(() => {
-    if (filterColor.length > 0 || filterMemory.length > 0 || (price.min || price.max)) {
+    console.log(filterColor, filterMemory, price)
+    if (backData || filterColor.length > 0 || filterMemory.length > 0 || (price.min || price.max)) {
       const categoryDataFilter = {
         category: params.category,
         color: filterColor,
@@ -294,24 +295,24 @@ function Tkani(props) {
                                 return (
                                   <label
                                     className="tkani__filter__item__inner__label"
-                                    onClick={() => {
-                                      console.log("click");
-                                      let copy = Object.assign(
-                                        [],
-                                        filterMemory
-                                      );
-                                      const indexOfItem = copy.indexOf(item_memory)
-                                      if (indexOfItem == -1) {
-                                        copy.push(item_memory);
-                                      }
-                                      else {
-                                        copy.splice(indexOfItem, 1)
-                                      }
-                                      setFilterMemory(copy);
-                                    }}
                                   >
                                     <input
                                       type="checkbox"
+                                      onChange={() => {
+                                        console.log("click");
+                                        let copy = Object.assign(
+                                          [],
+                                          filterMemory
+                                        );
+                                        const indexOfItem = copy.indexOf(item_memory)
+                                        if (indexOfItem == -1) {
+                                          copy.push(item_memory);
+                                        }
+                                        else {
+                                          copy.splice(indexOfItem, 1)
+                                        }
+                                        setFilterMemory(copy);
+                                      }}
                                       className="tkani__filter__item__inner__check__input"
                                     />
                                     <div className="tkani__filter__item__inner__check__box"></div>
