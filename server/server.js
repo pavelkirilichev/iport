@@ -1,6 +1,6 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const path = require('path');
+const path = require("path");
 const express = require("express");
 const app = express();
 const sql = require("./get_data");
@@ -48,7 +48,7 @@ app.post("/orderAdd", (req, res) => {
     goods = cart.join(", ");
     connectPool
       .query(
-        `INSERT INTO orders (goods, date, adress, status, phone, mail) VALUES ('${goods}', '${date}', '${address}', 'Обработка', '${phone}', '${mail}', ${summ})`
+        `INSERT INTO orders (goods, date, adress, status, phone, mail, summ) VALUES ('${goods}', '${date}', '${address}', 'Обработка', '${phone}', '${mail}', ${summ})`
       )
       .then(() => {
         res.json("ok");
@@ -126,42 +126,44 @@ app.post("/goodsCategoryFilter", (req, res) => {
   category = req.body.category;
   colorArr = req.body.color;
   memoryArr = req.body.memory;
-  sortDirection = req.body.sort
-  price = req.body.price
-  let queryString = `SELECT * FROM goods WHERE category = ?`
-  let queryData = [category]
+  sortDirection = req.body.sort;
+  price = req.body.price;
+  let queryString = `SELECT * FROM goods WHERE category = ?`;
+  let queryData = [category];
 
   if (memoryArr && memoryArr.length) {
-    queryString += ` AND memory IN (?)`
-    queryData.push(memoryArr)
+    queryString += ` AND memory IN (?)`;
+    queryData.push(memoryArr);
   }
   if (colorArr && colorArr.length) {
-    queryString += ` AND color IN (?)`
-    queryData.push(colorArr)
+    queryString += ` AND color IN (?)`;
+    queryData.push(colorArr);
   }
   if (price) {
     price = {
       min: Number(price.min) || 0,
-      max: Number(price.max) || null
-    }
+      max: Number(price.max) || null,
+    };
     if (price.min) {
-      queryString += ` AND price >= ${price.min}`
+      queryString += ` AND price >= ${price.min}`;
     }
     if (price.max) {
-      queryString += ` AND price <= ${price.max}`
+      queryString += ` AND price <= ${price.max}`;
     }
   }
-  queryString += ` ORDER BY price`
+  queryString += ` ORDER BY price`;
   if (sortDirection) {
     switch (sortDirection) {
-      case "up": queryString += ` ASC`
+      case "up":
+        queryString += ` ASC`;
         break;
-      case "down": queryString += ` DESC`
+      case "down":
+        queryString += ` DESC`;
     }
   }
 
   console.log(req.body);
-  console.log(queryString, queryData)
+  console.log(queryString, queryData);
   // if (memoryArr && colorArr && memoryArr.length > 0 && colorArr.length > 0) {
   //   connectPool
   //     .query(
@@ -192,8 +194,7 @@ app.post("/goodsCategoryFilter", (req, res) => {
   //       res.json(goods[0]);
   //     });
   // }
-  connectPool.query(queryString, queryData)
-  .then((goods) => {
+  connectPool.query(queryString, queryData).then((goods) => {
     res.json(goods[0]);
   });
 });
@@ -209,28 +210,24 @@ app.post("/goodsFilterColor", (req, res) => {
 });
 app.post("/goodsFilterMemory", (req, res) => {
   category = req.body.category;
-  price = req.body.price
-  let queryString = `SELECT memory FROM goods WHERE category = '${category}'`
+  price = req.body.price;
+  let queryString = `SELECT memory FROM goods WHERE category = '${category}'`;
   if (price) {
     price = {
       min: Number(price.min) || 0,
-      max: Number(price.max) || null
-    }
+      max: Number(price.max) || null,
+    };
     if (price.min) {
-      queryString += ` AND price >= ${price.min}`
+      queryString += ` AND price >= ${price.min}`;
     }
     if (price.max) {
-      queryString += ` AND price <= ${price.max}`
+      queryString += ` AND price <= ${price.max}`;
     }
   }
-  queryString += ` GROUP BY memory ORDER BY price`
-  connectPool
-    .query(
-      queryString
-    )
-    .then((goods) => {
-      res.json(goods[0]);
-    });
+  queryString += ` GROUP BY memory ORDER BY price`;
+  connectPool.query(queryString).then((goods) => {
+    res.json(goods[0]);
+  });
 });
 app.post("/goodsCategoryDesc", (req, res) => {
   category = req.body.category;
@@ -525,16 +522,16 @@ app.post("/addToCart", (req, res) => {
   }
 });
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.resolve('./public')))
-  
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(process.cwd(), 'public/index.html'))
-  })
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.resolve("./public")));
 
-  app.post('*', (req, res) => {
-    res.sendStatus(404)
-  })
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(process.cwd(), "public/index.html"));
+  });
+
+  app.post("*", (req, res) => {
+    res.sendStatus(404);
+  });
 }
 
 app.listen(process.env.PORT || 6000, () => {

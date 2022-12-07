@@ -73,7 +73,7 @@ function MakeOrder() {
           </div>
         </div>
         <div className="mo__content__left__entry">
-          <div classname="mo__content__left__require">
+          <div className="mo__content__left__require">
             <div className="mo__content__left__require__personal">
               <span className="mo__content__left__require__title">
                 Контактный номер телефона
@@ -88,7 +88,7 @@ function MakeOrder() {
               />
             </div>
           </div>
-          <div classname="mo__content__left__require">
+          <div className="mo__content__left__require">
             <div className="mo__content__left__require__personal">
               <span className="mo__content__left__require__title">
                 E-mail (не обязательно)
@@ -123,7 +123,7 @@ function MakeOrder() {
           </div>
         </div>
         {delivery == "local" ? (
-          <div classname="mo__content__left__require ">
+          <div className="mo__content__left__require ">
             <div className="mo__content__left__require__personal mo__flex__row">
               <span className="mo__content__left__require__title mo__flex__row__title">
                 Адрес доставки

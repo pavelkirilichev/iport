@@ -191,7 +191,6 @@
 .mo__content__left__require {
 	display: flex;
 	align-items: center;
-	justify-content: center;
 }
 .mo__content__left__require__personal {
 	display: flex;
@@ -200,7 +199,7 @@
 }
 .mo__content__left__require__input {
 	box-sizing: border-box;
-	padding-left: 10px;
+	padding: 10px;
 	width: 310px;
 	height: 30px;
 	background: #f2f4f5;
