@@ -12,11 +12,14 @@ import AddToCart from "../components/AddToCart";
 import Cookies from "universal-cookie";
 import strCut from "../Services/StrCutLimits";
 import { useNavigate } from "react-router-dom";
+import { useTitle } from "../hooks/useTitle";
 const cookies = new Cookies();
 
 // Get ID from URL
 
 function Good() {
+  useTitle("Товар")
+  
   const navigate = useNavigate();
   const params = useParams();
   const goodID = params.id;

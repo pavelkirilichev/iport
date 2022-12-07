@@ -3,8 +3,11 @@ import Footer from "../components/Footer";
 import FooterMob from "../components/FooterMob";
 import { useCallback, useState, useRef } from "react";
 import Cookies from "universal-cookie";
+import { useTitle } from "../hooks/useTitle";
 
 function MakeOrder() {
+  useTitle("Оформление заказа")
+
   const phone = useRef();
   const mail = useRef();
   const adress = useRef();

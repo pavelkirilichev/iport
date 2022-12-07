@@ -9,9 +9,12 @@ import strCut from "../Services/StrCutLimits";
 import AddToCart from "../components/AddToCart";
 import Cookies from "universal-cookie";
 import { useParams } from "react-router-dom";
+import { useTitle } from "../hooks/useTitle";
 const cookies = new Cookies();
 
 function Tkani(props) {
+  useTitle("Каталог")
+
   const params = useParams();
   const [backData, setBackData] = useState();
   const location = useLocation();

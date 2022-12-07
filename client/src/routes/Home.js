@@ -8,9 +8,12 @@ import { goods } from "../data/GoodsJSON";
 import strCut from "../Services/StrCutLimits";
 import AddToCart from "../components/AddToCart";
 import Cookies from "universal-cookie";
+import { useTitle } from "../hooks/useTitle";
 const cookies = new Cookies();
 
 function Home() {
+  useTitle("Главная")
+
   const [backData, setBackData] = useState();
   const [cartCount, setCartCount] = useState(0);
   const [goodsAll, setGoodsAll] = useState(0);

@@ -7,9 +7,12 @@ import strCut from "../Services/StrCutLimits";
 import Cookies from "universal-cookie";
 import UpdateCart from "../components/UpdateCart";
 import { Link } from "react-router-dom";
+import { useTitle } from "../hooks/useTitle";
 const cookies = new Cookies();
 
 function Cart() {
+  useTitle("Личный кабинет")
+  
   const [pullMenuMob, setPullMenuMob] = useState("");
   const [pull, setPull] = useState("");
 
