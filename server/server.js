@@ -209,9 +209,24 @@ app.post("/goodsFilterColor", (req, res) => {
 });
 app.post("/goodsFilterMemory", (req, res) => {
   category = req.body.category;
+  price = req.body.price
+  let queryString = `SELECT memory FROM goods WHERE category = '${category}'`
+  if (price) {
+    price = {
+      min: Number(price.min) || 0,
+      max: Number(price.max) || null
+    }
+    if (price.min) {
+      queryString += ` AND price >= ${price.min}`
+    }
+    if (price.max) {
+      queryString += ` AND price <= ${price.max}`
+    }
+  }
+  queryString += ` GROUP BY memory ORDER BY price`
   connectPool
     .query(
-      `SELECT memory FROM goods WHERE category = '${category}' GROUP BY memory ORDER BY price`
+      queryString
     )
     .then((goods) => {
       res.json(goods[0]);
