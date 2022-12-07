@@ -29,7 +29,7 @@ function Tkani(props) {
   const [filterColor, setFilterColor] = useState([]);
   const [filterMemory, setFilterMemory] = useState([]);
 
-  const [price, setPrice] = useState({ min: null, max: null })
+  const [price, setPrice] = useState({ min: null, max: null });
 
   const categoryData = {
     category: params.category,
@@ -38,10 +38,10 @@ function Tkani(props) {
 
   let priceInputRequestTimeout = null;
   function updatePrice(data) {
-    clearTimeout(priceInputRequestTimeout)
+    clearTimeout(priceInputRequestTimeout);
     priceInputRequestTimeout = setTimeout(() => {
-      setPrice(data)
-    }, 300)
+      setPrice(data);
+    }, 300);
   }
 
   useEffect(() => {
@@ -86,7 +86,7 @@ function Tkani(props) {
       method: "POST",
       body: JSON.stringify({
         ...categoryData,
-        price
+        price,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -97,17 +97,25 @@ function Tkani(props) {
         console.log(data);
         setFilterMemoryData(data);
       });
-  }, [price])
+  }, [price]);
 
   useEffect(() => {
-    console.log(filterColor, filterMemory, price)
-    if (backData || filterColor.length > 0 || filterMemory.length > 0 || (price.min || price.max)) {
+    console.log(filterColor, filterMemory, price);
+    if (
+      backData ||
+      filterColor.length > 0 ||
+      filterMemory.length > 0 ||
+      price.min ||
+      price.max
+    ) {
       const categoryDataFilter = {
         category: params.category,
         color: filterColor,
-        memory: filterMemory,
+        memory: filterMemory.filter((item) =>
+          filterMemoryData.some((i) => i.memory === item)
+        ),
         sort: sortDirection,
-        price: price
+        price: price,
       };
       fetch("/goodsCategoryFilter", {
         method: "POST",
@@ -120,37 +128,36 @@ function Tkani(props) {
         .then((data) => {
           setBackData(data);
         });
-    }
-    else {
+    } else {
       if (sortDirection == "up") {
         // if (typeof backData == "undefined" && cartData == "initial") {
-          fetch("/goodsCategory", {
-            method: "POST",
-            body: JSON.stringify(categoryData),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              setBackData(data);
-            });
+        fetch("/goodsCategory", {
+          method: "POST",
+          body: JSON.stringify(categoryData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setBackData(data);
+          });
         // }
       } else {
         // if (checkData == 0) {
-          console.log("yes");
-          fetch("/goodsCategoryDesc", {
-            method: "POST",
-            body: JSON.stringify(categoryData),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              setBackData(data);
-              setCheckData(1);
-            });
+        console.log("yes");
+        fetch("/goodsCategoryDesc", {
+          method: "POST",
+          body: JSON.stringify(categoryData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setBackData(data);
+            setCheckData(1);
+          });
         // }
       }
     }
@@ -253,12 +260,13 @@ function Tkani(props) {
                                     onChange={() => {
                                       console.log("change");
                                       let copy = Object.assign([], filterColor);
-                                      const indexOfItem = copy.indexOf(item.color)
+                                      const indexOfItem = copy.indexOf(
+                                        item.color
+                                      );
                                       if (indexOfItem == -1) {
                                         copy.push(item.color);
-                                      }
-                                      else {
-                                        copy.splice(indexOfItem, 1)
+                                      } else {
+                                        copy.splice(indexOfItem, 1);
                                       }
                                       setFilterColor(copy);
                                     }}
@@ -293,9 +301,7 @@ function Tkani(props) {
                                   item = `${item}GB`;
                                 }
                                 return (
-                                  <label
-                                    className="tkani__filter__item__inner__label"
-                                  >
+                                  <label className="tkani__filter__item__inner__label">
                                     <input
                                       type="checkbox"
                                       onChange={() => {
@@ -304,16 +310,21 @@ function Tkani(props) {
                                           [],
                                           filterMemory
                                         );
-                                        const indexOfItem = copy.indexOf(item_memory)
+                                        const indexOfItem =
+                                          copy.indexOf(item_memory);
                                         if (indexOfItem == -1) {
                                           copy.push(item_memory);
-                                        }
-                                        else {
-                                          copy.splice(indexOfItem, 1)
+                                        } else {
+                                          copy.splice(indexOfItem, 1);
                                         }
                                         setFilterMemory(copy);
                                       }}
                                       className="tkani__filter__item__inner__check__input"
+                                      checked={
+                                        filterMemory.indexOf(item_memory) == -1
+                                          ? false
+                                          : true
+                                      }
                                     />
                                     <div className="tkani__filter__item__inner__check__box"></div>
                                     <span className="tkani__filter__item__inner__label__text">
@@ -331,41 +342,33 @@ function Tkani(props) {
                     <div className="tkani__filter__item__inner">
                       <div className="tkani__filter__item__inner-flex">
                         <div className="tkani__filter__item__inner-left flex-wrap">
-                          <label
-                            className="tkani__filter__item__inner__label tkani__filter__item__inner__label-price"
-                          >
+                          <label className="tkani__filter__item__inner__label tkani__filter__item__inner__label-price">
+                            <span>От: </span>
                             <input
                               type="text"
                               name="min"
                               onInput={(e) => {
                                 console.log("ok");
-                                let copy = Object.assign(
-                                  {},
-                                  price
-                                );
-                                copy.min = e.target.value
-                                updatePrice(copy)
+                                let copy = Object.assign({}, price);
+                                copy.min = e.target.value;
+                                updatePrice(copy);
                               }}
-                              className="tkani__filter__item__inner__check__input"
+                              className="tkani__filter__item__inner__price-input"
                             />
                           </label>
                           <div className="tkani__filter__item__inner__label-separator"></div>
-                          <label
-                            className="tkani__filter__item__inner__label tkani__filter__item__inner__label-price"
-                          >
+                          <label className="tkani__filter__item__inner__label tkani__filter__item__inner__label-price">
+                            <span>До: </span>
                             <input
                               type="text"
                               name="max"
                               onInput={(e) => {
                                 console.log("ok");
-                                let copy = Object.assign(
-                                  {},
-                                  price
-                                );
-                                copy.max = e.target.value
-                                updatePrice(copy)
+                                let copy = Object.assign({}, price);
+                                copy.max = e.target.value;
+                                updatePrice(copy);
                               }}
-                              className="tkani__filter__item__inner__check__input"
+                              className="tkani__filter__item__inner__price-input"
                             />
                           </label>
                         </div>
