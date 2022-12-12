@@ -421,7 +421,11 @@ app.post("/registration", (req, res) => {
               res.send("ok");
             }
           );
-        });
+        })
+        .catch(e => {
+          console.error(e)
+          res.send(`[BD error]`)
+        })
     } else {
       res.send("Такой пользователь уже существует!");
     }
@@ -535,5 +539,9 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.listen(process.env.PORT || 6000, () => {
-  console.log("server start on 6000");
+  console.log(`server start on ${process.env.PORT || 6000}`);
 });
+
+process.on('uncaughtException', e => {
+  console.error(`process killer\n${e}`)
+})
