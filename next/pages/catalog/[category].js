@@ -7,11 +7,18 @@ import { goods } from "../../data/GoodsJSON";
 import NewArrayByCount from "../../Services/Array";
 import strCut from "../../Services/StrCutLimits";
 import AddToCart from "../../components/AddToCart";
-import Cookies from "universal-cookie";
 import { useTitle } from "../../hooks/useTitle";
-const cookies = new Cookies();
+import { getCookies } from "cookies-next";
 
-function Tkani(props) {
+export function getServerSideProps({ req, res }) {
+  return {
+    props: {
+      cookies: getCookies({ req, res })
+    }
+  }
+}
+
+function Tkani({ cookies }) {
   useTitle("Каталог")
 
   const { query: params } = useRouter();
@@ -45,170 +52,170 @@ function Tkani(props) {
     }, 300);
   }
 
-  // useEffect(() => {
-  //   fetch("/api/goodsCategory", {
-  //     method: "POST",
-  //     body: JSON.stringify(categoryData),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setBackData(data);
-  //     });
-  //   fetch("/api/goodsFilterColor", {
-  //     method: "POST",
-  //     body: JSON.stringify(categoryData),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setFilterColorData(data);
-  //     });
-  //   fetch("/api/goodsFilterMemory", {
-  //     method: "POST",
-  //     body: JSON.stringify(categoryData),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       setFilterMemoryData(data);
-  //     });
-  // }, [category]);
+  useEffect(() => {
+    fetch("/api/goodsCategory", {
+      method: "POST",
+      body: JSON.stringify(categoryData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setBackData(data);
+      });
+    fetch("/api/goodsFilterColor", {
+      method: "POST",
+      body: JSON.stringify(categoryData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFilterColorData(data);
+      });
+    fetch("/api/goodsFilterMemory", {
+      method: "POST",
+      body: JSON.stringify(categoryData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setFilterMemoryData(data);
+      });
+  }, [category]);
 
-  // useEffect(() => {
-  //   fetch("/api/goodsFilterMemory", {
-  //     method: "POST",
-  //     body: JSON.stringify({
-  //       ...categoryData,
-  //       price,
-  //     }),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       setFilterMemoryData(data);
-  //     });
-  // }, [price]);
+  useEffect(() => {
+    fetch("/api/goodsFilterMemory", {
+      method: "POST",
+      body: JSON.stringify({
+        ...categoryData,
+        price,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setFilterMemoryData(data);
+      });
+  }, [price]);
 
-  // useEffect(() => {
-  //   console.log(filterColor, filterMemory, price);
-  //   if (
-  //     backData ||
-  //     filterColor.length > 0 ||
-  //     filterMemory.length > 0 ||
-  //     price.min ||
-  //     price.max
-  //   ) {
-  //     const categoryDataFilter = {
-  //       category: params.category,
-  //       color: filterColor,
-  //       memory: filterMemory.filter((item) =>
-  //         filterMemoryData.some((i) => i.memory === item)
-  //       ),
-  //       sort: sortDirection,
-  //       price: price,
-  //     };
-  //     fetch("/api/goodsCategoryFilter", {
-  //       method: "POST",
-  //       body: JSON.stringify(categoryDataFilter),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     })
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         setBackData(data);
-  //       });
-  //   } else {
-  //     if (sortDirection == "up") {
-  //       // if (typeof backData == "undefined" && cartData == "initial") {
-  //       fetch("/api/goodsCategory", {
-  //         method: "POST",
-  //         body: JSON.stringify(categoryData),
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       })
-  //         .then((response) => response.json())
-  //         .then((data) => {
-  //           setBackData(data);
-  //         });
-  //       // }
-  //     } else {
-  //       // if (checkData == 0) {
-  //       console.log("yes");
-  //       fetch("/api/goodsCategoryDesc", {
-  //         method: "POST",
-  //         body: JSON.stringify(categoryData),
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       })
-  //         .then((response) => response.json())
-  //         .then((data) => {
-  //           setBackData(data);
-  //           setCheckData(1);
-  //         });
-  //       // }
-  //     }
-  //   }
-  // }, [category, filterColor, filterMemory, sortDirection, price]);
+  useEffect(() => {
+    console.log(filterColor, filterMemory, price);
+    if (
+      backData ||
+      filterColor.length > 0 ||
+      filterMemory.length > 0 ||
+      price.min ||
+      price.max
+    ) {
+      const categoryDataFilter = {
+        category: params.category,
+        color: filterColor,
+        memory: filterMemory.filter((item) =>
+          filterMemoryData.some((i) => i.memory === item)
+        ),
+        sort: sortDirection,
+        price: price,
+      };
+      fetch("/api/goodsCategoryFilter", {
+        method: "POST",
+        body: JSON.stringify(categoryDataFilter),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setBackData(data);
+        });
+    } else {
+      if (sortDirection == "up") {
+        // if (typeof backData == "undefined" && cartData == "initial") {
+        fetch("/api/goodsCategory", {
+          method: "POST",
+          body: JSON.stringify(categoryData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setBackData(data);
+          });
+        // }
+      } else {
+        // if (checkData == 0) {
+        console.log("yes");
+        fetch("/api/goodsCategoryDesc", {
+          method: "POST",
+          body: JSON.stringify(categoryData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setBackData(data);
+            setCheckData(1);
+          });
+        // }
+      }
+    }
+  }, [category, filterColor, filterMemory, sortDirection, price]);
 
-  // if (
-  //   cartData == "initial" &&
-  //   typeof backData == "undefined" &&
-  //   cartPrice == 0
-  // ) {
-  //   console.log("test");
-  //   fetch("/api/cart")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setCartData(data);
-  //       let cart_summ = 0;
-  //       data.map((good) => {
-  //         cart_summ += good.price * good.count;
-  //       });
-  //       setCartPrice(cart_summ);
-  //     });
-  // }
+  if (
+    cartData == "initial" &&
+    typeof backData == "undefined" &&
+    cartPrice == 0
+  ) {
+    console.log("test");
+    fetch("/api/cart")
+      .then((response) => response.json())
+      .then((data) => {
+        setCartData(data);
+        let cart_summ = 0;
+        data.map((good) => {
+          cart_summ += good.price * good.count;
+        });
+        setCartPrice(cart_summ);
+      });
+  }
   const [cartCount, setCartCount] = useState(0);
-  // if (
-  //   cartCount == 0 &&
-  //   typeof backData == "undefined" &&
-  //   cartData == "initial"
-  // ) {
-  //   if (cookies.get("id")) {
-  //     fetch("/api/getUserByID")
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         setCartCount(data.cart.split(", ").length - 1);
-  //         //setBackData(data);
-  //       });
-  //   } else {
-  //     if (cookies.get("cart")) {
-  //       setTimeout(() => {
-  //         if (cartCount == 0)
-  //           setCartCount(cookies.get("cart").split("_").length - 1);
-  //         //setBackData(data);
-  //       }, 1);
-  //     }
-  //   }
-  // }
+  if (
+    cartCount == 0 &&
+    typeof backData == "undefined" &&
+    cartData == "initial"
+  ) {
+    if (cookies.id) {
+      fetch("/api/getUserByID")
+        .then((response) => response.json())
+        .then((data) => {
+          setCartCount(data.cart.split(", ").length - 1);
+          // setBackData(data);
+        });
+    } else {
+      if (cookies.cart) {
+        setTimeout(() => {
+          if (cartCount == 0)
+            setCartCount(cookies.cart.split("_").length - 1);
+          //setBackData(data);
+        }, 1);
+      }
+    }
+  }
 
   const searchRef = useRef();
   return (
     <div className="wrapper">
-      {/* <Header
+      <Header
         cartPrice={typeof cartPrice == "undefined" ? "" : cartPrice}
         pull={pull}
         setPull={setPull}
@@ -220,7 +227,8 @@ function Tkani(props) {
         searchRef={searchRef}
         setBackData={setBackData}
         isSearch={1}
-      /> */}
+        cookies={cookies}
+      />
 
       <div
         className={

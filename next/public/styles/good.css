@@ -52,7 +52,7 @@
 }
 .good__main__image__sidebar__slider__item {
 	display: flex;
-	justify-content: end;
+	justify-content: flex-end;
 	gap: 5px;
 }
 .good__main__slider__img {
@@ -93,7 +93,7 @@
 }
 .good__main__down__head {
 	display: flex;
-	align-items: end;
+	align-items: flex-end;
 	gap: 28px;
 }
 .good__main__down__left__title {
@@ -216,6 +216,7 @@
 }
 .good__main__down__right__content {
 	margin-top: 2px;
+	margin-right: 5px;
 }
 
 .good__main__down__right__content p {

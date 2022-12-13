@@ -4,14 +4,22 @@ import FooterMob from "../components/FooterMob";
 import { useCallback, useState, useRef } from "react";
 import Cookies from "universal-cookie";
 import { useTitle } from "../hooks/useTitle";
+import { getCookies } from "cookies-next";
 
-function MakeOrder() {
+export function getServerSideProps({ req, res }) {
+  return {
+    props: {
+      cookies: getCookies({ req, res })
+    }
+  }
+}
+
+function MakeOrder({ cookies }) {
   useTitle("Оформление заказа")
 
   const phone = useRef();
   const mail = useRef();
   const adress = useRef();
-  const cookies = new Cookies();
   const [buyer, setBuyer] = useState("company");
   const [delivery, setDelivery] = useState("local");
   const [payment, setPayment] = useState("online");
@@ -22,7 +30,7 @@ function MakeOrder() {
   const [backData, setBackData] = useState();
 
   if (typeof backData == "undefined") {
-    if (cookies.get("id") > 0 && cookies.get("pass").length > 0) {
+    if (cookies.id > 0 && cookies.pass.length > 0) {
       fetch("/api/getUserByID")
         .then((response) => response.json())
         .then((data) => {
@@ -34,17 +42,17 @@ function MakeOrder() {
     }
   }
   const [cartCount, setCartCount] = useState(0);
-  if (cookies.get("id")) {
+  if (cookies.id) {
     fetch("/api/getUserByID")
       .then((response) => response.json())
       .then((data) => {
         setCartCount(data.cart.split(", ").length - 1);
       });
   } else {
-    if (cookies.get("cart")) {
+    if (cookies.cart) {
       setTimeout(() => {
         if (cartCount == 0)
-          setCartCount(cookies.get("cart").split("_").length - 1);
+          setCartCount(cookies.cart.split("_").length - 1);
       }, 1);
     }
   }
@@ -159,6 +167,7 @@ function MakeOrder() {
         pullMenuMob={pullMenuMob}
         setPullMenuMob={setPullMenuMob}
         cartCount={cartCount}
+        cookies={cookies}
       />
       <div
         className={

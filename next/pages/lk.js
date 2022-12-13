@@ -6,6 +6,15 @@ import LK_2 from "../components/LK_2";
 import LK_3 from "../components/LK_3";
 import LK_4 from "../components/LK_4";
 import { useState } from "react";
+import { getCookies } from "cookies-next";
+
+export function getServerSideProps({ req, res }) {
+  return {
+    props: {
+      cookies: getCookies({ req, res })
+    }
+  }
+}
 
 function LK() {
   const [chapter, setChapter] = useState(2);
@@ -27,7 +36,7 @@ function LK() {
 
   return (
     <div className="wrapper">
-      <Header cartPrice={2120} pull={pull} setPull={setPull} pullMenuMob={pullMenuMob} setPullMenuMob={setPullMenuMob}/>
+      <Header cartPrice={2120} pull={pull} setPull={setPull} pullMenuMob={pullMenuMob} setPullMenuMob={setPullMenuMob} cookies={cookies} />
       <section className={(pull == "" && pullMenuMob == "") ? "lk__section-active" : "lk__section"}>{section}</section>
       <Footer />
       <FooterMob cartPrice={212000} />

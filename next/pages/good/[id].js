@@ -7,21 +7,27 @@ import GoodSlider from "../../components/GoodSlider";
 import { goods } from "../../data/GoodsJSON";
 import NewArrayByCount from "../../Services/Array";
 import GoodMobile from "../../components/GoodMobile";
-import { useParams } from "react-router-dom";
 import AddToCart from "../../components/AddToCart";
-import Cookies from "universal-cookie";
+// import Cookies from "universal-cookie";
 import strCut from "../../Services/StrCutLimits";
-import { useNavigate } from "react-router-dom";
 import { useTitle } from "../../hooks/useTitle";
-const cookies = new Cookies();
+import { getCookies } from "cookies-next";
+import { useRouter } from "next/router";
 
 // Get ID from URL
 
-function Good() {
+export function getServerSideProps({ req, res }) {
+  return {
+    props: {
+      cookies: getCookies({ req, res })
+    }
+  }
+}
+
+function Good({ cookies }) {
   useTitle("Товар")
   
-  const navigate = useNavigate();
-  const params = useParams();
+  const { query: params, push } = useRouter();
   const goodID = params.id;
   const [backData, setBackData] = useState();
   const [cartCount, setCartCount] = useState(0);
@@ -74,7 +80,7 @@ function Good() {
         setCartPrice(cart_summ);
       });
   }
-  if (cookies.get("id") && cartCount == 0 && cartData == "initial") {
+  if (cookies.id && cartCount == 0 && cartData == "initial") {
     fetch("/api/getUserByID")
       .then((response) => response.json())
       .then((data) => {
@@ -84,13 +90,13 @@ function Good() {
   } else {
     console.log("cho za huinya");
     if (
-      cookies.get("cart") &&
+      cookies.cart &&
       cartCount == 0 &&
-      typeof cookies.get("id") == "undefined"
+      typeof cookies.id == "undefined"
     ) {
       setTimeout(() => {
         if (cartCount == 0)
-          setCartCount(cookies.get("cart").split("_").length - 1);
+          setCartCount(cookies.cart.split("_").length - 1);
       }, 1);
     }
   }
@@ -106,6 +112,7 @@ function Good() {
           cartCount={cartCount}
           setBackData={setBackData}
           isSearch={0}
+          cookies={cookies}
         />
         <div
           className={
@@ -270,7 +277,7 @@ function Good() {
                                     })
                                       .then((response) => response.json())
                                       .then((data) => {
-                                        navigate("/good/" + data.ID);
+                                        push("/good/" + data.ID);
                                         setBackData(data);
                                       });
                                   }}
@@ -320,7 +327,7 @@ function Good() {
                                     })
                                       .then((response) => response.json())
                                       .then((data) => {
-                                        navigate("/good/" + data.ID);
+                                        push("/good/" + data.ID);
                                         setBackData(data);
                                       });
                                   }}

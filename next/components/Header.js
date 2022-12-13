@@ -6,8 +6,7 @@ import RegForm from "./RegForm";
 import LoginForm from "./LoginForm";
 import Cookies from "universal-cookie";
 import CityModal from "./CityModal";
-import { getCookies } from 'cookies-next'
-const cookies = new Cookies();
+import { getCookie, getCookies } from 'cookies-next'
 
 function Header({
   cartPrice,
@@ -21,6 +20,7 @@ function Header({
   searchRef,
   setBackData,
   isSearch,
+  cookies
 }) {
   const [catalogChapter, setCatalogChapter] = useState("");
   const [catalogMenuImgActive, setCatalogMenuImgActive] = useState("");
@@ -39,10 +39,8 @@ function Header({
 
   const [modal, setModal] = useState();
   const [cookiesState, setCookiesState] = useState(cookies);
-  const city = getCookies("city") ? getCookies("city") : "Москва";
+  const city = cookies.city ? cookies.city : "Москва";
   const [cityState, setCity] = useState(city);
-
-  console.log(cartCount);
 
   return (
     <header className="header">
@@ -155,8 +153,8 @@ function Header({
 
               <div className="nav-bottom__row-right">
                 <div className="nav-bottom__row-right__icons">
-                  {cookiesState.get("id") > 0 &&
-                  cookiesState.get("pass").length > 0 ? (
+                  {cookiesState.id > 0 &&
+                  cookiesState.pass.length > 0 ? (
                     <Link href="/cart">
                       <div
                         className="nav-bottom__burger"

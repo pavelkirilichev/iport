@@ -4,13 +4,20 @@ import Orders from "../components/Orders";
 import { useState, useEffect } from "react";
 import FooterMob from "../components/FooterMob";
 import strCut from "../Services/StrCutLimits";
-import Cookies from "universal-cookie";
 import UpdateCart from "../components/UpdateCart";
 import Link from "next/link";
 import { useTitle } from "../hooks/useTitle";
-const cookies = new Cookies();
+import { getCookies } from "cookies-next";
 
-function Cart() {
+export function getServerSideProps({ req, res }) {
+  return {
+    props: {
+      cookies: getCookies({ req, res })
+    }
+  }
+}
+
+function Cart({ cookies }) {
   useTitle("Личный кабинет")
   
   const [pullMenuMob, setPullMenuMob] = useState("");
@@ -38,7 +45,7 @@ function Cart() {
   }
   const [cartCount, setCartCount] = useState(0);
   if (cartCount == 0 && typeof backData == "undefined") {
-    if (cookies.get("id")) {
+    if (cookies.id) {
       fetch("/api/getUserByID")
         .then((response) => response.json())
         .then((data) => {
@@ -46,10 +53,10 @@ function Cart() {
           setBackData(data);
         });
     } else {
-      if (cookies.get("cart")) {
+      if (cookies.cart) {
         setTimeout(() => {
           if (cartCount == 0)
-            setCartCount(cookies.get("cart").split("_").length - 1);
+            setCartCount(cookies.cart.split("_").length - 1);
         }, 1);
       }
     }
@@ -65,6 +72,7 @@ function Cart() {
           pullMenuMob={pullMenuMob}
           setPullMenuMob={setPullMenuMob}
           cartCount={cartCount}
+          cookies={cookies}
         />
         <div
           className={
@@ -74,8 +82,8 @@ function Cart() {
           <div className="cart__container">
             <div className="cart__row">
               {typeof backData == "undefined" ||
-              cookies.get("id") == undefined ||
-              cookies.get("pass") == undefined ? (
+              cookies.id == undefined ||
+              cookies.pass == undefined ? (
                 ""
               ) : (
                 <div className="cart__row__sidebar">

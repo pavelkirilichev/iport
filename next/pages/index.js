@@ -7,11 +7,20 @@ import { useEffect, useState, useRef } from "react";
 import { goods } from "../data/GoodsJSON";
 import strCut from "../Services/StrCutLimits";
 import AddToCart from "../components/AddToCart";
-import Cookies from "universal-cookie";
 import { useTitle } from "../hooks/useTitle";
-const cookies = new Cookies();
+// import Cookies from "universal-cookie";
+// const cookies = new Cookies();
+import { getCookie, getCookies } from 'cookies-next'
 
-function Home() {
+export function getServerSideProps({ req, res }) {
+  return {
+    props: {
+      cookies: getCookies({ req, res })
+    }
+  }
+}
+
+function Home({ cookies }) {
   useTitle("Главная")
 
   const [backData, setBackData] = useState();
@@ -46,17 +55,17 @@ function Home() {
       });
   }
   if (cartCount == 0 && typeof backData == "undefined") {
-    if (cookies.get("id")) {
+    if (getCookie("id")) {
       fetch("/api/getUserByID")
         .then((response) => response.json())
         .then((data) => {
           setCartCount(data.cart.split(", ").length - 1);
         });
     } else {
-      if (cookies.get("cart")) {
+      if (getCookie("cart")) {
         setTimeout(() => {
           if (cartCount == 0)
-            setCartCount(cookies.get("cart").split("_").length - 1);
+            setCartCount(getCookie("cart").split("_").length - 1);
         }, 1);
       }
     }
@@ -73,6 +82,7 @@ function Home() {
         searchRef={searchRef}
         setBackData={setBackData}
         isSearch={1}
+        cookies={cookies}
       />
       <div
         className={

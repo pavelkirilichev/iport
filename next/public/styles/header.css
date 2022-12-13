@@ -123,7 +123,7 @@
 	margin-top: 3px;
 	display: flex;
 	align-items: center;
-	justify-content: end;
+	justify-content: flex-end;
 	width: 380px;
 	height: 40px;
 	background: #f2f4f5;
@@ -424,7 +424,7 @@
 .nav-mobile__search {
 	display: flex;
 	align-items: center;
-	justify-content: end;
+	justify-content: flex-end;
 	width: 60%;
 	height: 40px;
 	background: #f2f4f5;
