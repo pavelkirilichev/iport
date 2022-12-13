@@ -9,16 +9,34 @@ import strCut from "../../Services/StrCutLimits";
 import AddToCart from "../../components/AddToCart";
 import { useTitle } from "../../hooks/useTitle";
 import { getCookies } from "cookies-next";
+import Head from "next/head";
 
-export function getServerSideProps({ req, res }) {
+export async function getServerSideProps({ req, res, query }) {
+  const cookies = getCookies({ req, res })
+  const data = await fetch("http://localhost:6000/goodsCategory", {
+    method: "POST",
+    body: JSON.stringify({
+      category: query.caregory
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      return data
+    });
+
   return {
     props: {
-      cookies: getCookies({ req, res })
+      cookies,
+      goods: data
     }
   }
 }
 
-function Tkani({ cookies }) {
+function Tkani({ cookies, goods }) {
+  console.log(goods)
   useTitle("Каталог")
 
   const { query: params } = useRouter();
@@ -215,6 +233,10 @@ function Tkani({ cookies }) {
   const searchRef = useRef();
   return (
     <div className="wrapper">
+      <Head>
+        <title>{category}</title>
+        <meta type="og:title" content={category}></meta>
+      </Head>
       <Header
         cartPrice={typeof cartPrice == "undefined" ? "" : cartPrice}
         pull={pull}

@@ -8,6 +8,7 @@ import { goods } from "../data/GoodsJSON";
 import strCut from "../Services/StrCutLimits";
 import AddToCart from "../components/AddToCart";
 import { useTitle } from "../hooks/useTitle";
+import Head from 'next/head'
 // import Cookies from "universal-cookie";
 // const cookies = new Cookies();
 import { getCookie, getCookies } from 'cookies-next'
