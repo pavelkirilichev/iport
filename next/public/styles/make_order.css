@@ -421,3 +421,12 @@
 .mo__flex__row__title {
 	margin: 0;
 }
+.mo__payment__btn {
+	margin-top: 15px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	border: 1px solid rgb(41, 36, 36);
+	border-radius: 20px;
+}
