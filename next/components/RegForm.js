@@ -23,7 +23,7 @@ function RegForm({ modal, setModal }) {
 					pass: pass,
 					name: name,
 				};
-				fetch("/api/registration", {
+				fetch(`${process.env.NEXT_PUBLIC_API_URL}/registration`, {
 					method: "POST",
 					body: JSON.stringify(regData),
 					headers: {

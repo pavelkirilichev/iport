@@ -5,11 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 12537",
     "lint": "next lint"
   },
   "dependencies": {
     "cookies-next": "^2.1.1",
+    "dotenv": "^16.0.3",
     "next": "13.0.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",

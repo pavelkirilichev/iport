@@ -31,7 +31,7 @@ function Cart({ cookies }) {
   const [cartPrice, setCartPrice] = useState(0);
   if (cartData == "initial" && typeof backData == "undefined") {
     console.log("test");
-    fetch("/api/cart")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -46,7 +46,7 @@ function Cart({ cookies }) {
   const [cartCount, setCartCount] = useState(0);
   if (cartCount == 0 && typeof backData == "undefined") {
     if (cookies.id) {
-      fetch("/api/getUserByID")
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/getUserByID`)
         .then((response) => response.json())
         .then((data) => {
           setCartCount(data.cart.split(", ").length - 1);

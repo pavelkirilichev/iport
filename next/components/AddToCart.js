@@ -5,7 +5,7 @@ function AddToCart(id, count, setCartCount) {
 		id: id,
 		count: count,
 	};
-	fetch("/api/addToCart", {
+	fetch(`${process.env.NEXT_PUBLIC_API_URL}/addToCart`, {
 		method: "POST",
 		body: JSON.stringify(goodData),
 		headers: {

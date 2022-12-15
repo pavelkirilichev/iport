@@ -4,7 +4,7 @@ import MoreDetails from "./MoreDetails";
 function Orders() {
 	const [orders, setOrders] = useState();
 	if (typeof orders == "undefined") {
-		fetch("/api/ordersAll")
+		fetch(`${process.env.NEXT_PUBLIC_API_URL}/ordersAll`)
 			.then((response) => response.json())
 			.then((data) => {
 				setOrders(data);

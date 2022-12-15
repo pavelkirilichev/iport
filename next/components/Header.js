@@ -129,7 +129,7 @@ function Header({
                       const searchData = {
                         search: searchRef.current.value,
                       };
-                      fetch("/api/goodsSearch", {
+                      fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodsSearch`, {
                         method: "POST",
                         body: JSON.stringify(searchData),
                         headers: {

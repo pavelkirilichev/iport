@@ -49,7 +49,7 @@ function Good({ cookies }) {
     id: goodID,
   };
   if (typeof backData == "undefined") {
-    fetch("/api/goodID", {
+    fetch(`${process.end.API_URL}goodID`, {
       method: "POST",
       body: JSON.stringify(idData),
       headers: {
@@ -69,7 +69,7 @@ function Good({ cookies }) {
     cartCount == 0
   ) {
     console.log("test");
-    fetch("/api/cart")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`)
       .then((response) => response.json())
       .then((data) => {
         setCartData(data);
@@ -81,7 +81,7 @@ function Good({ cookies }) {
       });
   }
   if (cookies.id && cartCount == 0 && cartData == "initial") {
-    fetch("/api/getUserByID")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/getUserByID`)
       .then((response) => response.json())
       .then((data) => {
         setCartCount(data.cart.split(", ").length - 1);
@@ -268,7 +268,7 @@ function Good({ cookies }) {
                                       type: "color",
                                       value: item,
                                     };
-                                    fetch("/api/goodsOther", {
+                                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodsOther`, {
                                       method: "POST",
                                       body: JSON.stringify(data),
                                       headers: {
@@ -318,7 +318,7 @@ function Good({ cookies }) {
                                       type: "memory",
                                       value: item_data,
                                     };
-                                    fetch("/api/goodsOther", {
+                                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodsOther`, {
                                       method: "POST",
                                       body: JSON.stringify(data),
                                       headers: {

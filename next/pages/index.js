@@ -36,7 +36,7 @@ function Home({ cookies }) {
 
   if (cartData == "initial" && typeof backData == "undefined") {
     console.log("test");
-    fetch("/api/cart")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`)
       .then((response) => response.json())
       .then((data) => {
         setCartData(data);
@@ -49,7 +49,7 @@ function Home({ cookies }) {
       });
   }
   if (typeof backData == "undefined" && cartData == "initial") {
-    fetch("/api/goodsLimit")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodsLimit`)
       .then((response) => response.json())
       .then((data) => {
         setBackData(data);
@@ -57,7 +57,7 @@ function Home({ cookies }) {
   }
   if (cartCount == 0 && typeof backData == "undefined") {
     if (getCookie("id")) {
-      fetch("/api/getUserByID")
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/getUserByID`)
         .then((response) => response.json())
         .then((data) => {
           setCartCount(data.cart.split(", ").length - 1);
@@ -160,7 +160,7 @@ function Home({ cookies }) {
             <div
               className="home__view-all"
               onClick={() => {
-                fetch("/api/goods")
+                fetch(`${process.env.NEXT_PUBLIC_API_URL}/goods`)
                   .then((response) => response.json())
                   .then((data) => {
                     setBackData(data);
