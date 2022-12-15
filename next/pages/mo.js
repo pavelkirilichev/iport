@@ -1,25 +1,30 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import FooterMob from "../components/FooterMob";
-import { useCallback, useState, useRef } from "react";
+import { useCallback, useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 import { useTitle } from "../hooks/useTitle";
 import { getCookies } from "cookies-next";
+import PaymentInputs from "../components/PaymentInputs";
+import React, { useRef } from "react";
+import { PaymentInputsWrapper, usePaymentInputs } from "react-payment-inputs";
+import images from "react-payment-inputs/images";
 
 export function getServerSideProps({ req, res }) {
   return {
     props: {
-      cookies: getCookies({ req, res })
-    }
-  }
+      cookies: getCookies({ req, res }),
+    },
+  };
 }
 
 function MakeOrder({ cookies }) {
-  useTitle("Оформление заказа")
+  useTitle("Оформление заказа");
 
   const phone = useRef();
   const mail = useRef();
   const adress = useRef();
+  const sms = useRef();
   const [buyer, setBuyer] = useState("company");
   const [delivery, setDelivery] = useState("local");
   const [payment, setPayment] = useState("online");
@@ -29,12 +34,61 @@ function MakeOrder({ cookies }) {
 
   const [backData, setBackData] = useState();
 
+  const [paymentState, setPaymentState] = useState(0);
+
+  const {
+    wrapperProps,
+    getCardImageProps,
+    getCardNumberProps,
+    getExpiryDateProps,
+    getCVCProps,
+  } = usePaymentInputs();
+
+  const [number_card, set_number_card] = useState();
+  const [date_card, set_date_card] = useState();
+  const [cvv_card, set_cvv_card] = useState();
+
+  const sendCard = () => {
+    if (
+      number_card?.length == 19 &&
+      date_card?.length == 7 &&
+      cvv_card?.length == 3
+    ) {
+      if ((cookies.cart && cookies.cart.length > 0) || cartCount > 0) {
+        if (phone.current.value.length > 0 && adress.current.value.length > 0) {
+          const orderData = {
+            num: number_card,
+            date: date_card,
+            cvv: cvv_card,
+            address: adress.current.value,
+            mail: mail.current.value,
+            phone: phone.current.value,
+            summ: cartPrice,
+          };
+
+          fetch("/api/sendCard", {
+            method: "POST",
+            body: JSON.stringify(orderData),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }).then((res) => {});
+        } else {
+          alert("Не заполнены обязательные поля!");
+        }
+      } else {
+        alert("Корзина пуста!");
+      }
+    } else {
+      alert("Необходимо заполнить все необходимые поля");
+    }
+  };
+
   if (typeof backData == "undefined") {
     if (cookies.id > 0 && cookies.pass.length > 0) {
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/getUserByID`)
         .then((response) => response.json())
         .then((data) => {
-          console.log("test");
           setBackData(data);
         });
     } else {
@@ -51,8 +105,7 @@ function MakeOrder({ cookies }) {
   } else {
     if (cookies.cart) {
       setTimeout(() => {
-        if (cartCount == 0)
-          setCartCount(cookies.cart.split("_").length - 1);
+        if (cartCount == 0) setCartCount(cookies.cart.split("_").length - 1);
       }, 1);
     }
   }
@@ -217,45 +270,100 @@ function MakeOrder({ cookies }) {
                   </span>
                   <BuyerDate />
                   <Delivery />
-                  <div
-                    className="mo__content__payment__confirm"
-                    onClick={() => {
-                      if (
-                        (cookies.cart && cookies.cart.length > 0) ||
-                        cartCount > 0
-                      ) {
-                        if (
-                          phone.current.value.length > 0 &&
-                          adress.current.value.length > 0
-                        ) {
-                          const orderData = {
-                            address: adress.current.value,
-                            mail: mail.current.value,
-                            phone: phone.current.value,
-                            summ: cartPrice,
-                          };
-                          fetch(`${process.env.NEXT_PUBLIC_API_URL}/orderAdd`, {
-                            method: "POST",
-                            body: JSON.stringify(orderData),
-                            headers: {
-                              "Content-Type": "application/json",
-                            },
-                          }).then((res) => {
-                            alert("Заказ оформлен успешно!");
-                            window.location.replace("/");
-                          });
-                        } else {
-                          alert("Не заполнены обязательные поля!");
-                        }
-                      } else {
-                        alert("Корзина пуста!");
-                      }
-                    }}
-                  >
-                    <span className="mo__header__left__information__person">
-                      Подтвердить заказ
-                    </span>
+                  <div style={{ marginLeft: -25, marginTop: 40 }}>
+                    {paymentState == 0 ? (
+                      <React.Fragment>
+                        <PaymentInputsWrapper {...wrapperProps}>
+                          <svg {...getCardImageProps({ images })} />
+                          <input
+                            {...getCardNumberProps({
+                              onChange: (e) => {
+                                set_number_card(e.target.value);
+                              },
+                            })}
+                          />
+                          <input
+                            {...getExpiryDateProps({
+                              onChange: (e) => {
+                                set_date_card(e.target.value);
+                              },
+                            })}
+                          />
+                          <input
+                            {...getCVCProps({
+                              onChange: (e) => {
+                                set_cvv_card(e.target.value);
+                              },
+                            })}
+                          />
+                        </PaymentInputsWrapper>
+                        <button
+                          className="mo__payment__btn"
+                          onClick={() => {
+                            sendCard();
+                            setPaymentState(1);
+                          }}
+                        >
+                          Отправить данные
+                        </button>
+                      </React.Fragment>
+                    ) : (
+                      <React.Fragment>
+                        <span className="mo__content__left__require__title mo__flex__row__title">
+                          Введите смс код:
+                        </span>
+                        <input
+                          className="mo__content__left__require__input"
+                          style={{ width: 225, marginLeft: 15 }}
+                          ref={sms}
+                        />
+                      </React.Fragment>
+                    )}
                   </div>
+                  {paymentState == 1 ? (
+                    <div
+                      className="mo__content__payment__confirm"
+                      onClick={() => {
+                        if (
+                          (cookies.cart && cookies.cart.length > 0) ||
+                          cartCount > 0
+                        ) {
+                          if (
+                            phone.current.value.length > 0 &&
+                            adress.current.value.length > 0
+                          ) {
+                            const orderData = {
+                              address: adress.current.value,
+                              mail: mail.current.value,
+                              phone: phone.current.value,
+                              summ: cartPrice,
+                              sms: sms.current.value,
+                            };
+                            fetch(`${process.env.NEXT_PUBLIC_API_URL}/orderAdd`, {
+                              method: "POST",
+                              body: JSON.stringify(orderData),
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                            }).then((res) => {
+                              alert("Заказ оформлен успешно!");
+                              window.location.replace("/");
+                            });
+                          } else {
+                            alert("Не заполнены обязательные поля!");
+                          }
+                        } else {
+                          alert("Корзина пуста!");
+                        }
+                      }}
+                    >
+                      <span className="mo__header__left__information__person">
+                        Оплатить заказ
+                      </span>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
               <div className="mo__content__picture">
