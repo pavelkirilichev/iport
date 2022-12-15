@@ -49,7 +49,7 @@ function Good({ cookies }) {
     id: goodID,
   };
   if (typeof backData == "undefined") {
-    fetch(`${process.end.API_URL}goodID`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodID`, {
       method: "POST",
       body: JSON.stringify(idData),
       headers: {
