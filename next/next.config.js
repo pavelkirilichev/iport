@@ -10,6 +10,11 @@ const nextConfig = {
         destination: "http://localhost:4000/:path*", // Proxy to Backend
       },
     ] : []
+  },
+  webpack(config) {
+    config.module.generator.asset.publicPath = "/_next/";
+
+    return config
   }
 };
 
