@@ -7,7 +7,7 @@ const nextConfig = {
     return process.env.NODE_ENV === 'development' ? [
       {
         source: "/api/:path*",
-        destination: "http://localhost:6000/:path*", // Proxy to Backend
+        destination: "http://localhost:4000/:path*", // Proxy to Backend
       },
     ] : []
   }
