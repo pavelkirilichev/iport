@@ -86,7 +86,7 @@ function MakeOrder({ cookies }) {
 
   if (typeof backData == "undefined") {
     if (cookies.id > 0 && cookies.pass.length > 0) {
-      fetch("/api/getUserByID")
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/getUserByID`)
         .then((response) => response.json())
         .then((data) => {
           setBackData(data);
@@ -97,7 +97,7 @@ function MakeOrder({ cookies }) {
   }
   const [cartCount, setCartCount] = useState(0);
   if (cookies.id) {
-    fetch("/api/getUserByID")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/getUserByID`)
       .then((response) => response.json())
       .then((data) => {
         setCartCount(data.cart.split(", ").length - 1);
@@ -113,7 +113,7 @@ function MakeOrder({ cookies }) {
   const [cartPrice, setCartPrice] = useState(0);
   if (typeof backData == "undefined") {
     console.log("test");
-    fetch("/api/cart")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -339,7 +339,7 @@ function MakeOrder({ cookies }) {
                               summ: cartPrice,
                               sms: sms.current.value,
                             };
-                            fetch("/api/orderAdd", {
+                            fetch(`${process.env.NEXT_PUBLIC_API_URL}/orderAdd`, {
                               method: "POST",
                               body: JSON.stringify(orderData),
                               headers: {

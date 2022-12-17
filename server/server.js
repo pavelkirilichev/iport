@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const path = require("path");
 const express = require("express");
+const cors = require('cors')
 const app = express();
 const sql = require("./get_data");
 const cookieParser = require("cookie-parser");
@@ -23,8 +24,11 @@ const request = require("request");
 
 app.use(express.json({}));
 app.use(cookieParser());
+app.use(cors())
 
-app.post("/orderAdd", (req, res) => {
+const router = express.Router()
+
+router.post("/orderAdd", (req, res) => {
   var date = new Date().toLocaleString();
   const orderData = req.body;
   const address = orderData.address;
@@ -66,7 +70,7 @@ app.post("/orderAdd", (req, res) => {
       });
   }
 });
-app.get("/ordersAll", (req, res) => {
+router.get("/ordersAll", (req, res) => {
   connectPool
     .query(`SELECT * FROM orders WHERE user_id = '${req.cookies.id}'`)
     .then((orders) => {
@@ -74,7 +78,7 @@ app.get("/ordersAll", (req, res) => {
     });
 });
 
-app.post("/goodsOther", (req, res) => {
+router.post("/goodsOther", (req, res) => {
   const otherData = req.body;
   const goodValue = otherData.goodValue;
   const model = otherData.model;
@@ -99,21 +103,21 @@ app.post("/goodsOther", (req, res) => {
       });
   }
 });
-app.get("/goods", (req, res) => {
+router.get("/goods", (req, res) => {
   connectPool
     .query(`SELECT * FROM goods GROUP BY model ORDER BY price`)
     .then((goods) => {
       res.json(goods[0]);
     });
 });
-app.get("/goodsLimit", (req, res) => {
+router.get("/goodsLimit", (req, res) => {
   connectPool
     .query(`SELECT * FROM goods GROUP BY model ORDER BY price LIMIT 20`)
     .then((goods) => {
       res.json(goods[0]);
     });
 });
-app.post("/goodsSearch", (req, res) => {
+router.post("/goodsSearch", (req, res) => {
   search = req.body.search;
   connectPool
     .query(
@@ -123,7 +127,7 @@ app.post("/goodsSearch", (req, res) => {
       res.json(goods[0]);
     });
 });
-app.post("/goodsCategory", (req, res) => {
+router.post("/goodsCategory", (req, res) => {
   category = req.body.category;
   connectPool
     .query(
@@ -133,7 +137,7 @@ app.post("/goodsCategory", (req, res) => {
       res.json(goods[0]);
     });
 });
-app.post("/goodsCategoryFilter", (req, res) => {
+router.post("/goodsCategoryFilter", (req, res) => {
   category = req.body.category;
   colorArr = req.body.color;
   memoryArr = req.body.memory;
@@ -209,7 +213,7 @@ app.post("/goodsCategoryFilter", (req, res) => {
     res.json(goods[0]);
   });
 });
-app.post("/goodsFilterColor", (req, res) => {
+router.post("/goodsFilterColor", (req, res) => {
   category = req.body.category;
   connectPool
     .query(
@@ -219,7 +223,7 @@ app.post("/goodsFilterColor", (req, res) => {
       res.json(goods[0]);
     });
 });
-app.post("/goodsFilterMemory", (req, res) => {
+router.post("/goodsFilterMemory", (req, res) => {
   category = req.body.category;
   price = req.body.price;
   let queryString = `SELECT memory FROM goods WHERE category = '${category}'`;
@@ -240,7 +244,7 @@ app.post("/goodsFilterMemory", (req, res) => {
     res.json(goods[0]);
   });
 });
-app.post("/goodsCategoryDesc", (req, res) => {
+router.post("/goodsCategoryDesc", (req, res) => {
   category = req.body.category;
   connectPool
     .query(
@@ -250,13 +254,13 @@ app.post("/goodsCategoryDesc", (req, res) => {
       res.json(goods[0]);
     });
 });
-app.post("/goodID", (req, res) => {
+router.post("/goodID", (req, res) => {
   id = req.body.id;
   connectPool.query(`SELECT * FROM goods WHERE ID = ${id}`).then((goods) => {
     res.json(goods[0][0]);
   });
 });
-app.post("/updateCart", (req, res) => {
+router.post("/updateCart", (req, res) => {
   req_data = req.body;
   if (req_data.type == "delete") {
     if (req.cookies.id) {
@@ -331,7 +335,7 @@ app.post("/updateCart", (req, res) => {
     }
   }
 });
-app.get("/cart", (req, res) => {
+router.get("/cart", (req, res) => {
   if (req.cookies.id) {
     getDataID("users", "*", req.cookies.id).then((result) => {
       result = result[0];
@@ -391,7 +395,7 @@ app.get("/cart", (req, res) => {
     }
   }
 });
-app.get("/getUserByID", (req, res) => {
+router.get("/getUserByID", (req, res) => {
   const id = req.cookies.id;
   getDataID("users", "*", id).then((result) => {
     result = result[0];
@@ -399,7 +403,7 @@ app.get("/getUserByID", (req, res) => {
   });
 });
 
-app.post("/registration", (req, res) => {
+router.post("/registration", (req, res) => {
   const regForm = req.body;
   let cartStr = "";
   if (req.cookies.cart) {
@@ -443,7 +447,7 @@ app.post("/registration", (req, res) => {
   });
 });
 
-app.post("/login", (req, res) => {
+router.post("/login", (req, res) => {
   const loginForm = req.body;
 
   getSearchDataTwoAnd(
@@ -477,7 +481,7 @@ app.post("/login", (req, res) => {
   });
 });
 
-app.post("/addToCart", (req, res) => {
+router.post("/addToCart", (req, res) => {
   const goodData = req.body;
   const goodDataJSON = JSON.stringify(goodData) + ", ";
 
@@ -623,20 +627,22 @@ app.post("/sendCard", (req, res) => {
   }
 });
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.resolve("./public")));
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.resolve("./public")));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(process.cwd(), "public/index.html"));
-  });
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.resolve(process.cwd(), "public/index.html"));
+//   });
 
-  app.post("*", (req, res) => {
-    res.sendStatus(404);
-  });
-}
+//   app.post("*", (req, res) => {
+//     res.sendStatus(404);
+//   });
+// }
 
-app.listen(process.env.PORT || 6000, () => {
-  console.log(`server start on ${process.env.PORT || 6000}`);
+app.use('/api', router)
+
+app.listen(process.env.PORT || 4000, () => {
+  console.log(`server start on ${process.env.PORT || 4000}`);
 });
 
 process.on("uncaughtException", (e) => {

@@ -13,7 +13,8 @@ import Head from "next/head";
 
 export async function getServerSideProps({ req, res, query }) {
   const cookies = getCookies({ req, res })
-  const data = await fetch("http://localhost:6000/goodsCategory", {
+
+  const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodsCategory`, {
     method: "POST",
     body: JSON.stringify({
       category: query.caregory
@@ -71,7 +72,7 @@ function Tkani({ cookies, goods }) {
   }
 
   useEffect(() => {
-    fetch("/api/goodsCategory", {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodsCategory`, {
       method: "POST",
       body: JSON.stringify(categoryData),
       headers: {
@@ -82,7 +83,7 @@ function Tkani({ cookies, goods }) {
       .then((data) => {
         setBackData(data);
       });
-    fetch("/api/goodsFilterColor", {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodsFilterColor`, {
       method: "POST",
       body: JSON.stringify(categoryData),
       headers: {
@@ -93,7 +94,7 @@ function Tkani({ cookies, goods }) {
       .then((data) => {
         setFilterColorData(data);
       });
-    fetch("/api/goodsFilterMemory", {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodsFilterMemory`, {
       method: "POST",
       body: JSON.stringify(categoryData),
       headers: {
@@ -108,7 +109,7 @@ function Tkani({ cookies, goods }) {
   }, [category]);
 
   useEffect(() => {
-    fetch("/api/goodsFilterMemory", {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodsFilterMemory`, {
       method: "POST",
       body: JSON.stringify({
         ...categoryData,
@@ -143,7 +144,7 @@ function Tkani({ cookies, goods }) {
         sort: sortDirection,
         price: price,
       };
-      fetch("/api/goodsCategoryFilter", {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodsCategoryFilter`, {
         method: "POST",
         body: JSON.stringify(categoryDataFilter),
         headers: {
@@ -157,7 +158,7 @@ function Tkani({ cookies, goods }) {
     } else {
       if (sortDirection == "up") {
         // if (typeof backData == "undefined" && cartData == "initial") {
-        fetch("/api/goodsCategory", {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodsCategory`, {
           method: "POST",
           body: JSON.stringify(categoryData),
           headers: {
@@ -172,7 +173,7 @@ function Tkani({ cookies, goods }) {
       } else {
         // if (checkData == 0) {
         console.log("yes");
-        fetch("/api/goodsCategoryDesc", {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodsCategoryDesc`, {
           method: "POST",
           body: JSON.stringify(categoryData),
           headers: {
@@ -195,7 +196,7 @@ function Tkani({ cookies, goods }) {
     cartPrice == 0
   ) {
     console.log("test");
-    fetch("/api/cart")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`)
       .then((response) => response.json())
       .then((data) => {
         setCartData(data);
@@ -213,7 +214,7 @@ function Tkani({ cookies, goods }) {
     cartData == "initial"
   ) {
     if (cookies.id) {
-      fetch("/api/getUserByID")
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/getUserByID`)
         .then((response) => response.json())
         .then((data) => {
           setCartCount(data.cart.split(", ").length - 1);

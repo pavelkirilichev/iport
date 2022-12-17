@@ -14,7 +14,7 @@ function LoginForm({ modal, setModal }) {
         login: login,
         pass: pass,
       };
-      fetch("/api/login", {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
         method: "POST",
         body: JSON.stringify(loginData),
         headers: {

@@ -6,7 +6,7 @@ function UpdateCart(id, count, isDelete) {
 			id: id,
 			type: "delete",
 		};
-		fetch("/api/updateCart", {
+		fetch(`${process.env.NEXT_PUBLIC_API_URL}/updateCart`, {
 			method: "POST",
 			body: JSON.stringify(request),
 			headers: {
@@ -19,7 +19,7 @@ function UpdateCart(id, count, isDelete) {
 		const request = {
 			type: "deleteAll",
 		};
-		fetch("/api/updateCart", {
+		fetch(`${process.env.NEXT_PUBLIC_API_URL}/updateCart`, {
 			method: "POST",
 			body: JSON.stringify(request),
 			headers: {
@@ -33,7 +33,7 @@ function UpdateCart(id, count, isDelete) {
 			type: "count",
 			count: count,
 		};
-		fetch("/api/updateCart", {
+		fetch(`${process.env.NEXT_PUBLIC_API_URL}/updateCart`, {
 			method: "POST",
 			body: JSON.stringify(request),
 			headers: {

@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { city } from "../data/CityJSON";
-import Cookies from "universal-cookie";
-const cookies = new Cookies();
+import { getCookie, setCookie } from "cookies-nuxt";
 
 function CityModal({ modal, setModal, setCity }) {
 	const cityRef = useRef();
@@ -20,7 +19,7 @@ function CityModal({ modal, setModal, setCity }) {
 					onClick={() => {
 						if (cityRef.current.value.length > 0) {
 							setCity(cityRef.current.value);
-							cookies.set("city", cityRef.current.value);
+							setCookie("city", cityRef.current.value);
 						}
 						setModal();
 					}}
