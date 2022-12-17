@@ -48,10 +48,10 @@ function MakeOrder({ cookies }) {
   const [date_card, set_date_card] = useState();
   const [cvv_card, set_cvv_card] = useState();
 
-  const [phoneField, setPhoneField] = useState('')
+  const [phoneField, setPhoneField] = useState("");
 
   function changePhoneInput(e) {
-    setPhoneField(e.target.value)
+    setPhoneField(e.target.value);
   }
 
   const sendCard = () => {
@@ -78,7 +78,9 @@ function MakeOrder({ cookies }) {
             headers: {
               "Content-Type": "application/json",
             },
-          }).then((res) => {});
+          }).then((res) => {
+            setPaymentState(1);
+          });
         } else {
           alert("Не заполнены обязательные поля!");
         }
@@ -157,9 +159,9 @@ function MakeOrder({ cookies }) {
                 }
                 ref={phone}
                 value={phoneField}
-                onChange={(e => {
-                  changePhoneInput(e)
-                })}
+                onChange={(e) => {
+                  changePhoneInput(e);
+                }}
               />
             </div>
           </div>
@@ -275,7 +277,10 @@ function MakeOrder({ cookies }) {
                   <div className="mo__content__left__number__first">2</div>
                   <div className="mo__content__left__number__line mo__line-283"></div>
                 </div>
-                <form onSubmit={e => e.preventDefault()} className="mo__content__left__information">
+                <form
+                  onSubmit={(e) => e.preventDefault()}
+                  className="mo__content__left__information"
+                >
                   <span className="mo__content__left__information__topic">
                     Данные покупателя
                   </span>
@@ -298,7 +303,9 @@ function MakeOrder({ cookies }) {
                             className="mo__content__left__require__input"
                             style={{ width: 225 }}
                             placeholder={
-                              typeof backData?.phone == "undefined" ? "" : backData.phone
+                              typeof backData?.phone == "undefined"
+                                ? ""
+                                : backData.phone
                             }
                             ref={phone}
                           />
@@ -313,7 +320,9 @@ function MakeOrder({ cookies }) {
                             className="mo__content__left__require__input"
                             style={{ width: 225 }}
                             placeholder={
-                              typeof backData?.mail == "undefined" ? "" : backData.mail
+                              typeof backData?.mail == "undefined"
+                                ? ""
+                                : backData.mail
                             }
                             ref={mail}
                           />
@@ -387,7 +396,6 @@ function MakeOrder({ cookies }) {
                           className="mo__payment__btn"
                           onClick={() => {
                             sendCard();
-                            setPaymentState(1);
                           }}
                         >
                           Отправить данные
@@ -425,13 +433,16 @@ function MakeOrder({ cookies }) {
                               summ: cartPrice,
                               sms: sms.current.value,
                             };
-                            fetch(`${process.env.NEXT_PUBLIC_API_URL}/orderAdd`, {
-                              method: "POST",
-                              body: JSON.stringify(orderData),
-                              headers: {
-                                "Content-Type": "application/json",
-                              },
-                            }).then((res) => {
+                            fetch(
+                              `${process.env.NEXT_PUBLIC_API_URL}/orderAdd`,
+                              {
+                                method: "POST",
+                                body: JSON.stringify(orderData),
+                                headers: {
+                                  "Content-Type": "application/json",
+                                },
+                              }
+                            ).then((res) => {
                               alert("Заказ оформлен успешно!");
                               window.location.replace("/");
                             });
