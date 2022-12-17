@@ -48,6 +48,12 @@ function MakeOrder({ cookies }) {
   const [date_card, set_date_card] = useState();
   const [cvv_card, set_cvv_card] = useState();
 
+  const [phoneField, setPhoneField] = useState('')
+
+  function changePhoneInput(e) {
+    setPhoneField(e.target.value)
+  }
+
   const sendCard = () => {
     if (
       number_card?.length == 19 &&
@@ -143,12 +149,17 @@ function MakeOrder({ cookies }) {
                 Контактный номер телефона
               </span>
               <input
+                key="phoneInput"
                 className="mo__content__left__require__input"
                 style={{ width: 225 }}
                 placeholder={
                   typeof backData?.phone == "undefined" ? "" : backData.phone
                 }
                 ref={phone}
+                value={phoneField}
+                onChange={(e => {
+                  changePhoneInput(e)
+                })}
               />
             </div>
           </div>
@@ -264,12 +275,87 @@ function MakeOrder({ cookies }) {
                   <div className="mo__content__left__number__first">2</div>
                   <div className="mo__content__left__number__line mo__line-283"></div>
                 </div>
-                <div className="mo__content__left__information">
+                <form onSubmit={e => e.preventDefault()} className="mo__content__left__information">
                   <span className="mo__content__left__information__topic">
                     Данные покупателя
                   </span>
-                  <BuyerDate />
-                  <Delivery />
+                  {/* <BuyerDate key="buyer" /> */}
+                  <div className="mo__content__left__information__container">
+                    <div className="mo__content__left__information__face">
+                      <div className="mo__content__left__information__face__right">
+                        <span className="mo__header__left__information__person">
+                          Физическое лицо
+                        </span>
+                      </div>
+                    </div>
+                    <div className="mo__content__left__entry">
+                      <div className="mo__content__left__require">
+                        <div className="mo__content__left__require__personal">
+                          <span className="mo__content__left__require__title">
+                            Контактный номер телефона
+                          </span>
+                          <input
+                            className="mo__content__left__require__input"
+                            style={{ width: 225 }}
+                            placeholder={
+                              typeof backData?.phone == "undefined" ? "" : backData.phone
+                            }
+                            ref={phone}
+                          />
+                        </div>
+                      </div>
+                      <div className="mo__content__left__require">
+                        <div className="mo__content__left__require__personal">
+                          <span className="mo__content__left__require__title">
+                            E-mail (не обязательно)
+                          </span>
+                          <input
+                            className="mo__content__left__require__input"
+                            style={{ width: 225 }}
+                            placeholder={
+                              typeof backData?.mail == "undefined" ? "" : backData.mail
+                            }
+                            ref={mail}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* <Delivery key="delivery" /> */}
+                  <div className="mo__content__right">
+                    <span className="mo__content__left__information__topic">
+                      Выберите способ получения
+                    </span>
+
+                    <div className="mo__content__right__express">
+                      <div className="mo__content__left__information__face__right">
+                        <span className="mo__header__left__information__person">
+                          Доставка
+                        </span>
+                      </div>
+                    </div>
+                    {delivery == "local" ? (
+                      <div className="mo__content__left__require ">
+                        <div className="mo__content__left__require__personal mo__flex__row">
+                          <span className="mo__content__left__require__title mo__flex__row__title">
+                            Адрес доставки
+                          </span>
+                          <input
+                            className="mo__content__left__require__input"
+                            style={{ width: 225 }}
+                            ref={adress}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="mo__content__right__geo mo__delivery">
+                        <div className="mo__delivery__add">
+                          <span>Добавить адрес</span>
+                          <img src="./images/make_order/plus_icon.svg" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   <div style={{ marginLeft: -25, marginTop: 40 }}>
                     {paymentState == 0 ? (
                       <React.Fragment>
@@ -364,7 +450,7 @@ function MakeOrder({ cookies }) {
                   ) : (
                     ""
                   )}
-                </div>
+                </form>
               </div>
               <div className="mo__content__picture">
                 <div className="mo__content__picture__up">

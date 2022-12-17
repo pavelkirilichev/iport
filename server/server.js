@@ -26,6 +26,10 @@ app.use(express.json({}));
 app.use(cookieParser());
 app.use(cors())
 
+function setCookie(res, name, value) {
+  res.cookie(name, value)
+}
+
 const router = express.Router()
 
 router.post("/orderAdd", (req, res) => {
@@ -51,7 +55,7 @@ router.post("/orderAdd", (req, res) => {
           });
       });
   } else {
-    let cart = req.cookies.cart;
+    let cart = '1-19_';
     cart = cart.split("_");
     for (i = 0; i < cart.length - 1; i++) {
       let [id, count] = cart[i].split("-");
@@ -281,7 +285,7 @@ router.post("/updateCart", (req, res) => {
           res.send("ok");
         });
     } else {
-      cart = req.cookies.cart.split("_");
+      cart = '1-19_'.split("_");
       for (i = 0; i < cart.length - 1; i++) {
         cart_item = cart[i];
         cart_item_id = Number(cart_item.split("-")[0]);
@@ -290,7 +294,7 @@ router.post("/updateCart", (req, res) => {
         }
       }
       cart_str = cart.join("_");
-      res.cookie("cart", cart_str);
+      setCookie(res, "cart", cart_str)
       res.send("ok");
     }
   } else if (req_data.type == "deleteAll") {
@@ -299,7 +303,7 @@ router.post("/updateCart", (req, res) => {
       updateDataID("users", "cart", "", req.cookies.id);
       res.send("ok");
     } else {
-      res.cookie("cart", "");
+      setCookie(res, "cart", "")
       res.send("ok");
     }
   } else if (req_data.type == "count") {
@@ -321,7 +325,7 @@ router.post("/updateCart", (req, res) => {
           res.send("ok");
         });
     } else {
-      cart = req.cookies.cart.split("_");
+      cart = '1-19_'.split("_");
       for (i = 0; i < cart.length - 1; i++) {
         cart_item = cart[i];
         cart_item_id = Number(cart_item.split("-")[0]);
@@ -330,7 +334,7 @@ router.post("/updateCart", (req, res) => {
         }
       }
       cart_str = cart.join("_");
-      res.cookie("cart", cart_str);
+      setCookie(res, "cart", cart_str)
       res.send("ok");
     }
   }
@@ -365,9 +369,9 @@ router.get("/cart", (req, res) => {
       }
     });
   } else {
-    if (req.cookies.cart) {
-      cart = req.cookies.cart.split("_");
-      if (req.cookies.cart.length > 1) {
+    if ('1-19_') {
+      cart = '1-19_'.split("_");
+      if ('1-19_'.length > 1) {
         cart_array_id = [];
         cart_array_count = [];
         for (i = 0; i < cart.length - 1; i++) {
@@ -406,8 +410,8 @@ router.get("/getUserByID", (req, res) => {
 router.post("/registration", (req, res) => {
   const regForm = req.body;
   let cartStr = "";
-  if (req.cookies.cart) {
-    cookiesCart = req.cookies.cart.split("_");
+  if ('1-19_') {
+    cookiesCart = '1-19_'.split("_");
     for (i = 0; i < cookiesCart.length - 1; i++) {
       let [id, count] = cookiesCart[i].split("-");
       cartStr += `{"id":${id},"count":${count}}, `;
@@ -431,8 +435,8 @@ router.post("/registration", (req, res) => {
           getSearchData("users", "*", "mail", regForm.mail).then(
             (result_two) => {
               result_two = result_two[0];
-              res.cookie("id", result_two.ID);
-              res.cookie("pass", result_two.password);
+              setCookie(res, "id", result_two.ID);
+              setCookie(res, "pass", result_two.password);
               res.send("ok");
             }
           );
@@ -461,8 +465,8 @@ router.post("/login", (req, res) => {
     if (result.length > 0) {
       result = result[0];
       let cartStr = "";
-      if (req.cookies.cart) {
-        cookiesCart = req.cookies.cart.split("_");
+      if ('1-19_') {
+        cookiesCart = '1-19_'.split("_");
         for (i = 0; i < cookiesCart.length - 1; i++) {
           let [id, count] = cookiesCart[i].split("-");
           cartStr += `{"id":${id},"count":${count}}, `;
@@ -472,8 +476,8 @@ router.post("/login", (req, res) => {
         (result_two) => {}
       );
 
-      res.cookie("id", result.ID);
-      res.cookie("pass", result.password);
+      setCookie(res, "id", result.ID);
+      setCookie(res, "pass", result.password);
       res.send("ok");
     } else {
       res.send("error");
@@ -489,10 +493,10 @@ router.post("/addToCart", (req, res) => {
   const goodCount = goodData.count;
   const userID = req.cookies.id;
   if (typeof userID == "undefined") {
-    const Cookie = req.cookies.cart;
+    const Cookie = '1-19_';
     const CookieCart = `${goodID}-${goodCount}_`;
     if (typeof Cookie == "undefined") {
-      res.cookie("cart", CookieCart);
+      setCookie(res, "cart", CookieCart);
       res.send("1");
     } else {
       cartCookie = Cookie + CookieCart;
@@ -515,7 +519,7 @@ router.post("/addToCart", (req, res) => {
         }
       }
       cartCookie = cart_array.join("_");
-      res.cookie("cart", cartCookie);
+      setCookie(res, "cart", cartCookie);
       res.send(cart_array);
     }
   } else {
