@@ -430,3 +430,41 @@
 	border: 1px solid rgb(41, 36, 36);
 	border-radius: 20px;
 }
+.payment__form {
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 400px;
+	height: 40px;
+	border: 1px solid rgb(41, 36, 36);
+	padding: 10px;
+	border-radius: 10px;
+}
+.payment__form input {
+	text-align: center;
+	box-sizing: border-box;
+	padding: 10px;
+	height: 30px;
+	background: #f2f4f5;
+	border-radius: 10px;
+}
+
+.payment__form input::-webkit-input-placeholder {
+	text-align: center;
+}
+.payment__number {
+	width: 190px;
+}
+.payment__date {
+	width: 50px;
+}
+.payment__cvc {
+	width: 60px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	/* display: none; <- Crashes Chrome on hover */
+	-webkit-appearance: none;
+	margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
