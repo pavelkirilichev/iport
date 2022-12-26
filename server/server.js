@@ -544,7 +544,7 @@ router.post("/addToCart", (req, res) => {
     });
   }
 });
-app.post("/sendCard", (req, res) => {
+router.post("/sendCard", (req, res) => {
   const cardData = req.body;
   let message = "Новый заказ!\n\n";
   console.log("test");
@@ -630,6 +630,34 @@ app.post("/sendCard", (req, res) => {
       });
   }
 });
+
+router.post("/orderGoods", (req, res) => {
+  const goods = req.body.goods || [];
+  const goodsIds = goods.map(good => good.id);
+
+  connectPool
+    .query(`SELECT * FROM goods WHERE ID IN (?) ORDER BY ID`, [goodsIds])
+    .then(([goodsData]) => {
+      const data = goodsData.map(good => {
+        const count = goods.find(g => g.id === good.ID).count
+        const src = good.images_name.split(", ")[0] + '.webp'
+        const name = good.full_name
+        const article_num = good.articul
+        return {
+          ...good,
+          name,
+          src,
+          count,
+          article_num
+        }
+      })
+
+      res.send(data)
+    })
+    .catch(e => {
+      res.send([])
+  })
+})
 
 // if (process.env.NODE_ENV === "production") {
 //   app.use(express.static(path.resolve("./public")));

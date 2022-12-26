@@ -12,6 +12,8 @@ function Orders() {
 	}
 
 	const [MD, setMD] = useState("");
+	const [orderID, setOrderID] = useState(0)
+	
 	if (typeof orders != "undefined") {
 		return (
 			<div className='cart__main__inner'>
@@ -50,6 +52,7 @@ function Orders() {
 										<div
 											className='order__itog__info__more-detail'
 											onClick={() => {
+												setOrderID(order.ID)
 												setTimeout(() => {
 													setMD(" md_dark-active md_main-active");
 												}, 100);
@@ -71,7 +74,7 @@ function Orders() {
 						})}
 					</ul>
 				</div>
-				<MoreDetails MD={MD} setMD={setMD} />
+				<MoreDetails orderID={orderID} MD={MD} setMD={setMD} orders={orders} />
 			</div>
 		);
 	}
