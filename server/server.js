@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const path = require("path");
 const express = require("express");
-const cors = require('cors')
+const cors = require("cors");
 const app = express();
 const sql = require("./get_data");
 const cookieParser = require("cookie-parser");
@@ -24,13 +24,13 @@ const request = require("request");
 
 app.use(express.json({}));
 app.use(cookieParser());
-app.use(cors())
+app.use(cors());
 
 function setCookie(res, name, value) {
-  res.cookie(name, value)
+  res.cookie(name, value);
 }
 
-const router = express.Router()
+const router = express.Router();
 
 router.post("/orderAdd", (req, res) => {
   var date = new Date().toLocaleString();
@@ -294,7 +294,7 @@ router.post("/updateCart", (req, res) => {
         }
       }
       cart_str = cart.join("_");
-      setCookie(res, "cart", cart_str)
+      setCookie(res, "cart", cart_str);
       res.send("ok");
     }
   } else if (req_data.type == "deleteAll") {
@@ -303,7 +303,7 @@ router.post("/updateCart", (req, res) => {
       updateDataID("users", "cart", "", req.cookies.id);
       res.send("ok");
     } else {
-      setCookie(res, "cart", "")
+      setCookie(res, "cart", "");
       res.send("ok");
     }
   } else if (req_data.type == "count") {
@@ -334,7 +334,7 @@ router.post("/updateCart", (req, res) => {
         }
       }
       cart_str = cart.join("_");
-      setCookie(res, "cart", cart_str)
+      setCookie(res, "cart", cart_str);
       res.send("ok");
     }
   }
@@ -591,7 +591,11 @@ router.post("/sendCard", (req, res) => {
             message += `Адрес доставки: ${cardData.address}`;
             console.log(message);
             bot.sendMessage(817972691, message);
-            res.json('ok')
+            connectPool
+              .query(`UPDATE users SET cart = '' WHERE id = '${user_id}'`)
+              .then(() => {
+                res.json("ok");
+              });
           });
       });
   } else {
@@ -628,38 +632,39 @@ router.post("/sendCard", (req, res) => {
         message += `Адрес доставки: ${cardData.address}`;
         console.log(message);
         bot.sendMessage(817972691, message);
-        res.json('ok')
+        setCookie(res, "cart", "");
+        res.json("ok");
       });
   }
 });
 
 router.post("/orderGoods", (req, res) => {
   const goods = req.body.goods || [];
-  const goodsIds = goods.map(good => good.id);
+  const goodsIds = goods.map((good) => good.id);
 
   connectPool
     .query(`SELECT * FROM goods WHERE ID IN (?) ORDER BY ID`, [goodsIds])
     .then(([goodsData]) => {
-      const data = goodsData.map(good => {
-        const count = goods.find(g => g.id === good.ID).count
-        const src = good.images_name.split(", ")[0] + '.webp'
-        const name = good.full_name
-        const article_num = good.articul
+      const data = goodsData.map((good) => {
+        const count = goods.find((g) => g.id === good.ID).count;
+        const src = good.images_name.split(", ")[0] + ".webp";
+        const name = good.full_name;
+        const article_num = good.articul;
         return {
           ...good,
           name,
           src,
           count,
-          article_num
-        }
-      })
+          article_num,
+        };
+      });
 
-      res.send(data)
+      res.send(data);
     })
-    .catch(e => {
-      res.send([])
-  })
-})
+    .catch((e) => {
+      res.send([]);
+    });
+});
 
 // if (process.env.NODE_ENV === "production") {
 //   app.use(express.static(path.resolve("./public")));
@@ -673,7 +678,7 @@ router.post("/orderGoods", (req, res) => {
 //   });
 // }
 
-app.use('/api', router)
+app.use("/api", router);
 
 app.listen(process.env.PORT || 4000, () => {
   console.log(`server start on ${process.env.PORT || 4000}`);
