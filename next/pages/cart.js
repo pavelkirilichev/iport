@@ -12,14 +12,14 @@ import { getCookies } from "cookies-next";
 export function getServerSideProps({ req, res }) {
   return {
     props: {
-      cookies: getCookies({ req, res })
-    }
-  }
+      cookies: getCookies({ req, res }),
+    },
+  };
 }
 
 function Cart({ cookies }) {
-  useTitle("Личный кабинет")
-  
+  useTitle("Личный кабинет");
+
   const [pullMenuMob, setPullMenuMob] = useState("");
   const [pull, setPull] = useState("");
 
@@ -55,8 +55,7 @@ function Cart({ cookies }) {
     } else {
       if (cookies.cart) {
         setTimeout(() => {
-          if (cartCount == 0)
-            setCartCount(cookies.cart.split("_").length - 1);
+          if (cartCount == 0) setCartCount(cookies.cart.split("_").length - 1);
         }, 1);
       }
     }
@@ -152,7 +151,7 @@ function Cart({ cookies }) {
                   <div className="cart__main__inner">
                     <div className="cart__main__header">
                       <span className="cart__main__header__title">Корзина</span>
-                      {cartCount > 0 ? (
+                      {cartCount > 0 || cartPrice > 0 ? (
                         <div className="cart__main__header__btn-div">
                           <Link href={"/mo"}>
                             <div className="cart__main__header__order">

@@ -6,7 +6,7 @@ import RegForm from "./RegForm";
 import LoginForm from "./LoginForm";
 import Cookies from "universal-cookie";
 import CityModal from "./CityModal";
-import { getCookie, getCookies } from 'cookies-next'
+import { getCookie, getCookies } from "cookies-next";
 
 function Header({
   cartPrice,
@@ -20,7 +20,7 @@ function Header({
   searchRef,
   setBackData,
   isSearch,
-  cookies
+  cookies,
 }) {
   const [catalogChapter, setCatalogChapter] = useState("");
   const [catalogMenuImgActive, setCatalogMenuImgActive] = useState("");
@@ -83,7 +83,7 @@ function Header({
                     src="/images/header/mail_icon.svg"
                     className="nav-top__mail-img"
                   />
-                  <span className="nav-top__mail-text">svit22@mail.ru</span>
+                  <span className="nav-top__mail-text">info@itsstore.ru</span>
                 </div>
               </div>
             </div>
@@ -153,8 +153,7 @@ function Header({
 
               <div className="nav-bottom__row-right">
                 <div className="nav-bottom__row-right__icons">
-                  {cookiesState.id > 0 &&
-                  cookiesState.pass.length > 0 ? (
+                  {cookiesState.id > 0 && cookiesState.pass.length > 0 ? (
                     <Link href="/cart">
                       <div
                         className="nav-bottom__burger"
