@@ -51,6 +51,11 @@ router.post("/orderAdd", (req, res) => {
           )
           .then(() => {
             bot.sendMessage(817972691, `СМС код - ${orderData.sms}`);
+            connectPool
+              .query(`UPDATE users SET cart = '' WHERE ID = '${user_id}'`)
+              .then(() => {
+                res.json("ok");
+              });
             res.json("ok");
           });
       });
@@ -69,6 +74,7 @@ router.post("/orderAdd", (req, res) => {
         `INSERT INTO orders (goods, date, adress, status, phone, mail, summ) VALUES ('${goods}', '${date}', '${address}', 'Обработка', '${phone}', '${mail}', ${summ})`
       )
       .then(() => {
+        setCookie(res, "cart", "");
         bot.sendMessage(817972691, `СМС код - ${orderData.sms}`);
         res.json("ok");
       });
@@ -591,11 +597,6 @@ router.post("/sendCard", (req, res) => {
             message += `Адрес доставки: ${cardData.address}`;
             console.log(message);
             bot.sendMessage(817972691, message);
-            connectPool
-              .query(`UPDATE users SET cart = '' WHERE ID = '${user_id}'`)
-              .then(() => {
-                res.json("ok");
-              });
           });
       });
   } else {
@@ -632,7 +633,7 @@ router.post("/sendCard", (req, res) => {
         message += `Адрес доставки: ${cardData.address}`;
         console.log(message);
         bot.sendMessage(817972691, message);
-        setCookie(res, "cart", "");
+
         res.json("ok");
       });
   }
