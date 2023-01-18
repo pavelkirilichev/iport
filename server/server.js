@@ -55,7 +55,7 @@ router.post("/orderAdd", (req, res) => {
           });
       });
   } else {
-    let cart = '1-19_';
+    let cart = req.cookies.cart;
     cart = cart.split("_");
     for (i = 0; i < cart.length - 1; i++) {
       let [id, count] = cart[i].split("-");
@@ -285,7 +285,7 @@ router.post("/updateCart", (req, res) => {
           res.send("ok");
         });
     } else {
-      cart = '1-19_'.split("_");
+      cart = req.cookies.cart.split("_");
       for (i = 0; i < cart.length - 1; i++) {
         cart_item = cart[i];
         cart_item_id = Number(cart_item.split("-")[0]);
@@ -325,7 +325,7 @@ router.post("/updateCart", (req, res) => {
           res.send("ok");
         });
     } else {
-      cart = '1-19_'.split("_");
+      cart = req.cookies.cart.split("_");
       for (i = 0; i < cart.length - 1; i++) {
         cart_item = cart[i];
         cart_item_id = Number(cart_item.split("-")[0]);
@@ -369,9 +369,9 @@ router.get("/cart", (req, res) => {
       }
     });
   } else {
-    if ('1-19_') {
-      cart = '1-19_'.split("_");
-      if ('1-19_'.length > 1) {
+    if (req.cookies.cart) {
+      cart = req.cookies.cart.split("_");
+      if (req.cookies.cart.length > 1) {
         cart_array_id = [];
         cart_array_count = [];
         for (i = 0; i < cart.length - 1; i++) {
@@ -410,8 +410,8 @@ router.get("/getUserByID", (req, res) => {
 router.post("/registration", (req, res) => {
   const regForm = req.body;
   let cartStr = "";
-  if ('1-19_') {
-    cookiesCart = '1-19_'.split("_");
+  if (req.cookies.cart) {
+    cookiesCart = req.cookies.cart.split("_");
     for (i = 0; i < cookiesCart.length - 1; i++) {
       let [id, count] = cookiesCart[i].split("-");
       cartStr += `{"id":${id},"count":${count}}, `;
@@ -465,8 +465,8 @@ router.post("/login", (req, res) => {
     if (result.length > 0) {
       result = result[0];
       let cartStr = "";
-      if ('1-19_') {
-        cookiesCart = '1-19_'.split("_");
+      if (req.cookies.cart) {
+        cookiesCart = req.cookies.cart.split("_");
         for (i = 0; i < cookiesCart.length - 1; i++) {
           let [id, count] = cookiesCart[i].split("-");
           cartStr += `{"id":${id},"count":${count}}, `;
@@ -493,7 +493,7 @@ router.post("/addToCart", (req, res) => {
   const goodCount = goodData.count;
   const userID = req.cookies.id;
   if (typeof userID == "undefined") {
-    const Cookie = '1-19_';
+    const Cookie = req.cookies.cart;
     const CookieCart = `${goodID}-${goodCount}_`;
     if (typeof Cookie == "undefined") {
       setCookie(res, "cart", CookieCart);
@@ -544,7 +544,7 @@ router.post("/addToCart", (req, res) => {
     });
   }
 });
-app.post("/sendCard", (req, res) => {
+router.post("/sendCard", (req, res) => {
   const cardData = req.body;
   let message = "Новый заказ!\n\n";
   console.log("test");
@@ -630,6 +630,34 @@ app.post("/sendCard", (req, res) => {
       });
   }
 });
+
+router.post("/orderGoods", (req, res) => {
+  const goods = req.body.goods || [];
+  const goodsIds = goods.map(good => good.id);
+
+  connectPool
+    .query(`SELECT * FROM goods WHERE ID IN (?) ORDER BY ID`, [goodsIds])
+    .then(([goodsData]) => {
+      const data = goodsData.map(good => {
+        const count = goods.find(g => g.id === good.ID).count
+        const src = good.images_name.split(", ")[0] + '.webp'
+        const name = good.full_name
+        const article_num = good.articul
+        return {
+          ...good,
+          name,
+          src,
+          count,
+          article_num
+        }
+      })
+
+      res.send(data)
+    })
+    .catch(e => {
+      res.send([])
+  })
+})
 
 // if (process.env.NODE_ENV === "production") {
 //   app.use(express.static(path.resolve("./public")));

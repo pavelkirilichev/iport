@@ -116,16 +116,6 @@ function RegForm({ modal, setModal }) {
 						</button>
 					</div>
 				</form>
-				<div className='reg__footer'>
-					<span className='reg__footer__content'>
-						© 2010-2018 <br />
-						Торговая марка «Свит»
-					</span>
-					<span className='reg__footer__content'>
-						Пользовательское <br />
-						соглашение
-					</span>
-				</div>
 			</div>
 		</div>
 	);

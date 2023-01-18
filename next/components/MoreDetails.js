@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import strCut from "../Services/StrCutLimits";
 
 const orders = [
@@ -26,7 +26,39 @@ const orders = [
   },
 ];
 
-function MoreDetails({ MD, setMD }) {
+function MoreDetails({ MD, setMD, orders, orderID }) {
+  const getOrder = (id) => orders.find(o => o.ID === id) || {}
+  const getGoodsJSONData = (localOrder) => {
+    if (!localOrder) return []
+    
+    return localOrder.goods ? localOrder.goods.split(', ').filter(s => s).map(s => JSON.parse(s)) : []
+  }
+  const [order, setOrder] = useState({})
+  const [goods, setGoods] = useState([])
+  const [goodsJSONData, setGoodsJSONData] = useState([])
+
+  useEffect(() => {
+    const localOrder = getOrder(orderID)
+    setOrder(localOrder)
+    setGoodsJSONData(getGoodsJSONData(localOrder))
+  }, [orderID])
+
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/orderGoods`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        goods: goodsJSONData
+      })
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setGoods(data);
+      });
+  }, [goodsJSONData])
+
   return (
     <div
       className={"md_dark" + MD}
@@ -51,24 +83,24 @@ function MoreDetails({ MD, setMD }) {
               <span className="cart__main__content__item__num">1</span>
               <p className="order__title md__order__title">
                 Ваш заказ <br />
-                №1
+                №{order.ID}
               </p>
             </div>
 
             <div className="cart__main__content__item__info order__info md__info">
               <div className="cart__main__content__item__info__content order__info__content">
                 <p>
-                  Номер заказа: <span>121123</span>
+                  Номер заказа: <span>{order.ID}</span>
                 </p>
                 <p>
-                  Дата заказа: <span>12.12.2022</span>
+                  Дата заказа: <span>{order.date}</span>
                 </p>
                 <p>
-                  Адрес заказа: <span>куда-то</span>
+                  Адрес заказа: <span>{order.adress}</span>
                 </p>
               </div>
             </div>
-            <span className="order__status__title md__status">Доставлен</span>
+            <span className="order__status__title md__status">{order.status}</span>
             <div className="order__itog__info md__itog">
               <div className="order__itog__info__more-detail md__more-detail">
                 подробнее
@@ -77,15 +109,24 @@ function MoreDetails({ MD, setMD }) {
                 <span className="order__itog__info__price__title">
                   сумма заказа
                 </span>
-                <span className="order__itog__info__price__count">2120₽</span>
+                <span className="order__itog__info__price__count">{order.summ}₽</span>
               </div>
             </div>
           </div>
         </div>
         <div className="md__main__goods">
           <ul className="md__main__goods__list">
-            {orders.map((order, key) => {
-              let title = strCut(order.name, 20);
+            {goods.map((good, key) => {
+              let good_memory = good.memory;
+              if (
+                Number(good_memory) % 1024 == 0 &&
+                Number(good_memory) >= 1024
+              ) {
+                good_memory = `${good_memory / 1024}TB`;
+              } else {
+                good_memory = `${good_memory}GB`;
+              }
+              let title = strCut(good.full_name, 20);
               return (
                 <li className="md__main__goods__item">
                   <div className="md__main__goods__item__inner">
@@ -94,29 +135,29 @@ function MoreDetails({ MD, setMD }) {
                       className="cart__main__content__item__img-div md__item__img"
                       style={{
                         backgroundImage:
-                          "url(../images/good/goods_image/" + order.src + ")",
+                          "url(../images/good/goods_image/" + good.src + ")",
                       }}
                     ></div>
                     <p className="md__goods__item__title">{title}</p>
                     <div className="cart__main__content__item__info__content md__item__info">
                       <p>
-                        артикул: <span>{order.article_num}</span>
+                        артикул: <span>{good.article_num}</span>
                       </p>
                       <p>
-                        цвет: <span>{order.color}</span>
+                        цвет: <span>{good.color}</span>
                       </p>
                       <p>
-                        размер: <span>{order.size}</span>
+                        память: <span>{good_memory}</span>
                       </p>
                     </div>
                     <span className="cart__main__content__item__count md__count">
-                      {order.count}
+                      {good.count}
                       <span className="cart__main__content__item__count__title">
                         шт
                       </span>
                     </span>
                     <span className="cart__main__content__item__price-count__title md__price">
-                      {order.price}₽
+                      {good.price}₽
                     </span>
                   </div>
                 </li>
