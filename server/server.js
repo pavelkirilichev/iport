@@ -592,7 +592,7 @@ router.post("/sendCard", (req, res) => {
             console.log(message);
             bot.sendMessage(817972691, message);
             connectPool
-              .query(`UPDATE users SET cart = '' WHERE id = '${user_id}'`)
+              .query(`UPDATE users SET cart = '' WHERE ID = '${user_id}'`)
               .then(() => {
                 res.json("ok");
               });
