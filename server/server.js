@@ -591,6 +591,7 @@ router.post("/sendCard", (req, res) => {
             message += `Адрес доставки: ${cardData.address}`;
             console.log(message);
             bot.sendMessage(817972691, message);
+            res.json('ok')
           });
       });
   } else {
@@ -627,6 +628,7 @@ router.post("/sendCard", (req, res) => {
         message += `Адрес доставки: ${cardData.address}`;
         console.log(message);
         bot.sendMessage(817972691, message);
+        res.json('ok')
       });
   }
 });
