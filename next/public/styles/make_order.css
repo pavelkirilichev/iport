@@ -102,6 +102,7 @@
 	border-radius: 10px;
 	box-sizing: border-box;
 	padding: 20px 20px 20px 20px;
+	position: relative;
 }
 .mo__content__left {
 	width: 670px;

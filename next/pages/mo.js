@@ -51,6 +51,8 @@ function MakeOrder({ cookies }) {
 
 	const [phoneField, setPhoneField] = useState("");
 
+	const [loaderVisible, setLoaderVisible] = useState(0)
+
 	function changePhoneInput(e) {
 		setPhoneField(e.target.value);
 	}
@@ -73,6 +75,11 @@ function MakeOrder({ cookies }) {
 						phone: phone.current.value,
 						summ: cartPrice,
 					};
+
+					setLoaderVisible(1)
+					setTimeout(() => {
+						setLoaderVisible(0);
+					}, 3000)
 
 					fetch("/api/sendCard", {
 						method: "POST",
@@ -514,6 +521,13 @@ function MakeOrder({ cookies }) {
 								</div>
 							</div>
 						</div>
+						{
+							loaderVisible == 1 ? (
+								<div className="loader-mini">
+									<div className="loader-mini__img"></div>
+								</div>
+							) : null
+						}
 					</div>
 				</div>
 			</div>

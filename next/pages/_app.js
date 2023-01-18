@@ -15,6 +15,7 @@ import "../public/styles/lk.css"
 import "../public/styles/make_order.css"
 import "../public/styles/good_mobile.css"
 import "../public/styles/city_modal.css"
+import "../public/styles/loader.css"
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />
