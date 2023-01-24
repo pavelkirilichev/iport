@@ -69,7 +69,7 @@ function Footer() {
         <ul className="footer__list">
           <li className="footer__list__main">Контакты</li>
           <li>О нас</li>
-          <li>example@gmail.com</li>
+          <li>info@itsstore.ru</li>
         </ul>
       </div>
     </div>

@@ -151,7 +151,7 @@ function Cart({ cookies }) {
                   <div className="cart__main__inner">
                     <div className="cart__main__header">
                       <span className="cart__main__header__title">Корзина</span>
-                      {cartCount > 0 || cartPrice > 0 ? (
+                      {1 ? (
                         <div className="cart__main__header__btn-div">
                           <Link href={"/mo"}>
                             <div className="cart__main__header__order">
