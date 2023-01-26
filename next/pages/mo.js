@@ -256,7 +256,7 @@ function MakeOrder({ cookies }) {
             <div className="mo__header__essential">
               <div className="mo__header__essential__amount">
                 <span className="mo__header__time__up__title">
-                  сумма заказа
+                  Сумма заказа
                 </span>
                 <span>{cartPrice}₽</span>
               </div>
@@ -417,7 +417,7 @@ function MakeOrder({ cookies }) {
                             sendCard();
                           }}
                         >
-                          Отправить данные
+                          Оплатить
                         </button>
                       </React.Fragment>
                     ) : (
