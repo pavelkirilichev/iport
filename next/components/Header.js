@@ -187,7 +187,7 @@ function Header({
                         src="/images/header/cart.svg"
                         className="nav-bottom__row-right__icon-img cart-icon-img"
                       />
-                      {cartCount > 0 ? (
+                      {cartCount > 0 && cartPrice > 0 ? (
                         <div className="lk-clients__sidebar__menu__item__count">
                           <span>{cartCount}</span>
                         </div>

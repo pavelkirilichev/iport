@@ -151,7 +151,7 @@ function Cart({ cookies }) {
                   <div className="cart__main__inner">
                     <div className="cart__main__header">
                       <span className="cart__main__header__title">Корзина</span>
-                      {cartCount > 1 || cartPrice > 0 ? (
+                      {cartPrice > 0 ? (
                         <div className="cart__main__header__btn-div">
                           <Link href={"/mo"}>
                             <div className="cart__main__header__order">
@@ -175,7 +175,7 @@ function Cart({ cookies }) {
                             className="cart__main__header__del-cart"
                             onClick={() => {
                               setCartPrice(0);
-                              setCartCount();
+                              setCartCount(0);
                               setCartData("delete");
                               UpdateCart(0, 0, 2);
                             }}

@@ -8,21 +8,21 @@ import { goods } from "../data/GoodsJSON";
 import strCut from "../Services/StrCutLimits";
 import AddToCart from "../components/AddToCart";
 import { useTitle } from "../hooks/useTitle";
-import Head from 'next/head'
+import Head from "next/head";
 // import Cookies from "universal-cookie";
 // const cookies = new Cookies();
-import { getCookie, getCookies } from 'cookies-next'
+import { getCookie, getCookies } from "cookies-next";
 
 export function getServerSideProps({ req, res }) {
   return {
     props: {
-      cookies: getCookies({ req, res })
-    }
-  }
+      cookies: getCookies({ req, res }),
+    },
+  };
 }
 
 function Home({ cookies }) {
-  useTitle("Главная")
+  useTitle("Главная");
 
   const [backData, setBackData] = useState();
   const [cartCount, setCartCount] = useState(0);
