@@ -1,6 +1,5 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import FooterMob from "../components/FooterMob";
 import HomeMob from "../components/HomeMob";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
@@ -176,7 +175,6 @@ function Home({ cookies }) {
         </section>
       </div>
       <Footer />
-      <FooterMob cartPrice={212000} />
     </div>
   );
 }

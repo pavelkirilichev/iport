@@ -1,6 +1,5 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import FooterMob from "../components/FooterMob";
 import { useCallback, useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 import { useTitle } from "../hooks/useTitle";
@@ -530,7 +529,6 @@ function MakeOrder({ cookies }) {
         </div>
       </div>
       <Footer />
-      <FooterMob cartPrice={212000} />
     </div>
   );
 }

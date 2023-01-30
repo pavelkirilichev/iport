@@ -1,6 +1,5 @@
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import FooterMob from "../../components/FooterMob";
 import { useState } from "react";
 import Link from "next/link";
 import GoodSlider from "../../components/GoodSlider";
@@ -19,14 +18,14 @@ import { useRouter } from "next/router";
 export function getServerSideProps({ req, res }) {
   return {
     props: {
-      cookies: getCookies({ req, res })
-    }
-  }
+      cookies: getCookies({ req, res }),
+    },
+  };
 }
 
 function Good({ cookies }) {
-  useTitle("Товар")
-  
+  useTitle("Товар");
+
   const { query: params, push } = useRouter();
   const goodID = params.id;
   const [backData, setBackData] = useState();
@@ -89,14 +88,9 @@ function Good({ cookies }) {
       });
   } else {
     console.log("cho za huinya");
-    if (
-      cookies.cart &&
-      cartCount == 0 &&
-      typeof cookies.id == "undefined"
-    ) {
+    if (cookies.cart && cartCount == 0 && typeof cookies.id == "undefined") {
       setTimeout(() => {
-        if (cartCount == 0)
-          setCartCount(cookies.cart.split("_").length - 1);
+        if (cartCount == 0) setCartCount(cookies.cart.split("_").length - 1);
       }, 1);
     }
   }
@@ -268,13 +262,16 @@ function Good({ cookies }) {
                                       type: "color",
                                       value: item,
                                     };
-                                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodsOther`, {
-                                      method: "POST",
-                                      body: JSON.stringify(data),
-                                      headers: {
-                                        "Content-Type": "application/json",
-                                      },
-                                    })
+                                    fetch(
+                                      `${process.env.NEXT_PUBLIC_API_URL}/goodsOther`,
+                                      {
+                                        method: "POST",
+                                        body: JSON.stringify(data),
+                                        headers: {
+                                          "Content-Type": "application/json",
+                                        },
+                                      }
+                                    )
                                       .then((response) => response.json())
                                       .then((data) => {
                                         push("/good/" + data.ID);
@@ -318,13 +315,16 @@ function Good({ cookies }) {
                                       type: "memory",
                                       value: item_data,
                                     };
-                                    fetch(`${process.env.NEXT_PUBLIC_API_URL}/goodsOther`, {
-                                      method: "POST",
-                                      body: JSON.stringify(data),
-                                      headers: {
-                                        "Content-Type": "application/json",
-                                      },
-                                    })
+                                    fetch(
+                                      `${process.env.NEXT_PUBLIC_API_URL}/goodsOther`,
+                                      {
+                                        method: "POST",
+                                        body: JSON.stringify(data),
+                                        headers: {
+                                          "Content-Type": "application/json",
+                                        },
+                                      }
+                                    )
                                       .then((response) => response.json())
                                       .then((data) => {
                                         push("/good/" + data.ID);
@@ -355,7 +355,6 @@ function Good({ cookies }) {
           <GoodMobile />
         </div>
         <Footer />
-        <FooterMob cartPrice={212000} />
       </div>
     );
   }

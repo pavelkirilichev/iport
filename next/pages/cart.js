@@ -2,7 +2,6 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Orders from "../components/Orders";
 import { useState, useEffect } from "react";
-import FooterMob from "../components/FooterMob";
 import strCut from "../Services/StrCutLimits";
 import UpdateCart from "../components/UpdateCart";
 import Link from "next/link";
@@ -363,7 +362,6 @@ function Cart({ cookies }) {
           </div>
         </div>
         <Footer />
-        <FooterMob cartPrice={212000} />
       </div>
     );
   }
