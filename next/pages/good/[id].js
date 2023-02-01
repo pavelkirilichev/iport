@@ -246,96 +246,98 @@ function Good({ cookies }) {
                         <div className="good__main__down__size">
                           <span>цвет</span>
                           <div className="good__main__down__size__box">
-                            <div className="good__main__down__size__item color-iport-border-2">
-                              <span className="color-iport">
-                                {backData.color}
-                              </span>
-                            </div>
-                            {backData.other_colors.split(", ").map((item) => {
-                              return (
-                                <div
-                                  className="good__main__down__size__item"
-                                  onClick={() => {
-                                    const data = {
-                                      goodValue: backData.memory,
-                                      model: backData.model,
-                                      type: "color",
-                                      value: item,
-                                    };
-                                    fetch(
-                                      `${process.env.NEXT_PUBLIC_API_URL}/goodsOther`,
-                                      {
-                                        method: "POST",
-                                        body: JSON.stringify(data),
-                                        headers: {
-                                          "Content-Type": "application/json",
-                                        },
-                                      }
-                                    )
-                                      .then((response) => response.json())
-                                      .then((data) => {
-                                        push("/good/" + data.ID);
-                                        setBackData(data);
-                                      });
-                                  }}
-                                >
-                                  <span>{item}</span>
-                                </div>
-                              );
-                            })}
+                            {backData.other_colors
+                              .split(", ")
+                              .sort()
+                              .map((item) => {
+                                return (
+                                  <div
+                                    className={
+                                      item == backData.color
+                                        ? "good__main__down__size__item color-iport-border-2"
+                                        : "good__main__down__size__item"
+                                    }
+                                    onClick={() => {
+                                      const data = {
+                                        goodValue: backData.memory,
+                                        model: backData.model,
+                                        type: "color",
+                                        value: item,
+                                      };
+                                      console.log(data);
+                                      fetch(
+                                        `${process.env.NEXT_PUBLIC_API_URL}/goodsOther`,
+                                        {
+                                          method: "POST",
+                                          body: JSON.stringify(data),
+                                          headers: {
+                                            "Content-Type": "application/json",
+                                          },
+                                        }
+                                      )
+                                        .then((response) => response.json())
+                                        .then((data) => {
+                                          push("/good/" + data.ID);
+                                          setBackData(data);
+                                        });
+                                    }}
+                                  >
+                                    <span>{item}</span>
+                                  </div>
+                                );
+                              })}
                           </div>
                         </div>
                         <div className="good__main__down__size">
                           <span>память</span>
                           <div className="good__main__down__size__box">
-                            <div className="good__main__down__size__item color-iport-border-2">
-                              <span className="color-iport">
-                                {Number(backData.memory) % 1024 == 0 &&
-                                Number(backData.memory) >= 1024
-                                  ? backData.memory / 1024 + "TB"
-                                  : backData.memory + "GB"}
-                              </span>
-                            </div>
-                            {backData.other_memory.split(", ").map((item) => {
-                              item = Number(item);
-                              let item_data = item;
-                              console.log(item);
-                              if (item % 1024 == 0 && item >= 1024) {
-                                item = `${item / 1024}TB`;
-                              } else {
-                                item = `${item}GB`;
-                              }
-                              return (
-                                <div
-                                  className="good__main__down__size__item"
-                                  onClick={() => {
-                                    const data = {
-                                      goodValue: backData.color,
-                                      model: backData.model,
-                                      type: "memory",
-                                      value: item_data,
-                                    };
-                                    fetch(
-                                      `${process.env.NEXT_PUBLIC_API_URL}/goodsOther`,
-                                      {
-                                        method: "POST",
-                                        body: JSON.stringify(data),
-                                        headers: {
-                                          "Content-Type": "application/json",
-                                        },
-                                      }
-                                    )
-                                      .then((response) => response.json())
-                                      .then((data) => {
-                                        push("/good/" + data.ID);
-                                        setBackData(data);
-                                      });
-                                  }}
-                                >
-                                  <span>{item}</span>
-                                </div>
-                              );
-                            })}
+                            {backData.other_memory
+                              .split(", ")
+                              .sort()
+                              .map((item) => {
+                                item = Number(item);
+                                let item_data = item;
+                                console.log(item);
+                                if (item % 1024 == 0 && item >= 1024) {
+                                  item = `${item / 1024}TB`;
+                                } else {
+                                  item = `${item}GB`;
+                                }
+                                return (
+                                  <div
+                                    className={
+                                      item_data == backData.memory
+                                        ? "good__main__down__size__item color-iport-border-2"
+                                        : "good__main__down__size__item"
+                                    }
+                                    onClick={() => {
+                                      const data = {
+                                        goodValue: backData.color,
+                                        model: backData.model,
+                                        type: "memory",
+                                        value: item_data,
+                                      };
+                                      fetch(
+                                        `${process.env.NEXT_PUBLIC_API_URL}/goodsOther`,
+                                        {
+                                          method: "POST",
+                                          body: JSON.stringify(data),
+                                          headers: {
+                                            "Content-Type": "application/json",
+                                          },
+                                        }
+                                      )
+                                        .then((response) => response.json())
+                                        .then((data) => {
+                                          push("/good/" + data.ID);
+                                          setBackData(data);
+                                        });
+                                    }}
+                                  >
+                                    <span>{item}</span>
+                                  </div>
+                                );
+                              })}
                           </div>
                         </div>
                       </div>

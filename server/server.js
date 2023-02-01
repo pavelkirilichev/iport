@@ -100,6 +100,17 @@ router.post("/goodsOther", (req, res) => {
         `SELECT * FROM goods WHERE model = '${model}' AND color = '${othervalue}' AND memory = ${goodValue}`
       )
       .then((goods) => {
+        let good = goods[0][0];
+        let goodMemory = good["memory"];
+        let goodColor = good["color"];
+        goods[0][0]["other_memory"] =
+          goods[0][0]["other_memory"] + `, ${goodMemory}`;
+
+        goods[0][0]["other_colors"] =
+          goods[0][0]["other_colors"] + `, ${goodColor}`;
+
+        console.log(goods[0][0]);
+
         res.json(goods[0][0]);
       });
   } else {
@@ -108,6 +119,17 @@ router.post("/goodsOther", (req, res) => {
         `SELECT * FROM goods WHERE model = '${model}' AND memory = ${othervalue} AND color = '${goodValue}'`
       )
       .then((goods) => {
+        let good = goods[0][0];
+        let goodMemory = good["memory"];
+        let goodColor = good["color"];
+        goods[0][0]["other_memory"] =
+          goods[0][0]["other_memory"] + `, ${goodMemory}`;
+
+        goods[0][0]["other_colors"] =
+          goods[0][0]["other_colors"] + `, ${goodColor}`;
+
+        console.log(goods[0][0]);
+
         res.json(goods[0][0]);
       });
   }
@@ -266,6 +288,17 @@ router.post("/goodsCategoryDesc", (req, res) => {
 router.post("/goodID", (req, res) => {
   id = req.body.id;
   connectPool.query(`SELECT * FROM goods WHERE ID = ${id}`).then((goods) => {
+    let good = goods[0][0];
+    let goodMemory = good["memory"];
+    let goodColor = good["color"];
+    goods[0][0]["other_memory"] =
+      goods[0][0]["other_memory"] + `, ${goodMemory}`;
+
+    goods[0][0]["other_colors"] =
+      goods[0][0]["other_colors"] + `, ${goodColor}`;
+
+    console.log(goods[0][0]);
+
     res.json(goods[0][0]);
   });
 });
